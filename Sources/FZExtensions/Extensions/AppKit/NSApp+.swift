@@ -11,8 +11,9 @@ import Foundation
 import AppKit
 
 extension NSApplication {
-    var windowsOnActiveSpace: [NSWindow] {
-        self.windows.filter({$0.isOnActiveSpace})
+    var visibleWindows: [NSWindow] {
+        return self.windows.filter({
+            $0.isVisible && $0.isOnActiveSpace && !$0.isFloatingPanel })
     }
 }
 

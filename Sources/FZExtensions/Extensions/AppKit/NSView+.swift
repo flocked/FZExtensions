@@ -36,6 +36,14 @@ extension NSView {
             self.wantsLayer = true
             self.layer?.backgroundColor = newValue?.cgColor } }
     
+    var roundedCorners: CACornerMask {
+        get { self.layer?.maskedCorners ?? CACornerMask() }
+        set {
+            self.wantsLayer = true
+            self.layer?.maskedCorners = newValue
+        }
+    }
+    
     var cornerRadius: CGFloat {
         get { self.layer?.cornerRadius ?? 0.0 }
         set {
@@ -121,6 +129,31 @@ extension NSView {
             self.removeTrackingArea(trackingArea)
         }
     }
+}
+
+extension NSView {
+    @available(macOS 10.12, *)
+    public static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void) {
+        NSAnimationContext.runAnimationGroup() {
+            context in
+            context.duration = duration
+            context.allowsImplicitAnimation = true
+            animations()
+        }
+    }
+    
+    public func setNeedsDisplay() {
+        self.needsDisplay = true
+    }
+
+    public func setNeedsLayout() {
+        self.needsLayout = true
+    }
+
+    public func setNeedsUpdateConstraints() {
+        self.needsUpdateConstraints = true
+    }
+    
 }
 
 extension NSView.AutoresizingMask {

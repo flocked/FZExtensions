@@ -21,6 +21,26 @@ extension NSEvent {
     }
 }
 
+extension NSEvent {
+    public var isCommandDown: Bool {
+        return self.modifierFlags.contains(.command) }
+    
+    public var isOptionDown: Bool {
+        return self.modifierFlags.contains(.option) }
+    
+    public var isControlDown: Bool {
+        return self.modifierFlags.contains(.control) }
+    
+    public var isShiftDown: Bool {
+        return self.modifierFlags.contains(.shift) }
+    
+    public var isCapsLockDown: Bool {
+        return self.modifierFlags.contains(.capsLock) }
+    
+    public var isNoModifierDown: Bool {
+        return self.modifierFlags.intersection([.command,.option,.control,.shift,.capsLock]).isEmpty }
+}
+
 extension NSEvent.EventTypeMask {
    func intersects(_ event: NSEvent?) -> Bool {
     return event?.associatedEventsMask.intersection(self).isEmpty == false
