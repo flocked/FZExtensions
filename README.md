@@ -1,3 +1,3 @@
 # FZExtensions
 
-A description of this package.
+AppKit/UIKit extensions and useful classes.
