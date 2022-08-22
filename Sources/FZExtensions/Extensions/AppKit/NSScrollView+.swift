@@ -45,13 +45,23 @@ extension NSScrollView {
             self.scrollToVisible(rect)
         }
     }
-    
-    func setMagnification(_ magnification: CGFloat, animationDuration: CGFloat) {
+        
+    func setMagnification(_ magnification: CGFloat, centeredAt: CGPoint? = nil, animationDuration: TimeInterval?) {
+        if let animationDuration = animationDuration, animationDuration != 0.0 {
         NSAnimationContext.runAnimationGroup({
             context in
             context.duration = animationDuration
+            if let centeredAt = centeredAt {
+                self.scroll(centeredAt, animationDuration: animationDuration)
+            }
             self.animator().magnification = magnification
-        })
+        }) } else {
+            if let centeredAt = centeredAt {
+                self.setMagnification(magnification, centeredAt: centeredAt)
+            } else {
+                self.magnification = magnification
+            }
+        }
     }
     
 }
