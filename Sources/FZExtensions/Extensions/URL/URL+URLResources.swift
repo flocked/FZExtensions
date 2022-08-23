@@ -6,7 +6,13 @@
 //
 
 import Foundation
+#if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers
+#endif
+
+#if os(macOS)
+import AppKit
+#endif
 
 public extension URL {
      var resources: URLResources {
@@ -22,7 +28,7 @@ public class URLResources {
 
     public var name: String? {
         get {
-            return try? url.resourceValues(forKeys: [.nameKey]).name
+            return try? url.resourceValues(for: .nameKey).name
          }
         set {
             var urlResouceValues = URLResourceValues()
@@ -33,38 +39,38 @@ public class URLResources {
 
         public var localizedName: String? {
             get {
-                return try? url.resourceValues(forKeys: [.localizedNameKey]).localizedName
+                return try? url.resourceValues(for: .localizedNameKey).localizedName
              }
         }
 
         public var isRegularFile: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isRegularFileKey]).isRegularFile) ?? false
+                return (try? url.resourceValues(for: .isRegularFileKey).isRegularFile) ?? false
              }
         }
 
         public var isDirectory: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isDirectoryKey]).isDirectory) ?? false
+                return (try? url.resourceValues(for: .isDirectoryKey).isDirectory) ?? false
              }
         }
 
         public var isSymbolicLink: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isSymbolicLinkKey]).isSymbolicLink) ?? false
+                return (try? url.resourceValues(for: .isSymbolicLinkKey).isSymbolicLink) ?? false
              }
         }
     
 
         public var isVolume: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isVolumeKey]).isVolume) ?? false
+                return (try? url.resourceValues(for: .isVolumeKey).isVolume) ?? false
              }
         }
     
     public var volumeName: String? {
         get {
-            return try? url.resourceValues(forKeys: [.volumeNameKey]).volumeName
+            return try? url.resourceValues(for: .volumeNameKey).volumeName
          }
         set {
             if let newValue = newValue {
@@ -77,13 +83,13 @@ public class URLResources {
     
     public var volumeURL: URL? {
         get {
-            return try? url.resourceValues(forKeys: [.volumeURLKey]).volume
+            return try? url.resourceValues(for: .volumeURLKey).volume
          }
     }
 
         public var isPackage: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isPackageKey]).isPackage) ?? false
+                return (try? url.resourceValues(for: .isPackageKey).isPackage) ?? false
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -95,7 +101,7 @@ public class URLResources {
         @available(macOS 10.11, iOS 9.0, *)
         public var isApplication: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isApplicationKey]).isApplication) ?? false
+                return (try? url.resourceValues(for: .isApplicationKey).isApplication) ?? false
              }
         }
 
@@ -103,21 +109,21 @@ public class URLResources {
         @available(macOS 10.11, *)
         public var applicationIsScriptable: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.applicationIsScriptableKey]).applicationIsScriptable) ?? false
+                return (try? url.resourceValues(for: .applicationIsScriptableKey).applicationIsScriptable) ?? false
              }
         }
 
         /// True for system-immutable resources.
         public var isSystemImmutable: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isSystemImmutableKey]).isSystemImmutable) ?? false
+                return (try? url.resourceValues(for: .isSystemImmutableKey).isSystemImmutable) ?? false
              }
         }
 
         /// True for user-immutable resources
         public var isUserImmutable: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isUserImmutableKey]).isUserImmutable) ?? false
+                return (try? url.resourceValues(for: .isUserImmutableKey).isUserImmutable) ?? false
              }
             set {
                  var urlResouceValues = URLResourceValues()
@@ -129,7 +135,7 @@ public class URLResources {
   
         public var isHidden: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isHiddenKey]).isHidden) ?? false
+                return (try? url.resourceValues(for: .isHiddenKey).isHidden) ?? false
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -139,7 +145,7 @@ public class URLResources {
         }
         public var hasHiddenExtension: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.hasHiddenExtensionKey]).hasHiddenExtension) ?? false
+                return (try? url.resourceValues(for: .hasHiddenExtensionKey).hasHiddenExtension) ?? false
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -150,7 +156,7 @@ public class URLResources {
     
         public var creationDate: Date? {
             get {
-                return try? url.resourceValues(forKeys: [.creationDateKey]).creationDate
+                return try? url.resourceValues(for: .creationDateKey).creationDate
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -161,13 +167,13 @@ public class URLResources {
     
     public var addedToDirectoryDateKey: Date? {
         get {
-            return try? url.resourceValues(forKeys: [.addedToDirectoryDateKey]).addedToDirectoryDate
+            return try? url.resourceValues(for: .addedToDirectoryDateKey).addedToDirectoryDate
          }
     }
     
         public var lastAccessDate: Date? {
             get {
-                return try? url.resourceValues(forKeys: [.contentAccessDateKey]).contentAccessDate
+                return try? url.resourceValues(for: .contentAccessDateKey).contentAccessDate
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -178,7 +184,7 @@ public class URLResources {
     
         public var modificationDate: Date? {
             get {
-                return try? url.resourceValues(forKeys: [.contentModificationDateKey]).contentModificationDate
+                return try? url.resourceValues(for: .contentModificationDateKey).contentModificationDate
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -189,19 +195,19 @@ public class URLResources {
 
         public var attributeModificationDate: Date? {
             get {
-                return try? url.resourceValues(forKeys: [.attributeModificationDateKey]).attributeModificationDate
+                return try? url.resourceValues(for: .attributeModificationDateKey).attributeModificationDate
              }
         }
 
         public var linkCount: Int? {
             get {
-                return try? url.resourceValues(forKeys: [.linkCountKey]).linkCount
+                return try? url.resourceValues(for: .linkCountKey).linkCount
              }
         }
     
         public var parentDirectory: URL? {
             get {
-                return try? url.resourceValues(forKeys: [.parentDirectoryURLKey]).parentDirectory
+                return try? url.resourceValues(for: .parentDirectoryURLKey).parentDirectory
              }
             set {
                 if var newParentDirectory = newValue {
@@ -213,14 +219,14 @@ public class URLResources {
 
         public var localizedTypeDescription: String? {
             get {
-                return try? url.resourceValues(forKeys: [.localizedTypeDescriptionKey]).localizedTypeDescription
+                return try? url.resourceValues(for: .localizedTypeDescriptionKey).localizedTypeDescription
              }
         }
 
         /// The label number assigned to the resource.
         public var labelNumber: Int? {
             get {
-                return try? url.resourceValues(forKeys: [.labelNumberKey]).labelNumber
+                return try? url.resourceValues(for: .labelNumberKey).labelNumber
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -231,7 +237,7 @@ public class URLResources {
     
         public var localizedLabel: String? {
             get {
-                return try? url.resourceValues(forKeys: [.localizedLabelKey]).localizedLabel
+                return try? url.resourceValues(for: .localizedLabelKey).localizedLabel
              }
         }
      
@@ -240,41 +246,41 @@ public class URLResources {
         @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
         public var fileContentIdentifier: Int64? {
             get {
-                return try? url.resourceValues(forKeys: [.fileContentIdentifierKey]).fileContentIdentifier
+                return try? url.resourceValues(for: .fileContentIdentifierKey).fileContentIdentifier
              }
         }
 
         public var preferredIOBlockSize: Int? {
             get {
-                return try? url.resourceValues(forKeys: [.preferredIOBlockSizeKey]).preferredIOBlockSize
+                return try? url.resourceValues(for: .preferredIOBlockSizeKey).preferredIOBlockSize
              }
         }
 
         public var isReadable: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isReadableKey]).isReadable) ?? false
+                return (try? url.resourceValues(for: .isReadableKey).isReadable) ?? false
              }
         }
         public var isWritable: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isWritableKey]).isWritable) ?? false
+                return (try? url.resourceValues(for: .isWritableKey).isWritable) ?? false
              }
         }
         public var isExecutable: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isExecutableKey]).isExecutable) ?? false
+                return (try? url.resourceValues(for: .isExecutableKey).isExecutable) ?? false
              }
         }
     
         public var fileSecurity: NSFileSecurity? {
             get {
-                return try? url.resourceValues(forKeys: [.fileSecurityKey]).fileSecurity
+                return try? url.resourceValues(for: .fileSecurityKey).fileSecurity
              }
         }
     
         public var isExcludedFromBackup: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isExcludedFromBackupKey]).isExcludedFromBackup) ?? false
+                return (try? url.resourceValues(for: .isExcludedFromBackupKey).isExcludedFromBackup) ?? false
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -285,48 +291,48 @@ public class URLResources {
     
         public var path: String? {
             get {
-                return try? url.resourceValues(forKeys: [.pathKey]).path
+                return try? url.resourceValues(for: .pathKey).path
              }
         }
 
         @available(macOS 10.12, iOS 10.0, tvOS 10.0, watchOS 3.0, *)
         public var canonicalPath: String? {
             get {
-                return try? url.resourceValues(forKeys: [.canonicalPathKey]).canonicalPath
+                return try? url.resourceValues(for: .canonicalPathKey).canonicalPath
              }
         }
 
         public var isMountTrigger: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isMountTriggerKey]).isMountTrigger) ?? false
+                return (try? url.resourceValues(for: .isMountTriggerKey).isMountTrigger) ?? false
              }
         }
 
         @available(macOS 10.10, iOS 8.0, *)
         public var generationIdentifier: (NSCopying & NSSecureCoding & NSObjectProtocol)? {
             get {
-                return try? url.resourceValues(forKeys: [.generationIdentifierKey]).generationIdentifier
+                return try? url.resourceValues(for: .generationIdentifierKey).generationIdentifier
              }
         }
 
         @available(macOS 10.10, iOS 8.0, *)
         public var documentIdentifier: Int? {
             get {
-                return try? url.resourceValues(forKeys: [.documentIdentifierKey]).documentIdentifier
+                return try? url.resourceValues(for: .documentIdentifierKey).documentIdentifier
              }
         }
 
         @available(macOS 10.10, iOS 8.0, *)
         public var addedToDirectoryDate: Date? {
             get {
-                return try? url.resourceValues(forKeys: [.addedToDirectoryDateKey]).addedToDirectoryDate
+                return try? url.resourceValues(for: .addedToDirectoryDateKey).addedToDirectoryDate
              }
         }
 
         @available(macOS 10.10, *)
         public var quarantineProperties: [String : Any]? {
             get {
-                return try? url.resourceValues(forKeys: [.quarantinePropertiesKey]).quarantineProperties
+                return try? url.resourceValues(for: .quarantinePropertiesKey).quarantineProperties
              }
             set {
                 var urlResouceValues = URLResourceValues()
@@ -338,145 +344,150 @@ public class URLResources {
         @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
         public var mayHaveExtendedAttributes: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.mayHaveExtendedAttributesKey]).mayHaveExtendedAttributes) ?? false
+                return (try? url.resourceValues(for: .mayHaveExtendedAttributesKey).mayHaveExtendedAttributes) ?? false
              }
         }
 
         @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
         public var isPurgeable: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isPurgeableKey]).isPurgeable) ?? false
+                return (try? url.resourceValues(for: .isPurgeableKey).isPurgeable) ?? false
              }
         }
 
         @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
         public var isSparse: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isSparseKey]).isSparse) ?? false
+                return (try? url.resourceValues(for: .isSparseKey).isSparse) ?? false
              }
         }
 
         @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
         public var mayShareFileContent: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.mayShareFileContentKey]).mayShareFileContent) ?? false
+                return (try? url.resourceValues(for: .mayShareFileContentKey).mayShareFileContent) ?? false
              }
         }
 
         public var fileResourceType: URLFileResourceType? {
             get {
-                return try? url.resourceValues(forKeys: [.fileResourceTypeKey]).fileResourceType
+                return try? url.resourceValues(for: .fileResourceTypeKey).fileResourceType
              }
         }
 
         public var isUbiquitousItem: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isUbiquitousItemKey]).isUbiquitousItem) ?? false
+                return (try? url.resourceValues(for: .isUbiquitousItemKey).isUbiquitousItem) ?? false
              }
         }
         public var ubiquitousItemHasUnresolvedConflicts: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.ubiquitousItemHasUnresolvedConflictsKey]).ubiquitousItemHasUnresolvedConflicts) ?? false
+                return (try? url.resourceValues(for: .ubiquitousItemHasUnresolvedConflictsKey).ubiquitousItemHasUnresolvedConflicts) ?? false
              }
         }
         public var ubiquitousItemIsDownloading: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.ubiquitousItemIsDownloadingKey]).ubiquitousItemIsDownloading) ?? false
+                return (try? url.resourceValues(for: .ubiquitousItemIsDownloadingKey).ubiquitousItemIsDownloading) ?? false
              }
         }
         public var ubiquitousItemIsUploaded: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.ubiquitousItemIsUploadedKey]).ubiquitousItemIsUploaded) ?? false
+                return (try? url.resourceValues(for: .ubiquitousItemIsUploadedKey).ubiquitousItemIsUploaded) ?? false
              }
         }
         public var ubiquitousItemIsUploading: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.ubiquitousItemIsUploadingKey]).ubiquitousItemIsUploading) ?? false
+                return (try? url.resourceValues(for: .ubiquitousItemIsUploadingKey).ubiquitousItemIsUploading) ?? false
              }
         }
         public var ubiquitousItemDownloadingStatus: URLUbiquitousItemDownloadingStatus? {
             get {
-                return try? url.resourceValues(forKeys: [.ubiquitousItemDownloadingStatusKey]).ubiquitousItemDownloadingStatus
+                return try? url.resourceValues(for: .ubiquitousItemDownloadingStatusKey).ubiquitousItemDownloadingStatus
              }
         }
 
         @available(macOS 11.0, iOS 9.0, *)
         public var fileProtection: URLFileProtection? {
             get {
-                return try? url.resourceValues(forKeys: [.fileProtectionKey]).fileProtection
+                return try? url.resourceValues(for: .fileProtectionKey).fileProtection
              }
         }
     
         public var fileSize: Int? {
             get {
-                return try? url.resourceValues(forKeys: [.fileSizeKey]).fileSize
+                return try? url.resourceValues(for: .fileSizeKey).fileSize
              }
         }
     
         public var fileAllocatedSize: Int? {
             get {
-                return try? url.resourceValues(forKeys: [.fileAllocatedSizeKey]).fileAllocatedSize
+                return try? url.resourceValues(for: .fileAllocatedSizeKey).fileAllocatedSize
              }
         }
     
         public var totalFileSize: Int? {
             get {
-                return try? url.resourceValues(forKeys: [.totalFileSizeKey]).totalFileSize
+                return try? url.resourceValues(for: .totalFileSizeKey).totalFileSize
              }
         }
     
         public var totalFileAllocatedSize: Int? {
             get {
-                return try? url.resourceValues(forKeys: [.totalFileAllocatedSizeKey]).totalFileAllocatedSize
+                return try? url.resourceValues(for: .totalFileAllocatedSizeKey).totalFileAllocatedSize
              }
         }
     
     
         public var isAliasFile: Bool {
             get {
-                return (try? url.resourceValues(forKeys: [.isAliasFileKey]).isAliasFile) ?? false
+                return (try? url.resourceValues(for: .isAliasFileKey).isAliasFile) ?? false
              }
         }
         
     @available(macOS 11.0, iOS 14.0, watchOS 7.0, tvOS 14.0, *)
     public  var contentType: UTType? {
         get {
-           return try? url.resourceValues(forKeys: [.contentTypeKey]).contentType
+           return try? url.resourceValues(for: .contentTypeKey).contentType
         }
     }
     
+    public  var customIcon: Image? {
+        get {
+           return try? url.resourceValues(for: .customIconKey).customIcon
+        }
     }
-
-extension URLResources {
+    
+    public  var effectiveIcon: Image? {
+        get {
+           return try? url.resourceValues(for: .effectiveIconKey).effectiveIcon as? Image
+        }
+    }
+    
+    public  var labelColor: Color? {
+        get {
+           return try? url.resourceValues(for: .labelColorKey).labelColor
+        }
+    }
+    
     var dataSize: DataSize? {
         if let bytes = self.totalFileAllocatedSize ?? self.fileAllocatedSize {
             return DataSize(bytes)
         }
         return nil
     }
-}
-
-#if os(macOS)
-import AppKit
-extension URLResources {
-        public var tags: [String] {
+    
+    @available(macOS 10.9, *)
+         var tags: [String] {
             get {
-                if let tagNames = try? url.resourceValues(forKeys: [.tagNamesKey]).tagNames {
-                    return tagNames
-                }
-                return []
-             }
+                if let tagNames = try? url.resourceValues(for: .tagNamesKey).tagNames {  return tagNames }
+                return [] }
             set {
                 do {
                     let fileLabels = NSWorkspace.shared.fileLabels
                     if (fileLabels.contains(all: newValue) == true) {
                         let url = self.url as NSURL
-                        try url.setResourceValue(newValue.unique() as NSArray, forKey: .tagNamesKey)
-                    }
-                } catch {
-                    print("Can not set tagNames")
-                }
-            }
+                        try url.setResourceValue(newValue.unique() as NSArray, forKey: .tagNamesKey) }
+                } catch { print("Cant set tagNames") } }
         }
+    
 }
-#endif

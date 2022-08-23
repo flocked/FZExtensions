@@ -10,10 +10,8 @@ import Combine
 
 #if os(macOS)
 import AppKit
-public typealias Image = NSImage
 #elseif canImport(UIKit)
 public import UIKit
-typealias Image = UIImage
 #endif
 
 public class ImageLayer: CALayer {

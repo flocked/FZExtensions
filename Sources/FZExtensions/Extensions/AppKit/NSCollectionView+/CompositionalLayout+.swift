@@ -8,16 +8,8 @@
 import Foundation
 #if os(macOS)
 import AppKit
-public typealias CollectionView = NSCollectionView
-public typealias CollectionViewCompositionalLayout = NSCollectionViewCompositionalLayout
-public typealias CollectionViewLayout = NSCollectionViewLayout
-public typealias CollectionViewCompositionalLayoutConfiguration = NSCollectionViewCompositionalLayoutConfiguration
 #elseif canImport(UIKit)
 import UIKit
-public typealias CollectionView = UICollectionView
-public typealias CollectionViewCompositionalLayout = UICollectionViewCompositionalLayout
-public typealias CollectionViewLayout = UICollectionViewLayout
-public typealias CollectionViewCompositionalLayoutConfiguration = UICollectionViewCompositionalLayoutConfiguration
 #endif
 
 public extension CollectionViewCompositionalLayout {

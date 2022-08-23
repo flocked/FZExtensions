@@ -8,6 +8,11 @@
 import Foundation
 
 public extension URL {
+    
+   internal func resourceValues(for key: URLResourceKey) throws -> URLResourceValues {
+        return try self.resourceValues(forKeys: [key])
+    }
+    
     var parent: URL? {
         let parent = self.deletingLastPathComponent()
         if (parent.path != self.path) {
