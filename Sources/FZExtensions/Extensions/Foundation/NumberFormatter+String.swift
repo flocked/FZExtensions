@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension NumberFormatter {
+public extension NumberFormatter {
     func intValue(from string: String) -> Int? {
         let str = strippingNonNumericCharacters(from: string)
         let formatter = NumberFormatter.forInteger()

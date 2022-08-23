@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSSlider {
+public extension NSSlider {
   /** Returns the position of knob center by point */
   func knobPointPosition() -> CGFloat {
     let sliderOrigin = frame.origin.x + knobThickness / 2

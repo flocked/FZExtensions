@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSScrollView {
+public extension NSScrollView {
     var contentOffset: CGPoint {
         get {
         //    return contentView.bounds.origin

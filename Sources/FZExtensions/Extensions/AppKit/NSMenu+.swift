@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSMenu {
+public extension NSMenu {
     convenience init(items: [NSMenuItem]) {
         self.init()
         for item in items {

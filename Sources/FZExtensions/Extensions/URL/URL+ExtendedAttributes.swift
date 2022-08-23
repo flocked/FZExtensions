@@ -1,7 +1,7 @@
 import Foundation
 
 
-extension URL {
+public extension URL {
     /// Wrap the xattr functions's POSIX error codes in `NSError` instances.
     ///
     /// - note: Originally written by Martin R on StackOverflow: <https://stackoverflow.com/a/38343753/1460929>
@@ -13,16 +13,16 @@ extension URL {
     }
 }
 
-extension URL {
-    public class ExtendedAttributes {
-        public typealias Key = String
+public extension URL {
+     class ExtendedAttributes {
+         public  typealias Key = String
         
         var url: URL
         init(_ url: URL) {
             self.url = url
         }
         
-        public subscript<T>(key: Key, initalValue: T? = nil) -> T?  {
+         subscript<T>(key: Key, initalValue: T? = nil) -> T?  {
             get {
                 if let value: T = self.extendedAttribute(for: key) {
                     return value
@@ -39,7 +39,7 @@ extension URL {
             set {  try? self.setExtendedAttribute(newValue, for: key) }
         }
         
-        public func setExtendedAttribute<T>(_ value:T?, for key:Key) throws
+         func setExtendedAttribute<T>(_ value:T?, for key:Key) throws
         {
             if let value = value {
             let data = try PropertyListSerialization.data(fromPropertyList:value,format:.binary,options:0)
@@ -52,7 +52,7 @@ extension URL {
         
          /// Get extended attribute
 
-        public func extendedAttribute<T>(for key: Key) -> T?
+         func extendedAttribute<T>(for key: Key) -> T?
         {
             if let data = self.extendedAttributeData(for: key),
                let any = try? PropertyListSerialization.propertyList(from:data, format:nil),
@@ -126,7 +126,7 @@ extension URL {
             }
         }
         
-       public func hasExtendedAttribute(_ key: Key) -> Bool
+        func hasExtendedAttribute(_ key: Key) -> Bool
         {
             let result = url.withUnsafeFileSystemRepresentation
             {
@@ -138,7 +138,7 @@ extension URL {
             return result
         }
         
-       public func listExtendedAttributes() throws -> [Key]
+        func listExtendedAttributes() throws -> [Key]
         {
             let list = try url.withUnsafeFileSystemRepresentation
             {
@@ -176,7 +176,7 @@ extension URL {
         
     }
     
-    public var extendedAttributes: ExtendedAttributes {
+     var extendedAttributes: ExtendedAttributes {
         return ExtendedAttributes(self)
     }
 }

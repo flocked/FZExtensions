@@ -10,28 +10,25 @@ import Foundation
 import AppKit
 import AVKit
 
-class MediaView: NSView {
-    enum VideoPlaybackOption {
+public class MediaView: NSView {
+    public enum VideoPlaybackOption {
         case autostart
         case previousPlaybackState
         case off
     }
     
-    var imageView = ImageView()
-    lazy var videoView: NoKeyDownPlayerView = {
-        let videoView = NoKeyDownPlayerView(frame: .zero)
-        videoView.player = AVPlayer()
-        return videoView
-    }()
+   internal let imageView = ImageView()
+    internal let videoView = NoKeyDownPlayerView()
+
     
-    var loopVideos: Bool = true
-    var isMuted: Bool = false { didSet { self.updateVideoViewConfiguration() } }
-    var volume: Float = 0.2  { didSet { self.updateVideoViewConfiguration() } }
-    var videoPlaybackOption: VideoPlaybackOption = .autostart
-    var videoViewControlStyle:  AVPlayerViewControlsStyle = .inline {
+    public  var loopVideos: Bool = true
+    public  var isMuted: Bool = false { didSet { self.updateVideoViewConfiguration() } }
+    public var volume: Float = 0.2  { didSet { self.updateVideoViewConfiguration() } }
+    public  var videoPlaybackOption: VideoPlaybackOption = .autostart
+    public var videoViewControlStyle:  AVPlayerViewControlsStyle = .inline {
         didSet { self.updateVideoViewConfiguration() } }
     
-    var contentScaling: CALayerContentsGravity = .resizeAspect {
+    public  var contentScaling: CALayerContentsGravity = .resizeAspect {
         didSet {
             self.imageView.imageScaling = self.contentScaling
             self.videoView.videoGravity = AVLayerVideoGravity(caLayerContentsGravity: self.contentScaling) ?? .resizeAspectFill
@@ -40,7 +37,7 @@ class MediaView: NSView {
     
     private var mediaType: URL.FileType? = nil
     
-    var mediaURL: URL? = nil {
+    public  var mediaURL: URL? = nil {
         didSet {
             if let mediaURL = self.mediaURL {
                 self.updatePreviousPlaybackState()
@@ -62,7 +59,7 @@ class MediaView: NSView {
         }
     }
     
-    var asset: AVAsset? {
+    public var asset: AVAsset? {
         get {
             if (self.mediaType == .video) { return self.videoView.player?.currentItem?.asset }
             return nil
@@ -96,7 +93,7 @@ class MediaView: NSView {
         }
     }
 
-    var image: NSImage? {
+    public  var image: NSImage? {
         get {
             if (self.mediaType == .image || self.mediaType == .gif) { return self.imageView.image }
             return nil
@@ -115,28 +112,28 @@ class MediaView: NSView {
         }
     }
             
-    func play() {
+    public func play() {
         self.imageView.startAnimating()
         self.videoView.player?.play()
     }
     
-    func pause() {
+    public func pause() {
         self.imageView.pauseAnimating()
         self.videoView.player?.pause()
         
     }
     
-    func stop() {
+    public func stop() {
         self.imageView.stopAnimating()
         self.videoView.player?.stop()
     }
     
-    func togglePlayback() {
+    public func togglePlayback() {
         self.imageView.toggleAnimating()
         self.videoView.player?.togglePlayback()
     }
     
-    override var fittingSize: NSSize {
+    public override var fittingSize: NSSize {
         if (self.mediaURL?.fileType == .image || self.mediaURL?.fileType == .gif) {
             return imageView.fittingSize
         } else if (self.mediaURL?.fileType == .video) {
@@ -145,7 +142,7 @@ class MediaView: NSView {
         return .zero
     }
     
-    func sizeToFit() {
+    public  func sizeToFit() {
         self.frame.size = self.fittingSize
     }
     
@@ -162,13 +159,11 @@ class MediaView: NSView {
         self.imageView.frame = self.frame
             self.imageView.autoAnimates = true
             self.imageView.imageScaling = self.contentScaling
-        self.imageView.isHidden = false
-         //   self.addSubview(withAutoresizing: self.imageView)
+            self.imageView.isHidden = false
     }
     
     private func removeImageView() {
         self.imageView.stopAnimating()
-      //  self.imageView.removeFromSuperview()
         self.imageView.image = nil
         self.imageView.isHidden = true
     }
@@ -224,12 +219,12 @@ class MediaView: NSView {
         }
     }
     
-    init(mediaURL: URL) {
+    public  init(mediaURL: URL) {
         super.init(frame: .zero)
         self.mediaURL = mediaURL
     }
     
-    init(frame: CGRect, mediaURL: URL) {
+    public init(frame: CGRect, mediaURL: URL) {
         super.init(frame: frame)
         self.mediaURL = mediaURL
     }

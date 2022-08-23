@@ -11,80 +11,80 @@ import Foundation
 import Quartz
 import AppKit
 
-protocol QLPreviewable {
+public protocol QLPreviewable {
     var url: URL {get}
     var frame: CGRect? {get}
 }
 
-struct QuicklookItem: QLPreviewable {
-    var url: URL
-    var frame: CGRect?
-    init(_ url: URL, _ frame: CGRect? = nil) {
+public struct QuicklookItem: QLPreviewable {
+    public let url: URL
+    public var frame: CGRect?
+    public init(_ url: URL, _ frame: CGRect? = nil) {
         self.url = url
         self.frame = frame
     }
-    init(url: URL, frame: CGRect? = nil) {
+    public init(url: URL, frame: CGRect? = nil) {
         self.url = url
         self.frame = frame
     }
 }
 
-class QuicklookPanel: NSObject {
-    static let shared = QuicklookPanel()
+public class QuicklookPanel: NSObject {
+    public static let shared = QuicklookPanel()
 
-    weak var keyDownResponder: NSResponder? = nil
+    public weak var keyDownResponder: NSResponder? = nil
     
-    override func acceptsPreviewPanelControl(_ panel: QLPreviewPanel!) -> Bool {
+    public override func acceptsPreviewPanelControl(_ panel: QLPreviewPanel!) -> Bool {
         return true
     }
     
-    override func beginPreviewPanelControl(_ panel: QLPreviewPanel!) {
+    public override func beginPreviewPanelControl(_ panel: QLPreviewPanel!) {
         panel.dataSource = self
         panel.delegate = self
     }
     
-    override func endPreviewPanelControl(_ panel: QLPreviewPanel!) {
+    public override func endPreviewPanelControl(_ panel: QLPreviewPanel!) {
     //    panel.dataSource = self
     //    panel.delegate = self
     }
     
-    var previewPanel: QLPreviewPanel {
+    public var previewPanel: QLPreviewPanel {
         QLPreviewPanel.shared()
     }
     
-    var isOpen: Bool {
+    public var isOpen: Bool {
         return previewPanel.isVisible
     }
         
-   private var items = [QLPreviewable]()
+   internal var items = [QLPreviewable]()
    
-    func preview(_ items: [QLPreviewable]) {
+    public  func preview(_ items: [QLPreviewable]) {
         self.items = items
         previewPanel.reloadData()
         open()
     }
     
-    func preview(_ urls: [URL]) {
+    public func preview(_ urls: [URL]) {
         self.items = urls.compactMap({QuicklookItem($0)})
         previewPanel.reloadData()
         open()
     }
   
-    func open() {
+    public  func open() {
         if (isOpen == false) {
             previewPanel.center()
             previewPanel.makeKeyAndOrderFront(nil)
         }
     }
     
-    func close(_ items: [QLPreviewable]? = nil) {
+    public func close(_ items: [QLPreviewable]? = nil) {
         if let items = items {
             self.items = items
         }
         previewPanel.orderOut(nil)
     }
     
-    func toggleOpen() {
+    public  func toggleOpen() {
         if (previewPanel.isVisible) {
             close()
         } else {
@@ -92,7 +92,7 @@ class QuicklookPanel: NSObject {
         }
     }
     
-    override init() {
+    public override init() {
          super.init()
    //     self.beginPreviewPanelControl(self.previewPanel)
         previewPanel.delegate = self
@@ -101,7 +101,7 @@ class QuicklookPanel: NSObject {
 }
 
 extension QuicklookPanel: QLPreviewPanelDataSource, QLPreviewPanelDelegate {
-    func previewPanel(_ panel: QLPreviewPanel!, handle event: NSEvent!) -> Bool {
+    public func previewPanel(_ panel: QLPreviewPanel!, handle event: NSEvent!) -> Bool {
         if(self.items.count > 1 && (event.keyCode == 123 || event.keyCode == 124)) {
             return true
         }
@@ -115,15 +115,15 @@ extension QuicklookPanel: QLPreviewPanelDataSource, QLPreviewPanelDelegate {
         }
     }
     
-    func previewPanel(_ panel: QLPreviewPanel!, sourceFrameOnScreenFor item: QLPreviewItem!) -> NSRect {
+    public func previewPanel(_ panel: QLPreviewPanel!, sourceFrameOnScreenFor item: QLPreviewItem!) -> NSRect {
         return self.items.first(where: {$0.url == item.previewItemURL})?.frame ?? .zero
             }
     
-    func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> QLPreviewItem! {
+    public func previewPanel(_ panel: QLPreviewPanel!, previewItemAt index: Int) -> QLPreviewItem! {
         return self.items[index].url as QLPreviewItem
     }
     
-    func numberOfPreviewItems(in panel: QLPreviewPanel!) -> Int {
+    public func numberOfPreviewItems(in panel: QLPreviewPanel!) -> Int {
         return self.items.count
     }
 }

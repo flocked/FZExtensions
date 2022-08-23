@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSBox {
+public extension NSBox {
     static func horizontalLine(width: CGFloat) -> NSBox {
         let box = NSBox(frame: NSRect(origin: .zero, size: NSSize(width: width, height: 1)))
         box.boxType = .separator

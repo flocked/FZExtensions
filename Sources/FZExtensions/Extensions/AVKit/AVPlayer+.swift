@@ -8,7 +8,7 @@
 import Foundation
 import AVKit
 
-extension AVPlayer {
+public extension AVPlayer {
     enum State: Int {
         case isPlaying
         case isPaused
@@ -44,7 +44,7 @@ extension AVPlayer {
     }
 }
 
-extension AVLayerVideoGravity {
+public extension AVLayerVideoGravity {
     init?(caLayerContentsGravity: CALayerContentsGravity) {
         switch caLayerContentsGravity {
         case .resizeAspectFill:

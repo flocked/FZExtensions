@@ -9,7 +9,7 @@ import Foundation
 import CoreVideo
 
 
-extension CVTimeStamp {
+public extension CVTimeStamp {
     var timeInterval: TimeInterval {
         return TimeInterval(videoTime) / TimeInterval(self.videoTimeScale)
     }

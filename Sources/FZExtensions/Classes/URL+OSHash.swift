@@ -1,6 +1,6 @@
 import Foundation
 
-extension URL {
+public extension URL {
     func osHash() throws -> Hash.OSHash {
         return try Hash.OSHash(url: self)
     }
@@ -11,18 +11,18 @@ protocol HashValue: Equatable {
     var value: String {get}
 }
 
-extension HashValue {
-    static func == (lhs: Self, rhs: Self) -> Bool {
+ extension HashValue {
+     public static func == (lhs: Self, rhs: Self) -> Bool {
         lhs.value == rhs.value && lhs.fileSize == rhs.fileSize
     }
 }
 
-class Hash {
+public class Hash {
     enum HashError: Error {
         case invalidFileURL
         case fileToSmall
     }
-    class OSHash: HashValue {
+    public class OSHash: HashValue {
         
         private static let chunkSize: Int = 65536
         private static let UInt64Size = 8

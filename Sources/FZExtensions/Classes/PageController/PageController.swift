@@ -9,8 +9,8 @@
 import Foundation
 import AppKit
 
-class PageController<ViewController: NSViewController, Element>: NSPageController, NSPageControllerDelegate {
-    override func loadView() {
+public class PageController<ViewController: NSViewController, Element>: NSPageController, NSPageControllerDelegate {
+    public   override func loadView() {
        self.view = NSView()
      }
     
@@ -31,7 +31,7 @@ class PageController<ViewController: NSViewController, Element>: NSPageControlle
         fatalError("init(coder:) has not been implemented")
     }
      
-    override func performKeyEquivalent(with event: NSEvent) -> Bool {
+    public  override func performKeyEquivalent(with event: NSEvent) -> Bool {
         var type: AdvanceType? = nil
         if (event.keyCode == 123) {
             if (event.modifierFlags.contains(.command)) {
@@ -53,11 +53,11 @@ class PageController<ViewController: NSViewController, Element>: NSPageControlle
         return false
     }
     
-    override var acceptsFirstResponder: Bool {
+    public  override var acceptsFirstResponder: Bool {
         return true
     }
 
-    override func viewDidLoad() {
+    public  override func viewDidLoad() {
         super.viewDidLoad()
         self.delegate = self
         self.transitionStyle = .horizontalStrip
@@ -69,7 +69,7 @@ class PageController<ViewController: NSViewController, Element>: NSPageControlle
         }
     }
 
-    override func scrollWheel(with event: NSEvent) {
+    public  override func scrollWheel(with event: NSEvent) {
         if (isSwipeable) {
             super.scrollWheel(with: event)
         }
@@ -79,11 +79,11 @@ class PageController<ViewController: NSViewController, Element>: NSPageControlle
         get {  return self.arrangedObjects.isEmpty ? [] : (self.arrangedObjects as! [Element]) }
         set { self.arrangedObjects = newValue } }
     
-    func pageController(_ pageController: NSPageController, viewControllerForIdentifier identifier: String) -> NSViewController {
+    public func pageController(_ pageController: NSPageController, viewControllerForIdentifier identifier: String) -> NSViewController {
        return ViewController()
     }
     
-    func pageController(_ pageController: NSPageController, identifierFor object: Any) -> String {
+    public  func pageController(_ pageController: NSPageController, identifierFor object: Any) -> String {
         return "ViewController"
     }
     
@@ -91,12 +91,12 @@ class PageController<ViewController: NSViewController, Element>: NSPageControlle
         handler(viewController, element)
     }
     
-    func pageController(_ pageController: NSPageController, prepare viewController: NSViewController, with object: Any?) {
+    public  func pageController(_ pageController: NSPageController, prepare viewController: NSViewController, with object: Any?) {
         guard let element = object as? Element, let itemVC = viewController as? ViewController else { return }
         self.prepare(viewController: itemVC, with: element)
     }
     
-    func pageControllerDidEndLiveTransition(_ pageController: NSPageController) {
+    public  func pageControllerDidEndLiveTransition(_ pageController: NSPageController) {
         self.completeTransition()
     }
 }

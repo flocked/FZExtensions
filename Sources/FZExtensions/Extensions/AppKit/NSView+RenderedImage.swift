@@ -9,12 +9,12 @@
 
 import AppKit
 
-extension NSView {
-    public static var currentContext: CGContext? {
+public extension NSView {
+     static var currentContext: CGContext? {
        return NSGraphicsContext.current?.cgContext
     }
 
-    public var renderedImage: NSImage  {
+     var renderedImage: NSImage  {
         let image = NSImage(size:self.bounds.size)
         image.lockFocus()
         
@@ -26,7 +26,7 @@ extension NSView {
         return image
     }
 
-    public static func renderedImage(from views:[NSView]) -> NSImage {
+     static func renderedImage(from views:[NSView]) -> NSImage {
         var frame = CGRect.zero
         for view in views {
             frame = NSUnionRect(frame, view.frame)
@@ -43,7 +43,7 @@ extension NSView {
         return image
     }
     
-    public func enclosingRect(for subviews: [NSView]) -> CGRect {
+     func enclosingRect(for subviews: [NSView]) -> CGRect {
         var enlosingFrame = CGRect.zero
         for subview in subviews {
             let frame = self.convert(subview.bounds, from:subview)

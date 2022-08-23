@@ -9,24 +9,24 @@
 
 import Foundation
 
-struct Shell {
-    struct Error: Swift.Error {
+public struct Shell {
+    public struct Error: Swift.Error {
         let command: String
         let output: String?
         let message: String?
         let exitCode: Int32
     }
     
-    enum ShellType: String {
+    public enum ShellType: String {
         case bash
         case zsh
     }
     
-    static func execute(_ args: String...,at path: String = ".", update: ((String) -> Void)?, completion: @escaping (Result<String, Shell.Error>) -> Void) {
+    public static func execute(_ args: String...,at path: String = ".", update: ((String) -> Void)?, completion: @escaping (Result<String, Shell.Error>) -> Void) {
         self.execute(args, at: path, update: update, completion: completion)
     }
     
-    static func execute(_ args: [String],at path: String = ".", update: ((String) -> Void)?, completion: @escaping (Result<String, Shell.Error>) -> Void) {
+    public static func execute(_ args: [String],at path: String = ".", update: ((String) -> Void)?, completion: @escaping (Result<String, Shell.Error>) -> Void) {
         let task = Process()
         task.launchPath = "/bin/bash"
         let command = "cd \(path.escapingSpaces) && \(args.joined(separator: " "))"
@@ -83,12 +83,12 @@ struct Shell {
     }
     
     @discardableResult
-    static func execute(_ args: String...,at path: String = ".") -> Result<String, Shell.Error> {
+    public static func execute(_ args: String...,at path: String = ".") -> Result<String, Shell.Error> {
         return execute(args, at: path)
     }
     
     @discardableResult
-    static func execute(_ args: [String],at path: String = ".") -> Result<String, Shell.Error> {
+    public static func execute(_ args: [String],at path: String = ".") -> Result<String, Shell.Error> {
         let task = Process()
         task.launchPath = "/bin/bash"
         let command = "cd \(path.escapingSpaces) && \(args.joined(separator: " "))"
@@ -140,7 +140,7 @@ struct Shell {
     
 }
 
-private extension String {
+internal extension String {
   var escapingSpaces: String {
     return replacingOccurrences(of: " ", with: "\\ ")
   }

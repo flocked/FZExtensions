@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSCollectionView {
+public extension NSCollectionView {
     func displayingIndexPaths() -> [IndexPath] {
         return self.displayingItems().compactMap({self.indexPath(for: $0)}).sorted()
     }

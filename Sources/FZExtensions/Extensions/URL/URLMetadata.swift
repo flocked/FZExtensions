@@ -688,7 +688,7 @@ public class URLMetadata {
     }
 }
 
-extension URLMetadata {
+public extension URLMetadata {
     var dataSize: DataSize? {
         if let fsSize = fsSize {
             return DataSize(fsSize)
@@ -699,7 +699,7 @@ extension URLMetadata {
 
 #if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers
-extension URLMetadata {
+public extension URLMetadata {
     @available(macOS 11.0, iOS 14.0, *)
     var contentUTType: UTType? {
         get { if let string = item.value(forAttribute: NSMetadataItemContentTypeKey) as? String

@@ -9,8 +9,8 @@
 
 import UIKit
 
-extension UIImage: CodableValueSupported {
-    public static let type = SupportedCodableTypes.image
+public extension UIImage: CodableValueSupported {
+     static let type = SupportedCodableTypes.image
 }
 
 #endif

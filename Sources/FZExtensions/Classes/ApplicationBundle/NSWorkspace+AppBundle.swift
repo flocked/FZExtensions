@@ -15,7 +15,7 @@ import UniformTypeIdentifiers
 import Foundation
 import AppKit
 
-extension NSWorkspace {
+public extension NSWorkspace {
     @available(macOS 12.0, *)
     func applications(toOpen fileExtension: String) -> [ApplicationBundle] {
         if let uttype = UTType(filenameExtension: fileExtension.lowercased()) {

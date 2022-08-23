@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension NSEdgeInsets {
+public extension NSEdgeInsets {
     static var zero = NSDirectionalEdgeInsets(0)
 
     init(_ value: CGFloat) {
@@ -45,7 +45,7 @@ import AppKit
 import UIKit
 #endif
 
-extension NSDirectionalEdgeInsets {
+public extension NSDirectionalEdgeInsets {
     static var zero = NSDirectionalEdgeInsets(0)
 
     init(_ value: CGFloat) {

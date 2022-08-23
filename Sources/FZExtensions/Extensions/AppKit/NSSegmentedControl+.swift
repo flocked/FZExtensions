@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSSegmentedControl {
+public extension NSSegmentedControl {
   func selectSegment(withLabel label: String) {
     self.selectedSegment = -1
     for i in 0..<segmentCount {

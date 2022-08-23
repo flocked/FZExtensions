@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSCollectionView {
+public extension NSCollectionView {
     func register<V: NSCollectionViewItem>(_ item: V.Type) {
         let identifier = NSUserInterfaceItemIdentifier(String(describing: V.self))
         self.register(V.self, forItemWithIdentifier: identifier)

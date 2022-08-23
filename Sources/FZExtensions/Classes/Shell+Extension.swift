@@ -10,7 +10,7 @@
 import Foundation
 
 extension Shell {
-    static func totalSize(for path: String) -> DataSize? {
+    public static func totalSize(for path: String) -> DataSize? {
        let result = Shell.execute("du", "-s", "-k", at: path)
         if let string = try? result.get(), let first = string.split(separator: "\t").first, let kBytes = Int(first) {
             let bytes = kBytes * 1024

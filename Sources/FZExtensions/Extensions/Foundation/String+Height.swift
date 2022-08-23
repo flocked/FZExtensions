@@ -6,8 +6,8 @@
 //
 import Foundation
 
-extension NSAttributedString {
-    public func height(using width: CGFloat) -> CGFloat {
+public extension NSAttributedString {
+     func height(using width: CGFloat) -> CGFloat {
         
         let maxSize = CGSize(width: width,
                              height: CGFloat.greatestFiniteMagnitude)
@@ -23,8 +23,8 @@ extension NSAttributedString {
 #if os(macOS)
 import AppKit
 
-extension String {
-    public func height(using width: CGFloat, font: NSFont, maxLines: CGFloat = 0) -> CGFloat {
+public extension String {
+     func height(using width: CGFloat, font: NSFont, maxLines: CGFloat = 0) -> CGFloat {
         
         let maxSize = CGSize(width: width,
                              height: CGFloat.greatestFiniteMagnitude)

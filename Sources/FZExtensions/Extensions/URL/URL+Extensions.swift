@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension URL {
+public extension URL {
     var parent: URL? {
         let parent = self.deletingLastPathComponent()
         if (parent.path != self.path) {

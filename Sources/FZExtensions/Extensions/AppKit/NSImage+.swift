@@ -11,7 +11,7 @@ import Foundation
 import AppKit
 import UniformTypeIdentifiers
 
-extension CGImage {
+public extension CGImage {
     var nsImage: NSImage {
         return NSImage(cgImage: self)
     }
@@ -38,7 +38,7 @@ public extension NSImage {
     }
 }
 
-extension NSImage {
+public extension NSImage {
     func tinted(_ tintColor: NSColor) -> NSImage {
         guard self.isTemplate else { return self }
 
@@ -105,7 +105,7 @@ extension NSBitmapImageRep {
     var tiffData: Data? { representation(using: .tiff, properties: [:]) }
 }
 
-extension NSImage {
+public extension NSImage {
     var bitmapImageRep: NSBitmapImageRep? {
         if let cgImage = self.cgImage {
             let imageRep = NSBitmapImageRep(cgImage: cgImage)
@@ -120,21 +120,21 @@ extension NSImage {
     var jpegData: Data? { bitmapImageRep?.jpegData }
 }
 
-extension Data {
+public extension Data {
     var bitmap: NSBitmapImageRep? { NSBitmapImageRep(data: self) }
 }
 
-extension NSImage {
-    public func scaled(toFit size: CGSize) -> NSImage {
+public extension NSImage {
+     func scaled(toFit size: CGSize) -> NSImage {
         let size = self.size.scaled(toFit: size)
         return self.resized(to: size)
     }
-    public func scaled(toFill size: CGSize) -> NSImage {
+     func scaled(toFill size: CGSize) -> NSImage {
         let size = self.size.scaled(toFill: size)
         return self.resized(to: size)
     }
     
-    public func resized(to size: CGSize) -> NSImage {
+     func resized(to size: CGSize) -> NSImage {
         let scaledImage = NSImage(size: size)
         scaledImage.cacheMode = .never
         scaledImage.lockFocus()

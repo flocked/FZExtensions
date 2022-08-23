@@ -7,13 +7,13 @@
 
 import Foundation
 
-extension Calendar.Component: CaseIterable {
+ extension Calendar.Component: CaseIterable {
     public static var allCases: [Calendar.Component] {
         return [.month, .weekday, .weekdayOrdinal, .weekOfYear, .weekOfMonth, .year, .yearForWeekOfYear, .weekOfYear, .quarter, .nanosecond, .second, .hour, .month, .minute, .day, .era]
     }
 }
 
-extension Calendar.Component {
+public extension Calendar.Component {
     var stringRepresentations: [String]? {
         switch self {
         case .month: return ["months", "month", "mon"]

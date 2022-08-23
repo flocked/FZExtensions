@@ -7,9 +7,9 @@
 
 import Foundation
 
-class Measure {
+public class Measure {
     @discardableResult
-   class func printTimeElapsed(title:String, running operation:()->()) -> Double {
+    public class func printTimeElapsed(title:String, running operation:()->()) -> Double {
         let startTime = CFAbsoluteTimeGetCurrent()
         operation()
         let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
@@ -17,7 +17,7 @@ class Measure {
        return Double(timeElapsed)
     }
 
-    class func timeElapsed(running operation: ()->()) -> Double {
+    public class func timeElapsed(running operation: ()->()) -> Double {
         let startTime = CFAbsoluteTimeGetCurrent()
         operation()
         let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime

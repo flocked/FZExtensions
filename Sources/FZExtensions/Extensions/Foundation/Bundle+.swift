@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Bundle {
+public extension Bundle {
     enum BundlePlatform {
         case macOS
         case maciOS

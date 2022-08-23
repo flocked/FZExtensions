@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 
-class PagingView<View: NSView, Element>: NSView {
+public class PagingView<View: NSView, Element>: NSView {
     private typealias ViewController = TypedViewController<View>
     typealias Handler = ((View, Element)->())
 
@@ -63,7 +63,7 @@ class PagingView<View: NSView, Element>: NSView {
     }
 }
 
-class TypedViewController<View: NSView>: NSViewController {
+internal class TypedViewController<View: NSView>: NSViewController {
     override func loadView() {
         self.view = View()
     }

@@ -12,8 +12,8 @@ import AVFoundation
 import UniformTypeIdentifiers
 
 @available(macOS 11.0, *)
-extension UTType {
-    public func conforms(toAny uttypes: [UTType]) -> Bool {
+public extension UTType {
+     func conforms(toAny uttypes: [UTType]) -> Bool {
         for uttype in uttypes {
             if (self.conforms(to: uttype)) {
                 return true

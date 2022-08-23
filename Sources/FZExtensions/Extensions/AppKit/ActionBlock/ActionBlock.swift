@@ -9,12 +9,12 @@ protocol TargetActionProtocol: AnyObject {
      var action: Selector? { get set }
  }
 
-extension NSControl: TargetActionProtocol {}
-extension NSToolbarItem: TargetActionProtocol {}
-extension NSGestureRecognizer: TargetActionProtocol {}
-extension NSMenuItem: TargetActionProtocol { }
+ extension NSControl: TargetActionProtocol {}
+ extension NSToolbarItem: TargetActionProtocol {}
+ extension NSGestureRecognizer: TargetActionProtocol {}
+ extension NSMenuItem: TargetActionProtocol { }
 
- class ActionTrampoline<T: TargetActionProtocol>: NSObject {
+ internal class ActionTrampoline<T: TargetActionProtocol>: NSObject {
        var action: (T) -> Void
        
        init(action: @escaping (T) -> Void) {
@@ -30,13 +30,13 @@ extension NSMenuItem: TargetActionProtocol { }
    
 fileprivate let ActionBlockAssociatedObjectKey = "ActionBlock".address
 
-extension String {
-    fileprivate var address: UnsafeRawPointer {
+internal extension String {
+     var address: UnsafeRawPointer {
         return UnsafeRawPointer(bitPattern: abs(hashValue))!
     }
 }
 
-extension TargetActionProtocol {
+ extension TargetActionProtocol {
     var actionBlock: ActionBlock? {
         set {
             guard let action = newValue else {

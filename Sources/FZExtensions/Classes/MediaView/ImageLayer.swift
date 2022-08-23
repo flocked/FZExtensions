@@ -10,14 +10,14 @@ import Combine
 
 #if os(macOS)
 import AppKit
-typealias Image = NSImage
+public typealias Image = NSImage
 #elseif canImport(UIKit)
-import UIKit
+public import UIKit
 typealias Image = UIImage
 #endif
 
-class ImageLayer: CALayer {
-    var image: Image?  {
+public class ImageLayer: CALayer {
+    public var image: Image?  {
         get {
             self.images.first
         }
@@ -35,7 +35,7 @@ class ImageLayer: CALayer {
     }
 
     
-    var images: [Image] = [] {
+    public var images: [Image] = [] {
         didSet {
             if (isAnimating && !isAnimatable) {
                 stopAnimating()
@@ -49,7 +49,7 @@ class ImageLayer: CALayer {
     }
     
         
-    var imageScaling: CALayerContentsGravity {
+    public  var imageScaling: CALayerContentsGravity {
         get {
            return self.contentsGravity
         }
@@ -58,7 +58,7 @@ class ImageLayer: CALayer {
         }
     }
     
-    var autoAnimates: Bool = true {
+    public  var autoAnimates: Bool = true {
         didSet {
             if (isAnimatable && !isAnimating && autoAnimates) {
                 self.startAnimating()
@@ -66,15 +66,15 @@ class ImageLayer: CALayer {
         }
     }
         
-    var animationDuration: TimeInterval = 0.0
+    public  var animationDuration: TimeInterval = 0.0
     
-    var isAnimating: Bool {
+    public  var isAnimating: Bool {
         return (displayLink != nil)
     }
     
     private var dlPreviousTimestamp: TimeInterval = 0.0
     private var dlCount: TimeInterval = 0.0
-    func startAnimating() {
+    public func startAnimating() {
         if (isAnimatable) {
             if (!isAnimating) {
                 self.dlPreviousTimestamp = 0.0
@@ -95,18 +95,18 @@ class ImageLayer: CALayer {
             }
         }
     
-    func pauseAnimating() {
+    public  func pauseAnimating() {
         self.displayLink?.cancel()
         self.displayLink = nil
     }
     
-    func stopAnimating() {
+    public  func stopAnimating() {
         self.displayLink?.cancel()
         self.displayLink = nil
         self.setFrame(to: .first)
     }
     
-    func toggleAnimating() {
+    public func toggleAnimating() {
         if (self.isAnimatable) {
             if (self.isAnimating) {
                 self.pauseAnimating()
@@ -116,7 +116,7 @@ class ImageLayer: CALayer {
         }
     }
     
-    enum FrameOption {
+    public  enum FrameOption {
         case first
         case last
         case random
@@ -124,7 +124,7 @@ class ImageLayer: CALayer {
         case previous
     }
     
-    func setFrame(to option: FrameOption) {
+    public  func setFrame(to option: FrameOption) {
         if (self.images.isEmpty == false) {
         switch option {
         case .first:
@@ -144,7 +144,7 @@ class ImageLayer: CALayer {
     }
     
     
-    func setGif(image: NSImage) {
+    public func setGif(image: NSImage) {
         if let frames = image.gifFrames() {
             var duration = 0.0
             for frame in frames {
@@ -190,33 +190,33 @@ class ImageLayer: CALayer {
         return (images.count > 1)
     }
     
-    var fittingSize: NSSize {
+    public var fittingSize: NSSize {
         if let imageSize = self.images.first?.size {
             return imageSize
         }
         return .zero
     }
     
-    func sizeToFit() {
+    public func sizeToFit() {
         self.frame.size = self.fittingSize
     }
     
-    init(image: NSImage) {
+    public  init(image: NSImage) {
         super.init()
         self.image = image
     }
     
-    init(layer: CALayer, image: NSImage) {
+    public init(layer: CALayer, image: NSImage) {
         super.init(layer: layer)
         self.image = image
     }
     
-    init(images: [NSImage]) {
+    public init(images: [NSImage]) {
         super.init()
         self.images = images
     }
     
-    init(layer: CALayer, images: [NSImage]) {
+    public init(layer: CALayer, images: [NSImage]) {
         super.init(layer: layer)
         self.images = images
     }
@@ -236,12 +236,12 @@ class ImageLayer: CALayer {
         self.sharedInit()
     }
     
-    func sharedInit() {
+  private  func sharedInit() {
         self.isOpaque = true
         self.contentsGravity = .resizeAspect
     }
     
-    var transition: Transition = .none {
+    public var transition: Transition = .none {
         didSet {
           //  updateTransitionAnimation()
         }
@@ -258,7 +258,7 @@ class ImageLayer: CALayer {
       }
     */
     
-    enum Transition {
+    public enum Transition {
         case none
         case push(CGFloat)
         case fade(CGFloat)

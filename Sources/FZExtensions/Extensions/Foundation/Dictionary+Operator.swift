@@ -7,8 +7,8 @@
 
 import Foundation
 
-extension Dictionary where Value : Any {
-    public static func +=(lhs: inout [Key:Value], rhs:[Key:Value]) {
+public extension Dictionary where Value : Any {
+     static func +=(lhs: inout [Key:Value], rhs:[Key:Value]) {
         rhs.forEach {
             lhs[$0] = $1
         }

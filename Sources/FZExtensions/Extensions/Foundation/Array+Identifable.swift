@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Sequence where Element: Identifiable {    
+public extension Sequence where Element: Identifiable {
     func contains(_ element: Element) -> Bool {
        return self.contains(where: {$0.id == element.id})
     }
@@ -45,7 +45,7 @@ extension Sequence where Element: Identifiable {
     
 }
 
-extension Collection where Element: Identifiable {
+public extension Collection where Element: Identifiable {
     func index(of element: Element) -> Self.Index? {
         return self.firstIndex(where: {$0.id == element.id})
     }
@@ -54,7 +54,7 @@ extension Collection where Element: Identifiable {
     }
 }
 
-extension RangeReplaceableCollection where Element: Identifiable {
+public extension RangeReplaceableCollection where Element: Identifiable {
     mutating func remove(_ element: Element)  {
         if let index = self.index(of: element) {
             self.remove(at: index)
@@ -68,7 +68,7 @@ extension RangeReplaceableCollection where Element: Identifiable {
     }
 }
 
-extension Array {
+public extension Array {
     subscript(indexes: [Int]) -> [Element] {
         var elements = [Element]()
         for index in indexes {
@@ -89,7 +89,7 @@ extension Array {
     
 }
 
-extension Array where Element: Identifiable {
+public extension Array where Element: Identifiable {
     mutating func move(_ elements: [Element], before: Element) {
         if let toIndex = self.index(of: before) {
             let indexSet = IndexSet(self.indexes(of: elements))

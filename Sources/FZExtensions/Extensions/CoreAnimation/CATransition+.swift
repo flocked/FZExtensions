@@ -8,7 +8,7 @@
 import Foundation
 import QuartzCore
 
-extension CATransition {
+public extension CATransition {
     convenience init(_ type: CATransitionType, _ duration: CGFloat) {
         self.init()
         self.type = type

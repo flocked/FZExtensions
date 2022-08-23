@@ -9,7 +9,7 @@
 
 import Cocoa
 
-extension NSWindow {
+public extension NSWindow {
     var isFullscreen: Bool {
         styleMask.contains(.fullScreen)
     }
@@ -18,7 +18,7 @@ extension NSWindow {
     ///
     /// This method attempts to size the window to match the current screen
     /// aspect ratio and dimensions. It will not exceed 1024 x 900.
-    public func resizeToScreenAspectRatio() {
+     func resizeToScreenAspectRatio() {
         guard let screen = NSScreen.main else {
             return
         }
@@ -51,7 +51,7 @@ extension NSWindow {
     ///
     /// Takes into account the tab bar, as well as transparent title bars and
     /// full size content.
-    public var titleBarHeight: CGFloat {
+     var titleBarHeight: CGFloat {
         let frameHeight = contentView?.frame.height ?? frame.height
         let contentLayoutRectHeight = contentLayoutRect.height
 
@@ -59,7 +59,7 @@ extension NSWindow {
     }
     
     /// Indicates the state of the window's tab bar
-    public var isTabBarVisible: Bool {
+     var isTabBarVisible: Bool {
         if #available(OSX 10.13, *) {
             // be extremely careful here. Just *accessing* the tabGroup property can
             // affect NSWindow's tabbing behavior
@@ -76,14 +76,14 @@ extension NSWindow {
     /// Returns the tab bar height
     ///
     /// This value will be zero if the tab bar is not visible
-    public var tabBarHeight: CGFloat {
+     var tabBarHeight: CGFloat {
         // hard-coding this isn't excellent, but I don't know
         // of another way to determine it without messing around
         // with hidden windows.
         return isTabBarVisible ? 28.0 : 0.0
     }
     
-    public func withAnimationDisabled(block: () -> Void) {
+     func withAnimationDisabled(block: () -> Void) {
         let currentBehavior = animationBehavior
 
         animationBehavior = .none

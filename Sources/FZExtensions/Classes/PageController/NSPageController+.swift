@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 
-extension NSPageController {
+public extension NSPageController {
     typealias AdvanceType = Int.NextValueType
     
     func select(_ index: Int, duration: CGFloat = 0.0) {

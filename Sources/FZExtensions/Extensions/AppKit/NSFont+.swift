@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSFont {
+public extension NSFont {
     var lineHeight: CGFloat {
         return self.boundingRectForFont.size.height
     }

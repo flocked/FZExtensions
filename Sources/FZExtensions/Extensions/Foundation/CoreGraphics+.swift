@@ -1,14 +1,14 @@
 import CoreGraphics
 
-func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+public func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
   return CGPoint(lhs.x - rhs.x, lhs.y - rhs.y)
 }
 
-func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
+public func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
     return CGPoint(lhs.x + rhs.x, lhs.y + rhs.y)
 }
 
-extension CGRect {
+public extension CGRect {
     init(_ x: CGFloat, _ y: CGFloat, _ width: CGFloat, _ height: CGFloat) {
         self.init(x: x, y: y, width: width, height: height)
     }
@@ -112,7 +112,7 @@ extension CGRect {
     }
 }
 
-extension CGSize {
+public extension CGSize {
     init(_ width: CGFloat, _ height: CGFloat) {
        self.init(width: width, height: height)
    }
@@ -177,7 +177,7 @@ extension CGSize {
 	}
 }
 
-extension CGPoint {
+public extension CGPoint {
     init(_ x: CGFloat, _ y: CGFloat) {
        self.init(x: x, y: y)
    }

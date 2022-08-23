@@ -10,16 +10,16 @@ import Cocoa
 import AVKit
 
 #if os(macOS)
-class MagnifyMediaView: NSView {
+public class MagnifyMediaView: NSView {
     private let mediaView = MediaView()
     private let scrollView = NSScrollView()
 
-    override var acceptsFirstResponder: Bool {
+    public override var acceptsFirstResponder: Bool {
         return true
     }
     
-    var doubleClickZoomFactor: CGFloat = 0.5
-    override func mouseDown(with event: NSEvent) {
+    public var doubleClickZoomFactor: CGFloat = 0.5
+    public override func mouseDown(with event: NSEvent) {
         self.window?.makeFirstResponder(self)
         if event.clickCount == 2 {
             if (self.magnification != 1.0) {
@@ -31,11 +31,11 @@ class MagnifyMediaView: NSView {
         }
     }
     
-    override func rightMouseDown(with event: NSEvent) {
+    public  override func rightMouseDown(with event: NSEvent) {
         self.mediaView.videoView.player?.togglePlayback()
     }
     
-    override func keyDown(with event: NSEvent) {
+    public  override func keyDown(with event: NSEvent) {
         if (event.keyCode == 30) { // Zoom In
             if (event.modifierFlags.contains(.command)) {
                 self.setMagnification(self.maxMagnification)
@@ -54,28 +54,28 @@ class MagnifyMediaView: NSView {
         }
     }
     
-    override var mouseDownCanMoveWindow: Bool {
+    public  override var mouseDownCanMoveWindow: Bool {
         return true
     }
                 
-    func scroll(to point: CGPoint) {
+    public  func scroll(to point: CGPoint) {
         self.scrollView.contentView.setBoundsOrigin(point)
         self.scrollView.scroll(self.scrollView.contentView, to: point)
     }
     
-    func scroll(to point: CGPoint, animationDuration: TimeInterval) {
+    public func scroll(to point: CGPoint, animationDuration: TimeInterval) {
         self.scrollView.scroll(point, animationDuration: animationDuration)
     }
     
-    func zoomIn(factor: CGFloat = 0.5, centeredAt: CGPoint? = nil, animationDuration: TimeInterval? = nil) {
+    public func zoomIn(factor: CGFloat = 0.5, centeredAt: CGPoint? = nil, animationDuration: TimeInterval? = nil) {
         self.zoom(factor: factor, centeredAt: centeredAt, animationDuration: animationDuration)
     }
     
-    func zoomOut(factor: CGFloat = 0.5, centeredAt: CGPoint? = nil, animationDuration: TimeInterval? = nil) {
+    public func zoomOut(factor: CGFloat = 0.5, centeredAt: CGPoint? = nil, animationDuration: TimeInterval? = nil) {
         self.zoom(factor: -factor, centeredAt: centeredAt, animationDuration: animationDuration)
     }
     
-    func zoom(factor: CGFloat = 0.5, centeredAt: CGPoint? = nil, animationDuration: TimeInterval? = nil) {
+    public func zoom(factor: CGFloat = 0.5, centeredAt: CGPoint? = nil, animationDuration: TimeInterval? = nil) {
         if allowsMagnification {
            let range = self.maxMagnification-self.minMagnification
             if (range > 0.0) {
@@ -86,7 +86,7 @@ class MagnifyMediaView: NSView {
         }
     }
     
-    func setMagnification(_ magnification: CGFloat, centeredAt: CGPoint? = nil, animationDuration: TimeInterval? = nil) {
+    public  func setMagnification(_ magnification: CGFloat, centeredAt: CGPoint? = nil, animationDuration: TimeInterval? = nil) {
         self.scrollView.setMagnification(magnification, centeredAt: centeredAt, animationDuration: animationDuration)
         if (magnification == 1.0) {
             self.scrollElasticity = .none
@@ -97,7 +97,7 @@ class MagnifyMediaView: NSView {
         }
     }
     
-    var mediaURL: URL? {
+    public var mediaURL: URL? {
         get {  return self.mediaView.mediaURL }
         set {
             self.mediaView.mediaURL = newValue
@@ -106,7 +106,7 @@ class MagnifyMediaView: NSView {
         }
     }
     
-    var image: NSImage? {
+    public  var image: NSImage? {
         get {  return self.mediaView.image }
         set {
             self.mediaView.image = newValue
@@ -115,7 +115,7 @@ class MagnifyMediaView: NSView {
         }
     }
     
-    var asset: AVAsset? {
+    public  var asset: AVAsset? {
         get {  return self.mediaView.asset }
         set {
             self.mediaView.asset = newValue
@@ -124,39 +124,39 @@ class MagnifyMediaView: NSView {
         }
     }
     
-    var isMuted: Bool {
+    public var isMuted: Bool {
         get {  self.mediaView.isMuted }
         set { self.mediaView.isMuted = newValue } }
     
-    var volume: Float {
+    public  var volume: Float {
         get { self.mediaView.volume  }
         set { self.mediaView.volume = newValue } }
     
-    var videoPlaybackOption: MediaView.VideoPlaybackOption {
+    public var videoPlaybackOption: MediaView.VideoPlaybackOption {
         get { self.mediaView.videoPlaybackOption }
         set { self.mediaView.videoPlaybackOption = newValue } }
     
-    var contentScaling: CALayerContentsGravity {
+    public var contentScaling: CALayerContentsGravity {
         get {  mediaView.contentScaling }
         set { mediaView.contentScaling = newValue } }
     
-    func play() {
+    public func play() {
         self.mediaView.play()
     }
     
-    func pause() {
+    public func pause() {
         self.mediaView.pause()
     }
     
-    func stop() {
+    public  func stop() {
         self.mediaView.stop()
     }
     
-    func togglePlayback() {
+    public func togglePlayback() {
         self.mediaView.togglePlayback()
     }
 
-     var hasScrollers: Bool {
+    public var hasScrollers: Bool {
         get { self.scrollView.hasVerticalScroller  }
         set {
             self.scrollView.hasVerticalScroller = newValue
@@ -164,7 +164,7 @@ class MagnifyMediaView: NSView {
         }
     }
     
-     var scrollElasticity: NSScrollView.Elasticity {
+    public  var scrollElasticity: NSScrollView.Elasticity {
         get {  self.scrollView.verticalScrollElasticity }
         set {
             self.scrollView.verticalScrollElasticity = newValue
@@ -172,32 +172,32 @@ class MagnifyMediaView: NSView {
         }
     }
     
-    var allowsMagnification: Bool {
+    public var allowsMagnification: Bool {
         get { self.scrollView.allowsMagnification }
         set { self.scrollView.allowsMagnification = newValue } }
     
-      var magnification: CGFloat {
+    public  var magnification: CGFloat {
         get { self.scrollView.magnification }
         set { self.setMagnification(newValue) } }
     
-      var minMagnification: CGFloat {
+    public  var minMagnification: CGFloat {
         get { self.scrollView.minMagnification }
         set { self.scrollView.minMagnification = newValue } }
     
-     var maxMagnification: CGFloat {
+    public  var maxMagnification: CGFloat {
         get { self.scrollView.maxMagnification }
         set { self.scrollView.maxMagnification = newValue } }
     
-    override var enclosingScrollView: NSScrollView? {
+    public override var enclosingScrollView: NSScrollView? {
         return self.scrollView
     }
     
-    init(mediaURL: URL) {
+    public init(mediaURL: URL) {
         super.init(frame: .zero)
         self.mediaURL = mediaURL
     }
     
-    init(frame: CGRect, mediaURL: URL) {
+    public  init(frame: CGRect, mediaURL: URL) {
         super.init(frame: frame)
         self.mediaURL = mediaURL
     }
@@ -212,7 +212,7 @@ class MagnifyMediaView: NSView {
         self.sharedInit()
     }
     
-    func sharedInit() {
+   private func sharedInit() {
         self.wantsLayer = true
         mediaView.wantsLayer = true
         mediaView.frame = self.bounds

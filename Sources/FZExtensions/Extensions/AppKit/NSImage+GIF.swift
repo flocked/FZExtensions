@@ -11,7 +11,7 @@ import Foundation
 import AppKit
 import UniformTypeIdentifiers
 
-extension NSImage {
+public extension NSImage {
     class func gifData(from images: [NSImage], duration: Float) -> Data? {
         let frameDuration = duration / Float(images.count)
         return gifData(from: images, frameDuration: frameDuration)
@@ -41,7 +41,7 @@ extension NSImage {
     }
 }
 
-extension NSImage {
+public extension NSImage {
     var isGif: Bool {
         return (framesCount > 1)
     }

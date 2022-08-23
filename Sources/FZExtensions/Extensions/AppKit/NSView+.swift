@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSView {
+public extension NSView {
     var frameInWindow: CGRect {
       convert(bounds, to: nil)
     }
@@ -131,9 +131,9 @@ extension NSView {
     }
 }
 
-extension NSView {
+public extension NSView {
     @available(macOS 10.12, *)
-    public static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void) {
+     static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void) {
         NSAnimationContext.runAnimationGroup() {
             context in
             context.duration = duration
@@ -142,21 +142,21 @@ extension NSView {
         }
     }
     
-    public func setNeedsDisplay() {
+     func setNeedsDisplay() {
         self.needsDisplay = true
     }
 
-    public func setNeedsLayout() {
+     func setNeedsLayout() {
         self.needsLayout = true
     }
 
-    public func setNeedsUpdateConstraints() {
+     func setNeedsUpdateConstraints() {
         self.needsUpdateConstraints = true
     }
     
 }
 
-extension NSView.AutoresizingMask {
+public extension NSView.AutoresizingMask {
     static let none: NSView.AutoresizingMask = []
     static let flexibleSize: NSView.AutoresizingMask = [.height, .width]
     static let all: NSView.AutoresizingMask = [.height, .width, .minYMargin, .minXMargin, .maxXMargin, .maxYMargin]

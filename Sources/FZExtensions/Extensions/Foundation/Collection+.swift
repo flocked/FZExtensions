@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension Sequence where Element: Equatable {
+public extension Sequence where Element: Equatable {
     func unique() -> [Element] {
         var uniqueValues: [Element] = []
         forEach { item in
@@ -18,7 +18,7 @@ extension Sequence where Element: Equatable {
     }
 }
 
-extension Array where Element: Equatable {
+public extension Array where Element: Equatable {
     mutating func uniqued() {
         var uniqueValues: [Element] = []
         forEach { item in
@@ -29,7 +29,7 @@ extension Array where Element: Equatable {
     }
 }
 
-extension Sequence {
+public extension Sequence {
     func sorted<T: Comparable>(
         by keyPath: KeyPath<Element, T>,
         using comparator: (T, T) -> Bool = (<)
@@ -52,7 +52,7 @@ extension Sequence {
 }
 
 
-extension Array {
+public extension Array {
     mutating func sort<T: Comparable>(by compare: (Element) -> T, asc ascendant: Bool = true) {
         if ascendant {
             self = self.sorted {compare($0) < compare($1)}
@@ -70,19 +70,19 @@ extension Array {
     }
 }
 
-extension Sequence where Iterator.Element: Hashable {
+public extension Sequence where Iterator.Element: Hashable {
     func unique() ->  [Iterator.Element] {
         return Array(Set(self))
     }
 }
 
-extension Sequence where Element: RawRepresentable, Element.RawValue: Equatable  {
+public extension Sequence where Element: RawRepresentable, Element.RawValue: Equatable  {
     func first(rawValue: Element.RawValue) -> Element? {
         return self.first(where: {$0.rawValue == rawValue})
     }
 }
 
-extension Sequence where Iterator.Element: AnyObject {
+public extension Sequence where Iterator.Element: AnyObject {
     func unique() ->  [Iterator.Element] {
         var elements = [Iterator.Element]()
         for element in self {
@@ -94,7 +94,7 @@ extension Sequence where Iterator.Element: AnyObject {
     }
 }
 
-extension Sequence where Element: Equatable  {
+public extension Sequence where Element: Equatable  {
     func contains(any elements: Self) -> Bool {
         for element in elements {
             if (self.contains(element)) {
@@ -114,7 +114,7 @@ extension Sequence where Element: Equatable  {
     }
 }
 
-extension Array {
+public extension Array {
     var middle: Element? {
         guard count != 0 else { return nil }
         let middleIndex = (count > 1 ? count - 1 : count) / 2
@@ -122,13 +122,13 @@ extension Array {
     }
 }
 
-extension Array {
+public extension Array {
   subscript(safe index: Int) -> Element? {
     return indices ~= index ? self[index] : nil
   }
 }
 
-extension RangeReplaceableCollection where Self.Indices.Element == Int {
+public extension RangeReplaceableCollection where Self.Indices.Element == Int {
 
     /**
         Removes the items contained in an `IndexSet` from the collection.

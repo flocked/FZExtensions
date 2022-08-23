@@ -8,7 +8,7 @@
 import Foundation
 import AVFoundation
 
-extension AVAsset {
+public extension AVAsset {
     var naturalSize: CGSize? {
         guard let track = self.tracks(withMediaType: AVMediaType.video).first else { return nil }
         let size = track.naturalSize.applying(track.preferredTransform)

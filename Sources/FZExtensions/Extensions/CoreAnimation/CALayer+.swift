@@ -14,7 +14,7 @@ import AppKit
 import UIKit
 #endif
 
-extension CACornerMask {
+public extension CACornerMask {
     static let bottomLeft = CACornerMask.layerMinXMaxYCorner
     static let bottomRight = CACornerMask.layerMaxXMaxYCorner
     static let topLeft = CACornerMask.layerMinXMinYCorner
@@ -22,7 +22,7 @@ extension CACornerMask {
     static let all: CACornerMask = [.bottomLeft, .bottomRight, .topLeft, .topRight]
 }
 
-extension CALayer {
+public extension CALayer {
     func sendToFront() {
         guard let superlayer = superlayer else { return }
         removeFromSuperlayer()

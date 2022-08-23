@@ -9,8 +9,8 @@
 
 import AppKit
 
-extension NSImage: CodableValueSupported {
-    public static let type = SupportedCodableTypes.image
+ extension NSImage: CodableValueSupported {
+     public  static let type = SupportedCodableTypes.image
 }
 
 #endif

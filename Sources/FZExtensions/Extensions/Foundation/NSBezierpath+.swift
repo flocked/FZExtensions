@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSBezierPath {
+public extension NSBezierPath {
     convenience init(rect: CGRect, cornerRadius: CGFloat, roundedCorners: CACornerMask = .all) {
         if (roundedCorners == .all || cornerRadius == 0.0) {
             let radius = cornerRadius / 2.0
@@ -64,7 +64,7 @@ extension NSBezierPath {
     }
 }
 
-extension NSBezierPath {
+public extension NSBezierPath {
     var cgPath: CGPath {
         return self.transformToCGPath()
     }
@@ -111,7 +111,7 @@ extension NSBezierPath {
     }
 }
 
-extension NSBezierPath {
+public extension NSBezierPath {
    static func contactShadow(rect: CGRect, shadowSize: CGFloat = 20, shadowDistance: CGFloat = 0) -> NSBezierPath {
         let contactRect = CGRect(x: -shadowSize, y: (rect.height - (shadowSize * 0.4)) + shadowDistance, width: rect.width + shadowSize * 2, height: shadowSize)
         return NSBezierPath(ovalIn: contactRect)

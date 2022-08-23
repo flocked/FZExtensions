@@ -33,12 +33,6 @@ public func set<T : AnyObject>(weakAssociatedValue: T?, key: String, object: Any
     set(associatedValue: AssociatedValue(weak: weakAssociatedValue), key: key, object: object)
 }
 
-extension String {
-    fileprivate var address: UnsafeRawPointer {
-        return UnsafeRawPointer(bitPattern: abs(hashValue))!
-    }
-}
-
 private func set(associatedValue: AssociatedValue, key: String, object: AnyObject) {
     objc_setAssociatedObject(object, key.address, associatedValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
 }

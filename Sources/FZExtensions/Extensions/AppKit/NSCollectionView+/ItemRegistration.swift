@@ -11,7 +11,7 @@ import Foundation
 import AppKit
 
 
-extension NSCollectionView {
+public extension NSCollectionView {
     class ItemRegistration<Item, Element> where Item: NSCollectionViewItem  {
     
     typealias Handler = ((Item, IndexPath, Element)->(Void))

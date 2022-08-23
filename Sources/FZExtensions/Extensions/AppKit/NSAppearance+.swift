@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSAppearance {
+public extension NSAppearance {
     static var vibrantDark: NSAppearance {
         return NSAppearance(named: .vibrantDark)!
     }

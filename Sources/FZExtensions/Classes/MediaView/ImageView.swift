@@ -9,8 +9,8 @@
 import Foundation
 import AppKit
 
-class ImageView: NSView {
-    var image: NSImage?  {
+public class ImageView: NSView {
+    public var image: NSImage?  {
         get {
             self.imageLayer.image
         }
@@ -19,7 +19,7 @@ class ImageView: NSView {
         }
     }
     
-    var images: [NSImage] {
+    public var images: [NSImage] {
         get {
             self.imageLayer.images
         }
@@ -28,7 +28,7 @@ class ImageView: NSView {
         }
     }
         
-    var imageScaling: CALayerContentsGravity {
+    public var imageScaling: CALayerContentsGravity {
         get {
             self.imageLayer.imageScaling
         }
@@ -37,7 +37,7 @@ class ImageView: NSView {
         }
     }
     
-    var autoAnimates: Bool  {
+    public  var autoAnimates: Bool  {
         get {
             self.imageLayer.autoAnimates
         }
@@ -46,7 +46,7 @@ class ImageView: NSView {
         }
     }
     
-    var animationDuration: TimeInterval {
+    public  var animationDuration: TimeInterval {
         get {
             self.imageLayer.animationDuration
         }
@@ -55,64 +55,64 @@ class ImageView: NSView {
         }
     }
     
-    var isAnimating: Bool {
+    public  var isAnimating: Bool {
         return imageLayer.isAnimating
     }
     
-    func startAnimating() {
+    public  func startAnimating() {
         imageLayer.startAnimating()
     }
     
-    func pauseAnimating() {
+    public func pauseAnimating() {
         imageLayer.pauseAnimating()
     }
     
-    func stopAnimating() {
+    public func stopAnimating() {
         imageLayer.stopAnimating()
     }
     
-    func toggleAnimating() {
+    public func toggleAnimating() {
         imageLayer.toggleAnimating()
     }
 
-    func setFrame(to option: ImageLayer.FrameOption) {
+    public  func setFrame(to option: ImageLayer.FrameOption) {
         imageLayer.setFrame(to: option)
     }
     
-    func setGif(image: NSImage) {
+    public  func setGif(image: NSImage) {
         imageLayer.setGif(image: image)
     }
             
-    override var fittingSize: NSSize {
+    public  override var fittingSize: NSSize {
         return imageLayer.fittingSize
     }
     
-    func sizeToFit() {
+    public func sizeToFit() {
         self.frame.size = self.fittingSize
     }
     
     private let imageLayer = ImageLayer()
     
-    override func makeBackingLayer() -> CALayer {
+    public override func makeBackingLayer() -> CALayer {
         return imageLayer
     }
     
-    init(image: NSImage) {
+    public init(image: NSImage) {
         super.init(frame: .zero)
         self.image = image
     }
     
-    init(image: NSImage, frame: CGRect) {
+    public init(image: NSImage, frame: CGRect) {
         super.init(frame: frame)
         self.image = image
     }
     
-    init(images: [NSImage]) {
+    public  init(images: [NSImage]) {
         super.init(frame: .zero)
         self.images = images
     }
     
-    init(images: [NSImage], frame: CGRect) {
+    public init(images: [NSImage], frame: CGRect) {
         super.init(frame: frame)
         self.images = images
     }
@@ -127,13 +127,13 @@ class ImageView: NSView {
         self.sharedInit()
     }
     
-    func sharedInit() {
+   private func sharedInit() {
         self.wantsLayer = true
         self.imageScaling = .resizeAspect
         self.layerContentsRedrawPolicy = .onSetNeedsDisplay
     }
     
-    override var wantsUpdateLayer: Bool {
+    public override var wantsUpdateLayer: Bool {
         return true
     }
     

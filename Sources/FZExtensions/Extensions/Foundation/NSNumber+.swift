@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension NSNumber {
+public extension NSNumber {
     convenience init(_ value: Bool) { self.init(value: value) }
     convenience init(_ value: CChar) { self.init(value: value) }
     convenience init(_ value: Double) { self.init(value: value) }

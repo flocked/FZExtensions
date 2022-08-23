@@ -1,15 +1,15 @@
 import Foundation
 
 public struct DataSize: Comparable, Equatable {
-    typealias CountStyle = ByteCountFormatter.CountStyle
-    var countStyle: CountStyle
+    public typealias CountStyle = ByteCountFormatter.CountStyle
+    public var countStyle: CountStyle
     
-    init(_ bytes: Int, countStyle: CountStyle = .file) {
+    public init(_ bytes: Int, countStyle: CountStyle = .file) {
         self.bytes = bytes
         self.countStyle = countStyle
     }
         
-    init(terabytes: Double = 0, gigabytes: Double = 0, megabytes: Double = 0, kilobytes: Double = 0, bytes: Int = 0, countStyle: CountStyle = .file) {
+    public  init(terabytes: Double = 0, gigabytes: Double = 0, megabytes: Double = 0, kilobytes: Double = 0, bytes: Int = 0, countStyle: CountStyle = .file) {
         self.bytes = bytes
         self.countStyle = countStyle
         self.bytes += self.bytes(for: kilobytes, .kilobyte)
@@ -18,29 +18,29 @@ public struct DataSize: Comparable, Equatable {
         self.bytes += self.bytes(for: terabytes, .terabyte)
     }
     
-    var bytes: Int
+    public var bytes: Int
     
-    var kilobytes: Double {
+    public var kilobytes: Double {
         get { value(for: .kilobyte) }
         set { self.bytes = bytes(for: newValue, .kilobyte) }
     }
     
-    var megabytes: Double {
+    public var megabytes: Double {
         get { value(for: .megabyte) }
         set { self.bytes = bytes(for: newValue, .megabyte) }
     }
     
-    var gigabytes: Double {
+    public  var gigabytes: Double {
         get { value(for: .gigabyte) }
         set { self.bytes = bytes(for: newValue, .gigabyte) }
     }
     
-    var terabytes: Double {
+    public var terabytes: Double {
         get { value(for: .terabyte) }
         set { self.bytes = bytes(for: newValue, .terabyte) }
     }
     
-    var petabytes: Double {
+    public var petabytes: Double {
         get { value(for: .petabyte) }
         set { self.bytes = bytes(for: newValue, .petabyte) }
     }
@@ -55,7 +55,7 @@ public struct DataSize: Comparable, Equatable {
 }
 
 public extension DataSize {
-    enum Unit: Int {
+     enum Unit: Int {
         case byte = 0
         case kilobyte = 1
         case megabyte = 2

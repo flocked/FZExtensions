@@ -16,13 +16,13 @@ import UniformTypeIdentifiers
 import Foundation
 import AppKit
 
-extension NSRunningApplication {
+public extension NSRunningApplication {
     var bundle: ApplicationBundle? {
         return ApplicationBundle(runningApplication: self)
     }
 }
 
-class ApplicationBundle: Bundle {
+public class ApplicationBundle: Bundle {
     override init?(path: String) {
         super.init(path: path)
         if (self.infoURL?.fileExists == false || !self.isApplicationBundle) {

@@ -14,14 +14,14 @@ import UIKit
 
 public typealias CollectionViewItemSizeProvider = (IndexPath) -> CGSize
 
-class LayoutItemProvider {
+public class LayoutItemProvider {
     private var columnHeights: [CGFloat]
     private let columnCount: CGFloat
     private let itemSizeProvider: CollectionViewItemSizeProvider
     private let spacing: CGFloat
     private let contentSize: CGSize
     
-    init(columnCount: Int = 2,
+   public init(columnCount: Int = 2,
          spacing: CGFloat = 8,
          environment: NSCollectionLayoutEnvironment,
          itemSizeProvider: @escaping CollectionViewItemSizeProvider) {
@@ -32,7 +32,7 @@ class LayoutItemProvider {
         self.contentSize = environment.container.effectiveContentSize
     }
     
-    func item(for indexPath: IndexPath) -> NSCollectionLayoutGroupCustomItem {
+   public func item(for indexPath: IndexPath) -> NSCollectionLayoutGroupCustomItem {
         let frame = frame(for: indexPath)
         columnHeights[columnIndex()] = frame.maxY + spacing
         return NSCollectionLayoutGroupCustomItem(frame: frame)

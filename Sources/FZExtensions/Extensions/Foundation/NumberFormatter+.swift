@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension NumberFormatter {
+public extension NumberFormatter {
     static func decimal(min: Int = 0, max: Int = 0) -> NumberFormatter {
         let formatter = NumberFormatter(minFractionDigits: min, maxFractionDigits: max)
         formatter.numberStyle = .decimal
@@ -70,28 +70,28 @@ extension NumberFormatter {
     func string(from value: UInt64) -> String? {  self.string(from: NSNumber(value: value)) }
 }
 
-extension Int {
+public extension Int {
     func localized(with format: String = "#,###", numberOfDigits: Int = 0, locale: Locale? = nil) -> String {
         let formatter = NumberFormatter.forInteger(with:format, numberOfDigits:numberOfDigits, locale:locale)
         return formatter.string(from:NSNumber(value:self)) ?? "\(self)"
     }
 }
 
-extension Double {
+public extension Double {
     func localized(with format: String = "#.#", numberOfDigits: Int = 1, locale: Locale? = nil) -> String {
         let formatter = NumberFormatter.forFloatingPoint(with:format, numberOfDigits:numberOfDigits, locale:locale)
         return formatter.string(from:NSNumber(value:self)) ?? "\(self)"
     }
 }
 
-extension Float {
+public extension Float {
     func localized(with format: String = "#.#", numberOfDigits: Int = 1, locale: Locale? = nil) -> String {
         let formatter = NumberFormatter.forFloatingPoint(with:format, numberOfDigits:numberOfDigits, locale:locale)
         return formatter.string(from:NSNumber(value:self)) ?? "\(self)"
     }
 }
 
-extension CGFloat {
+public extension CGFloat {
     func localized(with format: String = "#.#", numberOfDigits: Int = 1, locale: Locale? = nil) -> String {
         return Double(self).localized(with:format, numberOfDigits:numberOfDigits, locale:locale)
     }

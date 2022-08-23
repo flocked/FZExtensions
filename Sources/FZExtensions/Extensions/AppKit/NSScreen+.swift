@@ -12,7 +12,7 @@ import Cocoa
 import CoreGraphics
 
 
-extension NSScreen {
+public extension NSScreen {
     var displayID: CGDirectDisplayID {
       let key = NSDeviceDescriptionKey(rawValue: "NSScreenNumber")
       return deviceDescription[key] as? CGDirectDisplayID ?? 0

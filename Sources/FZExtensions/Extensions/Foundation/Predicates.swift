@@ -253,11 +253,11 @@ public func << <Root, S>(block: @escaping (Root) -> S?, value: S) -> (Root) -> B
 }
 
 infix operator <<!
-func <<! <Root, S>(block: @escaping (Root) -> S, value: S) -> (Root) -> Bool where S: Sequence, S.Element: Equatable {
+public func <<! <Root, S>(block: @escaping (Root) -> S, value: S) -> (Root) -> Bool where S: Sequence, S.Element: Equatable {
     return { value.contains(all: block($0)) }
 }
 
-func <<! <Root, S>(block: @escaping (Root) -> S?, value: S) -> (Root) -> Bool where S: Sequence, S.Element: Equatable {
+public func <<! <Root, S>(block: @escaping (Root) -> S?, value: S) -> (Root) -> Bool where S: Sequence, S.Element: Equatable {
     return { if let block = block($0) {
         return value.contains(all: block)
     } else {
@@ -278,11 +278,11 @@ public func >> <Root, S>(block: @escaping (Root) -> S?, value: S) -> (Root) -> B
 }
 
 infix operator >>!
-func >>! <Root, S>(block: @escaping (Root) -> S, value: S) -> (Root) -> Bool where S: Sequence, S.Element: Equatable {
+public func >>! <Root, S>(block: @escaping (Root) -> S, value: S) -> (Root) -> Bool where S: Sequence, S.Element: Equatable {
     return { block($0).contains(all: value) }
 }
 
-func >>! <Root, S>(block: @escaping (Root) -> S?, value: S) -> (Root) -> Bool where S: Sequence, S.Element: Equatable {
+public func >>! <Root, S>(block: @escaping (Root) -> S?, value: S) -> (Root) -> Bool where S: Sequence, S.Element: Equatable {
     return { if let block = block($0) {
         return block.contains(all: value)
     } else {
@@ -316,7 +316,7 @@ public struct Regex {
     
 }
 
-extension Regex: ExpressibleByStringLiteral {
+ extension Regex: ExpressibleByStringLiteral {
     
     public init(stringLiteral value: String) {
         self.init(pattern: value, options: .regularExpression)

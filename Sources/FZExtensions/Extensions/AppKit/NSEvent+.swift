@@ -11,7 +11,7 @@ import Foundation
 import AppKit
 import Carbon
 
-extension NSEvent {
+public extension NSEvent {
     func location(in view: NSView) -> CGPoint {
         return view.convert(self.locationInWindow, from: nil)
     }
@@ -21,33 +21,33 @@ extension NSEvent {
     }
 }
 
-extension NSEvent {
-    public var isCommandDown: Bool {
+public extension NSEvent {
+     var isCommandDown: Bool {
         return self.modifierFlags.contains(.command) }
     
-    public var isOptionDown: Bool {
+     var isOptionDown: Bool {
         return self.modifierFlags.contains(.option) }
     
-    public var isControlDown: Bool {
+     var isControlDown: Bool {
         return self.modifierFlags.contains(.control) }
     
-    public var isShiftDown: Bool {
+     var isShiftDown: Bool {
         return self.modifierFlags.contains(.shift) }
     
-    public var isCapsLockDown: Bool {
+     var isCapsLockDown: Bool {
         return self.modifierFlags.contains(.capsLock) }
     
-    public var isNoModifierDown: Bool {
+     var isNoModifierDown: Bool {
         return self.modifierFlags.intersection([.command,.option,.control,.shift,.capsLock]).isEmpty }
 }
 
-extension NSEvent.EventTypeMask {
+public extension NSEvent.EventTypeMask {
    func intersects(_ event: NSEvent?) -> Bool {
     return event?.associatedEventsMask.intersection(self).isEmpty == false
   }
 }
 
-extension NSEvent.EventType {
+public extension NSEvent.EventType {
     var isUserInteraction: Bool {
         Self.userInteractions.contains(self)
     }
@@ -66,7 +66,7 @@ extension NSEvent.EventType {
 }
 
 
-extension NSEvent {
+public extension NSEvent {
     static func keyCode(for string: String) -> (keyCode: UInt16, shift: Bool)? {
         if let found = NSEventKeyCodeMapping.first(where: {$0.value == string}) {
             return (keyCode: UInt16(found.key), shift: false)
@@ -125,7 +125,7 @@ extension NSEvent {
   }
 }
 
-extension NSEvent {
+internal extension NSEvent {
     fileprivate static let NSEventKeyCodeMapping: [Int: String] = [
       kVK_F1: "F1",
       kVK_F2: "F2",

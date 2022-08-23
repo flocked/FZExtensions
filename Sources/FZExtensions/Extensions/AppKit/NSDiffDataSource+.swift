@@ -11,7 +11,7 @@ import Foundation
 import AppKit
 
 @available(macOS 10.15.1, *)
-extension NSDiffableDataSourceSnapshot {
+public extension NSDiffableDataSourceSnapshot {
     enum ApplyOption {
         case reloadData
         case animated
@@ -20,7 +20,7 @@ extension NSDiffableDataSourceSnapshot {
 }
 
 @available(macOS 10.15.1, *)
-extension NSCollectionViewDiffableDataSource {
+public extension NSCollectionViewDiffableDataSource {
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>
     typealias SnapshotApplyOption = Snapshot.ApplyOption
     
@@ -68,7 +68,7 @@ extension NSCollectionViewDiffableDataSource {
 }
 
 @available(macOS 11.0, *)
-extension NSTableViewDiffableDataSource {
+public extension NSTableViewDiffableDataSource {
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>
     typealias SnapshotApplyOption = Snapshot.ApplyOption
     

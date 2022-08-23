@@ -8,19 +8,19 @@
 import Foundation
 #if os(macOS)
 import AppKit
-typealias CollectionView = NSCollectionView
-typealias CollectionViewCompositionalLayout = NSCollectionViewCompositionalLayout
-typealias CollectionViewLayout = NSCollectionViewLayout
-typealias CollectionViewCompositionalLayoutConfiguration = NSCollectionViewCompositionalLayoutConfiguration
+public typealias CollectionView = NSCollectionView
+public typealias CollectionViewCompositionalLayout = NSCollectionViewCompositionalLayout
+public typealias CollectionViewLayout = NSCollectionViewLayout
+public typealias CollectionViewCompositionalLayoutConfiguration = NSCollectionViewCompositionalLayoutConfiguration
 #elseif canImport(UIKit)
 import UIKit
-typealias CollectionView = UICollectionView
-typealias CollectionViewCompositionalLayout = UICollectionViewCompositionalLayout
-typealias CollectionViewLayout = UICollectionViewLayout
-typealias CollectionViewCompositionalLayoutConfiguration = UICollectionViewCompositionalLayoutConfiguration
+public typealias CollectionView = UICollectionView
+public typealias CollectionViewCompositionalLayout = UICollectionViewCompositionalLayout
+public typealias CollectionViewLayout = UICollectionViewLayout
+public typealias CollectionViewCompositionalLayoutConfiguration = UICollectionViewCompositionalLayoutConfiguration
 #endif
 
-extension CollectionViewCompositionalLayout {
+public extension CollectionViewCompositionalLayout {
     static func list(rowHeight: CGFloat) -> CollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                              heightDimension: .fractionalHeight(1.0))
@@ -101,7 +101,7 @@ extension CollectionViewCompositionalLayout {
 }
 }
 
-extension CollectionViewCompositionalLayout {
+public extension CollectionViewCompositionalLayout {
     static func waterfall(
         columnCount: Int = 2,
         spacing: CGFloat = 8,
@@ -136,7 +136,7 @@ extension CollectionViewCompositionalLayout {
     }
 }
 
-extension CollectionViewCompositionalLayout {
+public extension CollectionViewCompositionalLayout {
     enum SupplementaryItemType {
         case normal(height: CGFloat)
         case pinToTop(height: CGFloat)

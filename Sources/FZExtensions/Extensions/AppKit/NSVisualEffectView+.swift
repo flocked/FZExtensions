@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-extension NSVisualEffectView {
+public extension NSVisualEffectView {
     func roundCorners(withRadius cornerRadius: CGFloat) {
       if #available(macOS 10.14, *) {
         maskImage = .maskImage(cornerRadius: cornerRadius)

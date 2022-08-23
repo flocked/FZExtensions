@@ -7,7 +7,7 @@
 
 import Foundation
 
-extension ByteCountFormatter {
+public extension ByteCountFormatter {
     convenience init(unit: Units, countStyle: CountStyle = .file) {
         self.init()
         self.allowedUnits = unit

@@ -8,13 +8,13 @@
 import Foundation
 import NaturalLanguage
 
-extension NSRange {
+public extension NSRange {
     func toClosedRange() -> ClosedRange<Int> {
         return self.lowerBound...self.upperBound
     }
 }
 
-struct TextCheckingResult {
+public struct TextCheckingResult {
     private var dic = [String : String]()
     var range: Range<String.Index>
     init(source: String, textCheckingResult: NSTextCheckingResult, keys: [String]) {
@@ -38,7 +38,7 @@ struct TextCheckingResult {
 }
 
 
-extension String {
+public extension String {
     var lowercasedFirst: String {
         if isEmpty { return "" }
         return prefix(1).lowercased() + self.dropFirst()
@@ -142,7 +142,7 @@ extension String {
     }
 }
 
-extension StringProtocol {
+public extension StringProtocol {
     subscript(offset: Int) -> Character { self[index(startIndex, offsetBy: offset)] }
     subscript(range: Range<Int>) -> SubSequence {
         let startIndex = index(self.startIndex, offsetBy: range.lowerBound)
