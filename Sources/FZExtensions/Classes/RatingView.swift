@@ -4,10 +4,32 @@
 import AppKit
 
 public class RatingView : NSView {
+    // star.fill.left
+    // star.slash.fill
+    // star.slash
+    //star.circle.fill
+    // star.square.fill
+    
     public var rating = 0
     public var maxRating:Int = 5
     private var initialRating:Int = 0
     public var size:CGFloat = 14
+    
+    public var halfSteps = false
+    
+    public var onColor: NSColor = .black {
+        didSet { resetImages() } }
+
+    public var offColor: NSColor? = nil {
+        didSet { resetImages() } }
+    
+    private func resetImages() {
+        Self._offImage = nil
+        Self._onImage = nil
+        Self._halfImage = nil
+        self.needsDisplay = true
+    }
+
     
     public var isEnabled:Bool = true {
         didSet {
@@ -30,11 +52,8 @@ public class RatingView : NSView {
     }
     
     private var offImage:NSImage? {
-        if Self._offImage == nil
-        {
-            Self._offImage = Self.image(systemName:"star", color:NSColor.lightGray)
-        }
-        
+        if Self._offImage == nil {
+            Self._offImage = Self.image(systemName:"star", color: self.offColor ?? self.onColor) }
         return Self._offImage
     }
     
@@ -42,12 +61,21 @@ public class RatingView : NSView {
 
     private var onImage:NSImage? {
         if Self._onImage == nil {
-            Self._onImage = Self.image(systemName:"star.fill", color:NSColor.systemYellow)
+            Self._onImage = Self.image(systemName:"star.fill", color: self.onColor)
         }
         return Self._onImage
     }
     
     private static var _onImage:NSImage? = nil
+    
+    private var halfImage:NSImage? {
+        if Self._halfImage == nil {
+            Self._halfImage = Self.image(systemName:"star.fill.left", color: self.onColor)
+        }
+        return Self._halfImage
+    }
+    
+    private static var _halfImage:NSImage? = nil
     
     class func image(systemName:String, color:NSColor) -> NSImage? {
         if #available(macOS 11, *) {
