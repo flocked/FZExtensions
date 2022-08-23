@@ -8,14 +8,16 @@
 import Foundation
 
 class Measure {
-   class func printTimeElapsedWhenRunningCode(title:String, operation:()->()) {
+    @discardableResult
+   class func printTimeElapsed(title:String, running operation:()->()) -> Double {
         let startTime = CFAbsoluteTimeGetCurrent()
         operation()
         let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime
         print("Time elapsed for \(title): \(timeElapsed) s.")
+       return Double(timeElapsed)
     }
 
-    class func timeElapsedInSecondsWhenRunningCode(operation: ()->()) -> Double {
+    class func timeElapsed(running operation: ()->()) -> Double {
         let startTime = CFAbsoluteTimeGetCurrent()
         operation()
         let timeElapsed = CFAbsoluteTimeGetCurrent() - startTime

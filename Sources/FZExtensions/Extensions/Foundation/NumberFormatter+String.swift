@@ -67,9 +67,7 @@ extension NumberFormatter {
             }
             
             if let unitTimeInterval = unitKind?.timeInterval, let value = value {
-                if let interval = timeInterval {
-                    timeInterval = (timeInterval ?? 0) + (unitTimeInterval*value)
-                }
+                timeInterval = (timeInterval ?? 0) + (unitTimeInterval*value)
             }
         }
         return timeInterval

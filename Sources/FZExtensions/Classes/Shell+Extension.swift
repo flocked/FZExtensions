@@ -18,35 +18,6 @@ extension Shell {
         }
         return nil
     }
-    
-    enum TwitterType: String {
-        case likes = "likes"
-        case media = "media"
-        case all
-    }
-    
-    static func twitter(_ type: TwitterType = .media, user: String, at path: String = "."){
-        switch type {
-        case .likes:
-            let twitter = "https://twitter.com/" + user + "likes"
-            _ = Shell.execute("gallery-dl", twitter, at: path)
-        case .media:
-            let twitter = "https://twitter.com/" + user + "media"
-            _ = Shell.execute("gallery-dl", twitter, at: path)
-        case .all:
-            var twitter = "https://twitter.com/" + user + "media"
-            _ = Shell.execute("gallery-dl", twitter, at: path)
-            twitter = "https://twitter.com/" + user + "likes"
-            _ = Shell.execute("gallery-dl", twitter, at: path)
-        }
-    }
-    
-    static func twitter(_ type: TwitterType = .media, users: [String], at path: String = "."){
-        for user in users {
-            Shell.twitter(type, user: user, at: path)
-        }
-    }
-    
 }
 
 #endif

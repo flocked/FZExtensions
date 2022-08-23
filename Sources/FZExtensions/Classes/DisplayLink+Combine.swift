@@ -102,10 +102,9 @@ extension DisplayLink {
     
 }
 
-#if os(iOS) || os(tvOS) // iOS/tvOS support using CADisplayLink --------------------------------------------------------
+#if os(iOS) || os(tvOS)
 import QuartzCore
 
-/// DisplayLink is used to hook into screen refreshes.
 extension DisplayLink {
     
     fileprivate final class PlatformDisplayLink {
@@ -217,64 +216,3 @@ extension DisplayLink {
     }
 }
 #endif
-    
-extension CVTimeStamp {
-fileprivate var timeInterval: TimeInterval {
-    return TimeInterval(videoTime) / TimeInterval(self.videoTimeScale)
-}
-    
-    fileprivate var fps: TimeInterval {
-        return TimeInterval(videoTimeScale) / TimeInterval(self.videoRefreshPeriod)
-    }
-    
-    fileprivate var frame: TimeInterval {
-        return TimeInterval(videoTime) / TimeInterval(self.videoRefreshPeriod)
-    }
-    
-    fileprivate var seconds: TimeInterval {
-        return TimeInterval(videoTime) / TimeInterval(self.videoTimeScale)
-    }
-    
-    fileprivate var rootTotalSeconds: TimeInterval {
-        return TimeInterval(hostTime)
-    }
-    
-    fileprivate var rootDays: TimeInterval {
-        return TimeInterval(hostTime) / (1_000_000_000 * 60 * 60 * 24).truncatingRemainder(dividingBy: 365)
-    }
-    
-    fileprivate var rootHours: TimeInterval {
-        return TimeInterval(hostTime) / (1_000_000_000 * 60 * 60).truncatingRemainder(dividingBy: 24)
-    }
-    
-    fileprivate var rootMinutes: TimeInterval {
-        return TimeInterval(hostTime)  / (1_000_000_000 * 60).truncatingRemainder(dividingBy: 60)
-    }
-    
-    fileprivate var rootSeconds: TimeInterval {
-        return TimeInterval(hostTime) / 1_000_000_000.truncatingRemainder(dividingBy: 60)
-    }
-    
-    fileprivate var totalSeconds: TimeInterval {
-        return TimeInterval(videoTime) / TimeInterval(videoTimeScale)
-    }
-    
-    fileprivate var days: TimeInterval {
-        return (totalSeconds / (60 * 60 * 24)).truncatingRemainder(dividingBy: 365)
-    }
-    
-    fileprivate var hours: TimeInterval {
-        return (totalSeconds / (60 * 60)).truncatingRemainder(dividingBy: 24)
-    }
-    
-    
-    fileprivate var minutes: TimeInterval {
-        return (totalSeconds / 60).truncatingRemainder(dividingBy: 60)
-    }
-    /*
-    fileprivate var seconds: TimeInterval {
-        return totalSeconds.truncatingRemainder(dividingBy: 60)
-    }
-     */
-
-}
