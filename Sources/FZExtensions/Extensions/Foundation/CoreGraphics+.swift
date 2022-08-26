@@ -21,6 +21,21 @@ public extension CGRect {
         self.init(x: 0, y: 0, width: size.width, height: size.height)
     }
     
+    init(aroundPoint point: CGPoint, size: CGSize, integralized: Bool = false) {
+        let unintegralizedRect = CGRect(x: point.x - size.width / 2.0, y: point.y - size.height / 2.0, width: size.width, height: size.height)
+        let result = integralized ? unintegralizedRect.scaledIntegral : unintegralizedRect
+        self.init(x: result.origin.x, y: result.origin.y, width: result.size.width, height: result.size.height)
+    }
+    
+     var scaledIntegral: CGRect {
+        CGRect(
+            x: origin.x.scaledIntegral,
+            y: origin.y.scaledIntegral,
+            width: size.width.scaledIntegral,
+            height: size.height.scaledIntegral
+        )
+    }
+    
     var center: CGPoint {
       get { return CGPoint(x: centerX, y: centerY) }
       set { centerX = newValue.x; centerY = newValue.y }
@@ -117,6 +132,10 @@ public extension CGSize {
        self.init(width: width, height: height)
    }
     
+     var scaledIntegral: CGSize {
+        CGSize(width: width.scaledIntegral, height: height.scaledIntegral)
+    }
+    
     var aspectRatio: CGFloat {
       if height == 0 { return 1 }
       return width / height
@@ -195,4 +214,9 @@ public extension CGPoint {
         let ydst = self.y - point.y
         return sqrt((xdst * xdst) + (ydst * ydst))
     }
+    
+    
+    var scaledIntegral: CGPoint {
+       CGPoint(x: x.scaledIntegral, y: y.scaledIntegral)
+   }
 }

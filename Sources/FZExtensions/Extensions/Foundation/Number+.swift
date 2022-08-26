@@ -6,6 +6,22 @@
 //
 
 import Foundation
+#if os(macOS)
+import AppKit
+#elseif os(iOS)
+import UIKit
+#endif
+
+public extension CGFloat {
+    var scaledIntegral: Self {
+#if os(macOS)
+let scale = NSScreen.main?.backingScaleFactor ?? 1.0
+#elseif os(iOS)
+let scale = UIScreen.main.scale
+#endif
+return floor(self * scale) / scale
+    }
+}
 
 public extension CGFloat {
     func degreesToRadians() -> CGFloat {

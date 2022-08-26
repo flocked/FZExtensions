@@ -451,19 +451,19 @@ public class URLResources {
         }
     }
     
-    public  var customIcon: Image? {
+    public  var customIcon: NSUIImage? {
         get {
            return try? url.resourceValues(for: .customIconKey).customIcon
         }
     }
     
-    public  var effectiveIcon: Image? {
+    public  var effectiveIcon: NSUIImage? {
         get {
-           return try? url.resourceValues(for: .effectiveIconKey).effectiveIcon as? Image
+           return try? url.resourceValues(for: .effectiveIconKey).effectiveIcon as? NSUIImage
         }
     }
     
-    public  var labelColor: Color? {
+    public  var labelColor: NSUIColor? {
         get {
            return try? url.resourceValues(for: .labelColorKey).labelColor
         }

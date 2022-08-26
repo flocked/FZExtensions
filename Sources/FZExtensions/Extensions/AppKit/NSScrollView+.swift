@@ -66,29 +66,4 @@ public extension NSScrollView {
     
 }
 
-public extension NSCollectionView {
-    struct SavedScrollPosition {
-        let bounds: CGRect
-        let visible: CGRect
-    }
-    func saveScrollPosition() -> SavedScrollPosition {
-        return SavedScrollPosition(bounds: bounds, visible: visibleRect)
-    }
-
-    func restoreScrollPosition(_ saved: SavedScrollPosition) {
-        let oldBounds = saved.bounds
-        let oldVisible = saved.visible
-        let oldY = oldVisible.midY
-        let oldH = oldBounds.height
-        guard oldH > 0.0 else { return }
-
-        let fraction = (oldY - oldBounds.minY) / oldH
-        let newBounds = self.bounds
-        var newVisible = self.visibleRect
-        let newY = newBounds.minY + fraction * newBounds.height
-        newVisible.origin.y = newY - 0.5 * newVisible.height
-        self.scroll(newVisible.origin)
-    }
-}
-
 #endif

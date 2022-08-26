@@ -11,10 +11,10 @@ import Foundation
 import AppKit
 
 public extension NSSegmentedControl {
-  func selectSegment(withLabel label: String) {
+  func selectSegment(named name: String) {
     self.selectedSegment = -1
     for i in 0..<segmentCount {
-      if self.label(forSegment: i) == label {
+      if self.label(forSegment: i) == name {
         self.selectedSegment = i
       }
     }

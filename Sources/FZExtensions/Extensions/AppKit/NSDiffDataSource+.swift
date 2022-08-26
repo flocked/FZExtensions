@@ -19,6 +19,14 @@ public extension NSDiffableDataSourceSnapshot {
     }
 }
 
+public protocol HashIdentifiable: Identifiable, Hashable { }
+
+public extension HashIdentifiable {
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(self.id)
+    }
+}
+
 @available(macOS 10.15.1, *)
 public extension NSCollectionViewDiffableDataSource {
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>

@@ -61,23 +61,5 @@ public extension NSScreen {
             }
         return returnScreen
     }
-    
-    /*
-    var isVirtual: Bool {
-        var isVirtual = false
-        if !DEBUG_MACOS10, #available(macOS 11.0, *) {
-            if let dictionary = (CoreDisplay_DisplayCreateInfoDictionary(self.displayID)?.takeRetainedValue() as NSDictionary?) {
-            let isVirtualDevice = dictionary["kCGDisplayIsVirtualDevice"] as? Bool
-            let displayIsAirplay = dictionary["kCGDisplayIsAirPlay"] as? Bool
-            if isVirtualDevice ?? displayIsAirplay ?? false {
-              isVirtual = true
-            }
-          }
-        }
-        return isVirtual
-    }
-    */
-    
 }
-
 #endif

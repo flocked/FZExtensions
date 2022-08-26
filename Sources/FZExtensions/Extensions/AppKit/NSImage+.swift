@@ -6,15 +6,24 @@
 //
 
 #if os(macOS)
-
-import Foundation
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
+
 import UniformTypeIdentifiers
 
 public extension CGImage {
+    
+#if os(macOS)
     var nsImage: NSImage {
         return NSImage(cgImage: self)
     }
+#elseif canImport(UIKit)
+    var uiImage: UIImage {
+        return UIImage(cgImage: self)
+    }
+#endif
     
     var size: CGSize {
         return CGSize(width: self.width, height: self.height)
@@ -145,4 +154,3 @@ public extension NSImage {
     }
 }
 
-#endif

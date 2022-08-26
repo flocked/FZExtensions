@@ -8,15 +8,24 @@
 import Foundation
 #if os(macOS)
 import AppKit
+public typealias SupplementaryElementKind = NSCollectionView.SupplementaryElementKind
 #elseif canImport(UIKit)
 import UIKit
+public typealias SupplementaryElementKind = String
 #endif
 
-public extension CollectionViewCompositionalLayout {
-    static func list(rowHeight: CGFloat) -> CollectionViewLayout {
+public extension NSUICollectionViewCompositionalLayout {
+    static func list(rowHeight: CGFloat, seperatorLine: Bool) -> NSUICollectionViewLayout {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                              heightDimension: .fractionalHeight(1.0))
-        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+       
+        var itemSupplementaryItems = [NSCollectionLayoutBoundarySupplementaryItem]()
+        if (seperatorLine) {
+            let seperatorItem = NSUICollectionViewCompositionalLayout.seperatorLine(kind: .bottomLine)
+            itemSupplementaryItems.append(seperatorItem)
+        }
+        let item = NSCollectionLayoutItem(layoutSize: itemSize, supplementaryItems: itemSupplementaryItems)
+
       
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                               heightDimension: .absolute(rowHeight))
@@ -25,11 +34,11 @@ public extension CollectionViewCompositionalLayout {
       
         let section = NSCollectionLayoutSection(group: group)
         
-        let layout = CollectionViewCompositionalLayout(section: section)
+        let layout = NSUICollectionViewCompositionalLayout(section: section)
         return layout
     }
     
-    static func fullSize(paging: Bool, direction: CollectionView.ScrollDirection)-> CollectionViewLayout{
+    static func fullSize(paging: Bool, direction: NSUICollectionView.ScrollDirection)-> NSUICollectionViewLayout{
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1.0),
             heightDimension: .fractionalHeight(1.0)
@@ -46,14 +55,14 @@ public extension CollectionViewCompositionalLayout {
         )
         let layoutSection = NSCollectionLayoutSection(group: layoutGroup)
         layoutSection.orthogonalScrollingBehavior = paging ? .paging : .continuous
-        let config = CollectionViewCompositionalLayoutConfiguration()
+        let config = NSUICollectionViewCompositionalLayoutConfiguration()
         config.scrollDirection = direction
-        let layout = CollectionViewCompositionalLayout(section: layoutSection, configuration: config)
+        let layout = NSUICollectionViewCompositionalLayout(section: layoutSection, configuration: config)
         return layout
     }
 
-    static func grid(columns: Int = 3, itemAspectRatio: CGSize = CGSize(1,1), spacing: CGFloat = 0.0, insets: NSDirectionalEdgeInsets = .zero, header: SupplementaryItemType? = nil, footer: SupplementaryItemType? = nil) -> CollectionViewLayout {
-          return CollectionViewCompositionalLayout { (section: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
+    static func grid(columns: Int = 3, itemAspectRatio: CGSize = CGSize(1,1), spacing: CGFloat = 0.0, insets: NSDirectionalEdgeInsets = .zero, header: SupplementaryItemType? = nil, footer: SupplementaryItemType? = nil) -> NSUICollectionViewLayout {
+          return NSUICollectionViewCompositionalLayout { (section: Int, layoutEnvironment: NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection? in
 
               // Item
               let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(itemAspectRatio.width/itemAspectRatio.height),
@@ -93,15 +102,15 @@ public extension CollectionViewCompositionalLayout {
 }
 }
 
-public extension CollectionViewCompositionalLayout {
+public extension NSUICollectionViewCompositionalLayout {
     static func waterfall(
         columnCount: Int = 2,
         spacing: CGFloat = 8,
      //   contentInsetsReference: UIContentInsetsReference = .automatic,
         itemSizeProvider: @escaping CollectionViewItemSizeProvider
-    ) -> CollectionViewCompositionalLayout {
+    ) -> NSUICollectionViewCompositionalLayout {
         var numberOfItems: (Int) -> Int = { _ in 0 }
-        let layout = CollectionViewCompositionalLayout { section, environment in
+        let layout = NSUICollectionViewCompositionalLayout { section, environment in
             let groupLayoutSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
                 heightDimension: .estimated(environment.container.effectiveContentSize.height)
@@ -128,7 +137,26 @@ public extension CollectionViewCompositionalLayout {
     }
 }
 
-public extension CollectionViewCompositionalLayout {
+public extension NSUICollectionViewCompositionalLayout {
+    enum SupplementaryKind: SupplementaryElementKind  {
+        case topLine
+        case bottomLine
+        
+        internal var alignment: NSRectAlignment {
+            switch self {
+            case .topLine:   return .top
+            case .bottomLine: return .bottom  } }
+    }
+    
+   static func seperatorLine(kind: SupplementaryKind) -> NSCollectionLayoutBoundarySupplementaryItem {
+        let lineItemHeight:CGFloat = 1.0
+        let lineItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.92), heightDimension: .absolute(lineItemHeight))
+        let item = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: lineItemSize, elementKind: kind.rawValue, alignment: kind.alignment)
+        let supplementaryItemContentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4)
+        item.contentInsets = supplementaryItemContentInsets
+        return item
+    }
+    
     enum SupplementaryItemType {
         case normal(height: CGFloat)
         case pinToTop(height: CGFloat)

@@ -7,16 +7,22 @@
 
 #if os(macOS)
 
-import Foundation
 import AppKit
 
 public extension NSView {
     var frameInWindow: CGRect {
-      convert(bounds, to: nil)
+        convert(bounds, to: nil)
     }
     
     var frameOnScreen: CGRect? {
-       return self.window?.convertToScreen(frameInWindow)
+        return self.window?.convertToScreen(frameInWindow)
+    }
+    
+    var transform: CGAffineTransform {
+        get {
+            self.wantsLayer = true
+            return self.layer!.affineTransform() }
+        set {  self.layer?.setAffineTransform(newValue)  }
     }
     
     var center: CGPoint {
@@ -34,7 +40,8 @@ public extension NSView {
         }
         set {
             self.wantsLayer = true
-            self.layer?.backgroundColor = newValue?.cgColor } }
+            self.layer?.backgroundColor = newValue?.cgColor }
+    }
     
     var roundedCorners: CACornerMask {
         get { self.layer?.maskedCorners ?? CACornerMask() }
@@ -48,28 +55,29 @@ public extension NSView {
         get { self.layer?.cornerRadius ?? 0.0 }
         set {
             self.wantsLayer = true
-            self.layer?.cornerRadius = newValue } }
-    
-        func setAnchorPoint(_ anchorPoint:CGPoint) {
-            guard let layer = self.layer else { return }
-                var newPoint = CGPoint(self.bounds.size.width * anchorPoint.x, self.bounds.size.height * anchorPoint.y)
-                var oldPoint = CGPoint(self.bounds.size.width * layer.anchorPoint.x, self.bounds.size.height * layer.anchorPoint.y)
-                
-                newPoint = newPoint.applying(layer.affineTransform())
-                oldPoint = oldPoint.applying(layer.affineTransform())
-                
-                var position = layer.position
-                
-                position.x -= oldPoint.x
-                position.x += newPoint.x
-                
-                position.y -= oldPoint.y
-                position.y += newPoint.y
-                
-                layer.position = position
-                layer.anchorPoint = anchorPoint
+            self.layer?.cornerRadius = newValue }
     }
-
+    
+    func setAnchorPoint(_ anchorPoint:CGPoint) {
+        guard let layer = self.layer else { return }
+        var newPoint = CGPoint(self.bounds.size.width * anchorPoint.x, self.bounds.size.height * anchorPoint.y)
+        var oldPoint = CGPoint(self.bounds.size.width * layer.anchorPoint.x, self.bounds.size.height * layer.anchorPoint.y)
+        
+        newPoint = newPoint.applying(layer.affineTransform())
+        oldPoint = oldPoint.applying(layer.affineTransform())
+        
+        var position = layer.position
+        
+        position.x -= oldPoint.x
+        position.x += newPoint.x
+        
+        position.y -= oldPoint.y
+        position.y += newPoint.y
+        
+        layer.position = position
+        layer.anchorPoint = anchorPoint
+    }
+    
     
     func sendToFront() {
         if let superview = self.superview {
@@ -107,9 +115,9 @@ public extension NSView {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.frame = view.bounds
         let constraints = [NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: 0.0),
-        NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: 0.0),
-        NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1.0, constant: 0.0),
-        NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: 0.0)]
+                           NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1.0, constant: 0.0),
+                           NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1.0, constant: 0.0),
+                           NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1.0, constant: 0.0)]
         constraints.forEach({$0.isActive = true})
         return constraints
     }
@@ -129,11 +137,9 @@ public extension NSView {
             self.removeTrackingArea(trackingArea)
         }
     }
-}
-
-public extension NSView {
+    
     @available(macOS 10.12, *)
-     static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void) {
+    static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void) {
         NSAnimationContext.runAnimationGroup() {
             context in
             context.duration = duration
@@ -142,18 +148,17 @@ public extension NSView {
         }
     }
     
-     func setNeedsDisplay() {
+    func setNeedsDisplay() {
         self.needsDisplay = true
     }
-
-     func setNeedsLayout() {
+    
+    func setNeedsLayout() {
         self.needsLayout = true
     }
-
-     func setNeedsUpdateConstraints() {
+    
+    func setNeedsUpdateConstraints() {
         self.needsUpdateConstraints = true
     }
-    
 }
 
 public extension NSView.AutoresizingMask {
@@ -163,3 +168,18 @@ public extension NSView.AutoresizingMask {
 }
 
 #endif
+
+#if canImport(UIKit)
+import UIKit
+extension View {
+    var cornerRadius: CGFloat {
+        get {
+            return self.layer.cornerRadius ?? 0.0
+        }
+        set {
+            self.layer.cornerRadius = newValue
+        }
+    }
+}
+#endif
+

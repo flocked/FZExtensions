@@ -31,7 +31,7 @@ public class PageController<ViewController: NSViewController, Element>: NSPageCo
         fatalError("init(coder:) has not been implemented")
     }
      
-    public  override func performKeyEquivalent(with event: NSEvent) -> Bool {
+    public override func performKeyEquivalent(with event: NSEvent) -> Bool {
         var type: AdvanceType? = nil
         if (event.keyCode == 123) {
             if (event.modifierFlags.contains(.command)) {

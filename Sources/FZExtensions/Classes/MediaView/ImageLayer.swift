@@ -15,7 +15,7 @@ public import UIKit
 #endif
 
 public class ImageLayer: CALayer {
-    public var image: Image?  {
+    public var image: NSUIImage?  {
         get {
             self.images.first
         }
@@ -33,7 +33,7 @@ public class ImageLayer: CALayer {
     }
 
     
-    public var images: [Image] = [] {
+    public var images: [NSUIImage] = [] {
         didSet {
             if (isAnimating && !isAnimatable) {
                 stopAnimating()
