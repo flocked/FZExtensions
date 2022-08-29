@@ -8,17 +8,7 @@
 import Foundation
 import AppKit
 
-protocol Option: CaseIterable, RawRepresentable {
-    var rawValue: String {get}
-}
-
-
-
-enum Haha: String, Option {
-    case fun
-}
-
-extension NSPopUpButton {
+public extension NSPopUpButton {
     convenience init(items: [NSMenuItem]) {
         self.init()
         self.items = items
