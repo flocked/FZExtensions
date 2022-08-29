@@ -66,7 +66,7 @@ public extension NSCollectionView {
             self.collectionViewLayout = layout
         }
     }
-    
+        
     var contentOffset: CGPoint {
       get { return enclosingScrollView?.documentVisibleRect.origin ?? .zero }
       set { scroll(newValue) }

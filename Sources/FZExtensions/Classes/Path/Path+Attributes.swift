@@ -58,7 +58,7 @@ public extension Pathish {
         return url.resources
     }
     
-   var metadata: URLMetadata? {
+   var metadata: MetadataItem? {
        return url.metadata
    }
     

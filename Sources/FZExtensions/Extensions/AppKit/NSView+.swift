@@ -148,6 +148,19 @@ public extension NSView {
         }
     }
     
+    @available(OSX 10.12, *)
+    func animateLayout(changes: (NSAnimationContext) -> Void) {
+        layoutSubtreeIfNeeded()
+
+        NSAnimationContext.runAnimationGroup { (context) in
+            context.allowsImplicitAnimation = true
+
+            changes(context)
+
+            self.layoutSubtreeIfNeeded()
+        }
+    }
+    
     func setNeedsDisplay() {
         self.needsDisplay = true
     }

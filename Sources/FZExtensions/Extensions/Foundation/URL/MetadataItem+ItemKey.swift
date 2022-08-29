@@ -7,7 +7,7 @@
 
 import Foundation
 
-public extension PartialKeyPath where Root == URLMetadata {
+public extension PartialKeyPath where Root == MetadataItem {
     var mdItemKey: String {
         if #available(macOS 11.0, *) {
             switch self {

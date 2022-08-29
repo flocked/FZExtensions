@@ -130,12 +130,14 @@ public class ImageView: NSView {
    private func sharedInit() {
         self.wantsLayer = true
         self.imageScaling = .resizeAspect
-        self.layerContentsRedrawPolicy = .onSetNeedsDisplay
+   //     self.layerContentsRedrawPolicy = .onSetNeedsDisplay
     }
     
+    /*
     public override var wantsUpdateLayer: Bool {
         return true
     }
+    */
     
 }
 #endif

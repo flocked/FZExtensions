@@ -17,6 +17,35 @@ public extension NSMenu {
             self.addItem(item)
         }
     }
+    
+    convenience init(titles: [String]) {
+        self.init()
+        for title in titles {
+            self.addItem(NSMenuItem(title))
+        }
+    }
 }
+
+public extension NSMenuItem {
+    convenience init(_ title: String) {
+        self.init(title: title)
+    }
+    
+    convenience init(title: String) {
+        self.init(title: title, action: nil, keyEquivalent: "")
+        self.isEnabled = true
+    }
+    
+    convenience init(_ title: String, action: Selector) {
+        self.init(title: title, action: action)
+    }
+    
+    convenience init(title: String, action: Selector) {
+        self.init(title: title, action: action, keyEquivalent: "")
+        self.isEnabled = true
+    }
+    
+}
+
 
 #endif
