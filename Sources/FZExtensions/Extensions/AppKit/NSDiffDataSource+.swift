@@ -10,7 +10,6 @@
 import Foundation
 import AppKit
 
-@available(macOS 10.15.1, *)
 public extension NSDiffableDataSourceSnapshot {
     enum ApplyOption {
         case reloadData
@@ -27,7 +26,6 @@ public extension HashIdentifiable {
     }
 }
 
-@available(macOS 10.15.1, *)
 public extension NSCollectionViewDiffableDataSource {
     typealias Snapshot = NSDiffableDataSourceSnapshot<SectionIdentifierType, ItemIdentifierType>
     typealias SnapshotApplyOption = Snapshot.ApplyOption

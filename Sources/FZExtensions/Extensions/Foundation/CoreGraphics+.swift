@@ -160,7 +160,7 @@ public extension CGSize {
     func scaled(byFactor factor: CGFloat) -> CGSize {
         return CGSize(width: self.width*factor, height: self.height*factor)
     }
-    
+        
 	func scaled(toFit innerRect: CGSize) -> CGSize {
 		let outerRect = self
 		

@@ -8,7 +8,7 @@
 import Foundation
 import AppKit
 
-public extension  NSCollectionLayoutSection {
+extension  NSCollectionLayoutSection {
     func addSupplementaryItem(_ kind: String, height: NSCollectionLayoutDimension = .estimated(44), floating: Bool = true, alignment: NSRectAlignment = .top) {
         let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                       heightDimension: height)

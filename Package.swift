@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "FZExtensions",
     platforms: [
-        .macOS(.v10_15), .iOS(.v13)
+        .macOS("10.15.1"), .iOS(.v13)
     ],
     products: [
         .library(

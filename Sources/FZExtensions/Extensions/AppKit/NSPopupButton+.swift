@@ -19,7 +19,7 @@ public extension NSPopUpButton {
         self.items = titles.compactMap({NSMenuItem($0)})
     }
     
-    var items: [NSMenuItem] {
+var items: [NSMenuItem] {
         get {
             return self.menu?.items ?? []
         }

@@ -10,15 +10,20 @@
 import Foundation
 import AppKit
 
+public protocol NSCollectionViewSupplementaryProvider {
+        func makeSupplementaryView(_ collectionView: NSCollectionView, _ indexPath: IndexPath) -> (NSView & NSCollectionViewElement)
+        var elementKind: String { get }
+}
+
 public extension NSCollectionView {
-    class SupplementaryRegistration<Supplementary> where Supplementary: (NSView & NSCollectionViewElement)  {
+    class SupplementaryRegistration<Supplementary>: NSCollectionViewSupplementaryProvider where Supplementary: (NSView & NSCollectionViewElement)  {
         
         typealias Handler = ((Supplementary, SupplementaryElementKind, IndexPath)->(Void))
         
         private let identifier: NSUserInterfaceItemIdentifier
         private let nib: NSNib?
         private let handler: Handler
-        private let elementKind: SupplementaryElementKind
+        public let elementKind: SupplementaryElementKind
         private weak var registeredCollectionView: NSCollectionView? = nil
         
         init(elementKind: SupplementaryElementKind, handler: @escaping Handler) {
@@ -35,7 +40,7 @@ public extension NSCollectionView {
             self.identifier = NSUserInterfaceItemIdentifier(String(describing: Supplementary.self) + elementKind)
         }
         
-        fileprivate func makeSupplementaryView(_ collectionView: NSCollectionView, _ indexPath: IndexPath) -> Supplementary {
+        public func makeSupplementaryView(_ collectionView: NSCollectionView, _ indexPath: IndexPath) -> (NSView & NSCollectionViewElement) {
             if (registeredCollectionView != collectionView) {
                 self.register(for: collectionView)
             }
@@ -66,8 +71,8 @@ public extension NSCollectionView {
             }
         }
     }
-    func makeSupplementaryView<V>(using registration: SupplementaryRegistration<V>, for indexPath: IndexPath) -> V {
-        return registration.makeSupplementaryView(self, indexPath)
+     func makeSupplementaryView<V>(using registration: SupplementaryRegistration<V>, for indexPath: IndexPath) -> V {
+        return registration.makeSupplementaryView(self, indexPath) as! V
     }
 }
 
