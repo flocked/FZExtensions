@@ -7,6 +7,7 @@
 
 import Foundation
 
+#if os(macOS)
 public extension PartialKeyPath where Root == MetadataItem {
     var mdItemKey: String {
         if #available(macOS 11.0, iOS 14.0, *) {
@@ -182,3 +183,28 @@ public extension PartialKeyPath where Root == MetadataItem {
         }
     }
 }
+#elseif canImport(UIKit)
+public extension PartialKeyPath where Root == MetadataItem {
+    var mdItemKey: String {
+        if #available(macOS 11.0, iOS 14.0, *) {
+            if (self == \.contentUTType) {
+                return "kMDItemContentTypeTree" } }
+                
+        switch self {
+        case \Root.fsName: return "kMDItemFSName"
+        case \Root.displayName: return "kMDItemDisplayName"
+        case \Root.url: return "kMDItemURL"
+        case \Root.path: return "kMDItemPath"
+        case \Root.fsSize: return "kMDItemFSSize"
+        case \Root.fsCreationDate: return "kMDItemFSCreationDate"
+        case \Root.fsContentChangeDate: return "kMDItemFSContentChangeDate"
+        case \Root.contentType: return "kMDItemContentType"
+        case \Root.contentTypeTree: return "kMDItemContentTypeTree"
+        case \Root.attributeChangeDate: return "kMDItemAttributeChangeDate"
+        case \Root.isScreenCapture: return "kMDItemIsScreenCapture"
+        case \Root.queryResultContentRelevance: return "kMDQueryResultContentRelevance"
+        default: return "kMDItemTextContent"
+        }
+    }
+}
+#endif
