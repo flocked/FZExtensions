@@ -1,9 +1,11 @@
 import Foundation
 
+#if os(macOS)
 public extension URL {
     var metadata: MetadataItem? {
         return MetadataItem(url: self)  }
 }
+#endif
 
 public class MetadataItem {
     internal let item: NSMetadataItem
@@ -74,9 +76,6 @@ internal init?(url: URL, values: [String:Any]? = nil) {
     public var contentTypeTree: [String]? {
         get { self.value( NSMetadataItemContentTypeTreeKey, type: [String].self) } }
     
-    public var attributeChangeDate: Date? {
-        get { self.value( NSMetadataItemAttributeChangeDateKey, type: Date.self) } }
-    
     public var isScreenCapture: Bool {
         get { self.value("kMDItemIsScreenCapture", type: Bool.self) ?? false }  }
     
@@ -101,6 +100,10 @@ public extension MetadataItem {
 #if os(macOS)
 @available(macOS 10.12, *)
 public extension MetadataItem {
+     var attributeChangeDate: Date? {
+        get { self.value( NSMetadataItemAttributeChangeDateKey, type: Date.self) } }
+    
+    
     var keywords: [String]? {
         get { self.value( NSMetadataItemKeywordsKey, type: [String].self) } }
     

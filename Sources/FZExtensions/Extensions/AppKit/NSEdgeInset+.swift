@@ -83,7 +83,7 @@ public extension NSDirectionalEdgeInsets {
         }
     }
     
-    var edgeInsets: NSEdgeInsets {
+    var edgeInsets: NSUIEdgeInsets {
         return .init(top: self.top, left: self.leading, bottom: self.bottom, right: self.trailing)
     }
 }

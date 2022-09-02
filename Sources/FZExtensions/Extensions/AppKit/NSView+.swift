@@ -194,7 +194,7 @@ public extension NSView.AutoresizingMask {
 
 #if canImport(UIKit)
 import UIKit
-extension View {
+extension UIView {
    public var cornerRadius: CGFloat {
         get {
             return self.layer.cornerRadius ?? 0.0
