@@ -1,5 +1,12 @@
 import Foundation
+#if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers
+#endif
+
+#if canImport(UIKit)
+import MobileCoreServices
+#endif
+
 
 public extension Pathish {
     //MARK: Filesystem Attributes
