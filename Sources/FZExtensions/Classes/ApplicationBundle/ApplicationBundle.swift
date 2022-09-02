@@ -92,12 +92,12 @@ public class ApplicationBundle: Bundle {
     }
 
     
-    @available(macOS 11.0, *)
+    @available(macOS 11.0, iOS 14.0, *)
     var supportedFileTypes: [FileTypeDefinition] {
         return info.supportedFileTypes 
     }
     
-    @available(macOS 11.0, *)
+    @available(macOS 11.0, iOS 14.0, *)
     var supportedFileExtensions: [String] {
         return (supportedFileTypes.flatMap({$0.extensions})).unique().sorted()
     }
@@ -115,12 +115,12 @@ public class ApplicationBundle: Bundle {
         NSWorkspace.shared.open(urls, withApplicationAt: self.bundleURL, configuration: NSWorkspace.OpenConfiguration())
     }
     
-    @available(macOS 11.0, *)
+    @available(macOS 11.0, iOS 14.0, *)
     func fileTypeDefinition(for type: UTType) -> FileTypeDefinition? {
        return supportedFileTypes.first(where: {type.conforms(toAny: $0.contentTypes)})
     }
     
-    @available(macOS 11.0, *)
+    @available(macOS 11.0, iOS 14.0, *)
     func fileTypeDefinition(for extensionString: String) -> FileTypeDefinition? {
         return supportedFileTypes.first(where: {$0.extensions.contains(extensionString.lowercased())})
     }

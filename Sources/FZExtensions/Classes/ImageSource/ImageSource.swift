@@ -18,7 +18,7 @@ public class ImageSource {
     }
     
     
-    @available(macOS 11.0, *)
+    @available(macOS 11.0, iOS 14.0, *)
     public var utType: UTType? {
         guard let typeIdentifier = typeIdentifier else { return nil }
         return UTType(typeIdentifier)

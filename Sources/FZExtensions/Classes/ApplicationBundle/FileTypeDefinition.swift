@@ -10,7 +10,7 @@
 import Foundation
 import UniformTypeIdentifiers
 
-@available(macOS 11.0, *)
+@available(macOS 11.0, iOS 14.0, *)
 public struct FileTypeDefinition: Codable, Hashable {
     var iconName: String?
     var name: String?

@@ -254,14 +254,14 @@ public extension Path.Finder {
         return self
     }
     
-    @available(macOS 11.0, *)
+    @available(macOS 11.0, iOS 14.0, *)
     func contentType(_ type: UTType) -> Path.Finder {
         contentTypeIDs = contentTypeIDs ?? []
         contentTypeIDs!.insert(type.identifier)
         return self
     }
     
-    @available(macOS 11.0, *)
+    @available(macOS 11.0, iOS 14.0, *)
     func contentTypes(_ types: UTType...) -> Path.Finder {
         contentTypeIDs = contentTypeIDs ?? []
         for type in types {
@@ -328,7 +328,7 @@ public extension Pathish {
         return .init(path: Path(self), types: types)
     }
     
-    @available(macOS 11.0, *)
+    @available(macOS 11.0, iOS 14.0, *)
     func find(_ contenttypes: UTType...) -> Path.Finder {
         return .init(path: Path(self), contenttypes: contenttypes)
     }
