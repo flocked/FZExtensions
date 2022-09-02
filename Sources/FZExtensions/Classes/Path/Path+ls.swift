@@ -3,6 +3,10 @@ import Foundation
 import UniformTypeIdentifiers
 #endif
 
+#if canImport(UIKit)
+import MobileCoreServices
+#endif
+
 public extension Path {
     typealias Predicate = ((Path) -> Bool)
     
