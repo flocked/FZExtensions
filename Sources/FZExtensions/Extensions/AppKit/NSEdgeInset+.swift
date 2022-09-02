@@ -5,10 +5,19 @@
 //  Created by Florian Zand on 07.06.22.
 //
 
-import Foundation
+#if os(macOS)
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
+#if os(macOS)
 public extension NSEdgeInsets {
     static var zero = NSDirectionalEdgeInsets(0)
+    
+    var directional: NSDirectionalEdgeInsets {
+        return .init(top: self.top, leading: self.left, bottom: self.bottom, trailing: self.right)
+    }
 
     init(_ value: CGFloat) {
         self.init(top: value, left: value, bottom: value, right: value)
@@ -38,19 +47,8 @@ public extension NSEdgeInsets {
         }
     }
 }
-
-
-#if os(macOS)
-import AppKit
-#elseif canImport(UIKit)
-import UIKit
 #endif
 
-public extension NSEdgeInsets {
-    var directional: NSDirectionalEdgeInsets {
-        return .init(top: self.top, leading: self.left, bottom: self.bottom, trailing: self.right)
-    }
-}
 
 public extension NSDirectionalEdgeInsets {
     static var zero = NSDirectionalEdgeInsets(0)

@@ -45,10 +45,12 @@ public protocol NSUICollectionViewWaterfallLayoutDelegate: NSUICollectionViewDel
     func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         heightForFooterIn section: Int) -> CGFloat
+  
     
     func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
-                        insetsFor section: Int) -> NSEdgeInsets
+                        insetsFor section: Int) -> NSDirectionalEdgeInsets
+     
     
     func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
@@ -70,10 +72,12 @@ public extension NSUICollectionViewWaterfallLayoutDelegate {
                         heightForFooterIn section: Int) -> CGFloat {
         return -1 }
     
+    
     func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
-                        insetsFor section: Int) -> NSEdgeInsets{
-        return NSEdgeInsets(top: -1, left: -1, bottom: -1, right: -1) }
+                        insetsFor section: Int) -> NSDirectionalEdgeInsets {
+        return NSDirectionalEdgeInsets(top: -1, leading: -1, bottom: -1, trailing: -1) }
+     
     
     func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
@@ -118,7 +122,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
     public var footerHeight: CGFloat = 0 {
         didSet { invalidateLayout() } }
 
-    public var sectionInset: NSEdgeInsets = NSEdgeInsetsZero {
+    public var sectionInset: NSDirectionalEdgeInsets = .zero {
         didSet { invalidateLayout() } }
     
     public var itemRenderDirection: ItemRenderDirection = .shortestFirst {
@@ -165,10 +169,11 @@ public class WaterfallLayout: NSUICollectionViewLayout {
     
     private func collectionViewContentWidth(ofSection section: Int) -> CGFloat {
         var insets = delegate?.collectionView(collectionView!, layout: self, insetsFor: section) ?? sectionInset
+    //        var insets =  sectionInset
         if (insets.bottom == -1) {
             insets = self.sectionInset
         }
-        return collectionViewContentWidth - insets.left - insets.right
+        return collectionViewContentWidth - insets.leading - insets.trailing
     }
     
     public func itemWidth(inSection section: Int) -> CGFloat {
@@ -208,6 +213,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
             }
             
             var sectionInsets  =  delegate?.collectionView(collectionView!, layout: self, insetsFor: section) ?? self.sectionInset
+       //     var sectionInsets  =  self.sectionInset
             if sectionInsets.bottom == -1 {
                 sectionInsets =  self.sectionInset
             }
@@ -240,7 +246,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
                 let indexPath = IndexPath(item: idx, section: section)
                 
                 let columnIndex = nextColumnIndexForItem(idx, inSection: section)
-                let xOffset = sectionInsets.left + (itemWidth + minimumColumnSpacing) * CGFloat(columnIndex)
+                let xOffset = sectionInsets.leading + (itemWidth + minimumColumnSpacing) * CGFloat(columnIndex)
                 
                 let yOffset = columnHeights[section][columnIndex]
                 var itemHeight: CGFloat = 0.0
