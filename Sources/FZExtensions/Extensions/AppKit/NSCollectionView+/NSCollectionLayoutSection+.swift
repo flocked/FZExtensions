@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if os(macOS)
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 extension  NSCollectionLayoutSection {
     func addSupplementaryItem(_ kind: String, height: NSCollectionLayoutDimension = .estimated(44), floating: Bool = true, alignment: NSRectAlignment = .top) {
