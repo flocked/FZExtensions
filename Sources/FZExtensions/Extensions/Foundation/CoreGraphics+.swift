@@ -1,7 +1,7 @@
 import CoreGraphics
 
 public func - (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
-  return CGPoint(lhs.x - rhs.x, lhs.y - rhs.y)
+    return CGPoint(lhs.x - rhs.x, lhs.y - rhs.y)
 }
 
 public func + (lhs: CGPoint, rhs: CGPoint) -> CGPoint {
@@ -27,7 +27,7 @@ public extension CGRect {
         self.init(x: result.origin.x, y: result.origin.y, width: result.size.width, height: result.size.height)
     }
     
-     var scaledIntegral: CGRect {
+    var scaledIntegral: CGRect {
         CGRect(
             x: origin.x.scaledIntegral,
             y: origin.y.scaledIntegral,
@@ -37,12 +37,13 @@ public extension CGRect {
     }
     
     var center: CGPoint {
-      get { return CGPoint(x: centerX, y: centerY) }
-      set { centerX = newValue.x; centerY = newValue.y }
+        get { return CGPoint(x: centerX, y: centerY) }
+        set { centerX = newValue.x; centerY = newValue.y }
     }
     
     var bottomLeft: CGPoint {
         get { return CGPoint(x: self.minX, y: self.minY) }
+        set {  self.origin = newValue }
     }
     
     var bottomRight: CGPoint {
@@ -51,20 +52,39 @@ public extension CGRect {
     
     var topLeft: CGPoint {
         get { return CGPoint(x: self.minX, y: self.maxY) }
+        set {  self.origin = CGPoint(x: newValue.x, y: self.origin.y)
+            let width = self.origin.y - newValue.y
+            if (width < 0) {
+                self.origin = CGPoint(x: self.origin.x, y: self.origin.y-width)
+            }
+            self.width = self.origin.y + width
+        }
     }
     
     var topRight: CGPoint {
         get { return CGPoint(x: self.maxX, y: self.maxY) }
+        set {  self.origin = CGPoint(x: newValue.x, y: self.origin.y)
+            let width = self.origin.y - newValue.y
+            let height = self.origin.x - newValue.x
+            if (width < 0) {
+                self.origin = CGPoint(x: self.origin.x, y: self.origin.y-width)
+            }
+            self.width = self.origin.y + width
+            if (height < 0) {
+                self.origin = CGPoint(x: self.origin.x-height, y: self.origin.y)
+            }
+            self.height = self.origin.x + height
+        }
     }
     
-   private var centerX: CGFloat {
-           get { return midX }
-           set { origin.x = newValue - width * 0.5 }
-       }
-
+    private var centerX: CGFloat {
+        get { return midX }
+        set { origin.x = newValue - width * 0.5 }
+    }
+    
     private var centerY: CGFloat {
-           get { return midY }
-           set { origin.y = newValue - height * 0.5 }
+        get { return midY }
+        set { origin.y = newValue - height * 0.5 }
     }
     
     var x: CGFloat {
@@ -99,6 +119,39 @@ public extension CGRect {
             self.size = size }
     }
     
+    enum ExpandEdge {
+        case minXEdge
+        case maxXEdge
+        case minYEdge
+        case maxYEdge
+        case centerWidth
+        case centerHeight
+        case center
+    }
+    
+    func expanded(_ amount: CGFloat, edge: ExpandEdge) -> CGRect {
+        switch edge {
+        case .minXEdge:
+            return CGRect(x: minX - amount, y: minY, width: width + amount, height: height)
+        case .maxXEdge:
+            return CGRect(x: minX, y: minY, width: width + amount, height: height)
+        case .minYEdge:
+            return CGRect(x: minX, y: minY - amount, width: width, height: height + amount)
+        case .maxYEdge:
+            return CGRect(x: minX, y: minY, width: width, height: height + amount)
+        case .center:
+            let widthAmount = amount / 2.0
+            let heightAmount = amount / 2.0
+            return CGRect(x: minX - widthAmount, y: minY - heightAmount, width: width + widthAmount, height: height + heightAmount)
+        case .centerWidth:
+            let widthAmount = amount / 2.0
+            return CGRect(x: minX - widthAmount, y: minY, width: width + widthAmount, height: height)
+        case .centerHeight:
+            let heightAmount = amount / 2.0
+            return CGRect(x: minX , y: minY - heightAmount, width: width , height: height + heightAmount)
+        }
+    }
+    
     func scaled(byFactor factor: CGFloat, centered: Bool = true) -> CGRect {
         var rect = self
         rect.size = rect.size.scaled(byFactor: factor)
@@ -129,16 +182,16 @@ public extension CGRect {
 
 public extension CGSize {
     init(_ width: CGFloat, _ height: CGFloat) {
-       self.init(width: width, height: height)
-   }
+        self.init(width: width, height: height)
+    }
     
-     var scaledIntegral: CGSize {
+    var scaledIntegral: CGSize {
         CGSize(width: width.scaledIntegral, height: height.scaledIntegral)
     }
     
     var aspectRatio: CGFloat {
-      if height == 0 { return 1 }
-      return width / height
+        if height == 0 { return 1 }
+        return width / height
     }
     
     func rounded() -> CGSize {
@@ -160,46 +213,46 @@ public extension CGSize {
     func scaled(byFactor factor: CGFloat) -> CGSize {
         return CGSize(width: self.width*factor, height: self.height*factor)
     }
+    
+    func scaled(toFit innerRect: CGSize) -> CGSize {
+        let outerRect = self
         
-	func scaled(toFit innerRect: CGSize) -> CGSize {
-		let outerRect = self
-		
-		// the width and height ratios of the rects
-		let wRatio = outerRect.width / innerRect.width
-		let hRatio = outerRect.height / innerRect.height
-		
-		// calculate scaling ratio based on the smallest ratio.
-		let ratio = (wRatio > hRatio) ? wRatio : hRatio
-		
-		// aspect fitted origin and size
-		return CGSize(
-			width: outerRect.width / ratio,
-			height: outerRect.height / ratio
-		)
-	}
-	
-	func scaled(toFill innerRect: CGSize) -> CGSize {
-		let outerRect = self
-		
-		// the width and height ratios of the rects
-		let wRatio = outerRect.width / innerRect.width
-		let hRatio = outerRect.height / innerRect.height
-		
-		// calculate scaling ratio based on the smallest ratio.
-		let ratio = (wRatio < hRatio) ? wRatio : hRatio
-		
-		// aspect fitted origin and size
-		return CGSize(
-			width: outerRect.width / ratio,
-			height: outerRect.height / ratio
-		)
-	}
+        // the width and height ratios of the rects
+        let wRatio = outerRect.width / innerRect.width
+        let hRatio = outerRect.height / innerRect.height
+        
+        // calculate scaling ratio based on the smallest ratio.
+        let ratio = (wRatio > hRatio) ? wRatio : hRatio
+        
+        // aspect fitted origin and size
+        return CGSize(
+            width: outerRect.width / ratio,
+            height: outerRect.height / ratio
+        )
+    }
+    
+    func scaled(toFill innerRect: CGSize) -> CGSize {
+        let outerRect = self
+        
+        // the width and height ratios of the rects
+        let wRatio = outerRect.width / innerRect.width
+        let hRatio = outerRect.height / innerRect.height
+        
+        // calculate scaling ratio based on the smallest ratio.
+        let ratio = (wRatio < hRatio) ? wRatio : hRatio
+        
+        // aspect fitted origin and size
+        return CGSize(
+            width: outerRect.width / ratio,
+            height: outerRect.height / ratio
+        )
+    }
 }
 
 public extension CGPoint {
     init(_ x: CGFloat, _ y: CGFloat) {
-       self.init(x: x, y: y)
-   }
+        self.init(x: x, y: y)
+    }
     
     func offset(by offset: CGPoint) -> CGPoint {
         return CGPoint(x: self.x + offset.x, y: self.y + offset.y)
@@ -217,6 +270,6 @@ public extension CGPoint {
     
     
     var scaledIntegral: CGPoint {
-       CGPoint(x: x.scaledIntegral, y: y.scaledIntegral)
-   }
+        CGPoint(x: x.scaledIntegral, y: y.scaledIntegral)
+    }
 }

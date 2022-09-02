@@ -9,28 +9,28 @@
 
 import AppKit
 
-public extension NSView {
-    var frameInWindow: CGRect {
+extension NSView {
+    public var frameInWindow: CGRect {
         convert(bounds, to: nil)
     }
     
-    var frameOnScreen: CGRect? {
+    public var frameOnScreen: CGRect? {
         return self.window?.convertToScreen(frameInWindow)
     }
     
-    var transform: CGAffineTransform {
+    public  var transform: CGAffineTransform {
         get {
             self.wantsLayer = true
             return self.layer!.affineTransform() }
         set {  self.layer?.setAffineTransform(newValue)  }
     }
     
-    var center: CGPoint {
+    public var center: CGPoint {
         get { self.frame.center }
         set {  self.frame.center = newValue } }
     
     
-    var backgroundColor: NSColor? {
+   open var backgroundColor: NSColor? {
         get {
             if let cgColor = self.layer?.backgroundColor {
                 return NSColor(cgColor: cgColor)
@@ -43,7 +43,7 @@ public extension NSView {
             self.layer?.backgroundColor = newValue?.cgColor }
     }
     
-    var roundedCorners: CACornerMask {
+   open var roundedCorners: CACornerMask {
         get { self.layer?.maskedCorners ?? CACornerMask() }
         set {
             self.wantsLayer = true
@@ -51,14 +51,14 @@ public extension NSView {
         }
     }
     
-    var cornerRadius: CGFloat {
+   open var cornerRadius: CGFloat {
         get { self.layer?.cornerRadius ?? 0.0 }
         set {
             self.wantsLayer = true
             self.layer?.cornerRadius = newValue }
     }
     
-    func setAnchorPoint(_ anchorPoint:CGPoint) {
+    public  func setAnchorPoint(_ anchorPoint:CGPoint) {
         guard let layer = self.layer else { return }
         var newPoint = CGPoint(self.bounds.size.width * anchorPoint.x, self.bounds.size.height * anchorPoint.y)
         var oldPoint = CGPoint(self.bounds.size.width * layer.anchorPoint.x, self.bounds.size.height * layer.anchorPoint.y)
@@ -79,39 +79,39 @@ public extension NSView {
     }
     
     
-    func sendToFront() {
+    public func sendToFront() {
         if let superview = self.superview {
             superview.addSubview(self)
         }
     }
     
-    func sendToBack() {
+    public func sendToBack() {
         if let superview = self.superview, let firstView = superview.subviews.first, firstView != self {
             superview.addSubview(self, positioned: .below, relativeTo: firstView)
         }
     }
     
-    func addSubview(withAutoresizing view: NSView) {
+    public func addSubview(withAutoresizing view: NSView) {
         self.addSubview(view)
         view.autoresizingMask = .all
     }
     
     @discardableResult
-    func addSubview(withConstraint view: NSView) -> [NSLayoutConstraint]  {
+    public func addSubview(withConstraint view: NSView) -> [NSLayoutConstraint]  {
         self.addSubview(view)
         return view.constraint(to: self)
     }
     
-    func subviews(type: NSView.Type) -> [NSView] {
+    public  func subviews(type: NSView.Type) -> [NSView] {
         self.subviews.filter({$0.isKind(of: type)})
     }
     
-    func removeSubviews(type: NSView.Type) {
+    public func removeSubviews(type: NSView.Type) {
         self.subviews(type: type).forEach({$0.removeFromSuperview()})
     }
     
     @discardableResult
-    func constraint(to view: NSView) -> [NSLayoutConstraint]  {
+    public func constraint(to view: NSView) -> [NSLayoutConstraint]  {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.frame = view.bounds
         let constraints = [NSLayoutConstraint(item: self, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: view, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1.0, constant: 0.0),
@@ -122,7 +122,7 @@ public extension NSView {
         return constraints
     }
     
-    func addTrackingArea(rect: NSRect? = nil, options: NSTrackingArea.Options = [
+    public func addTrackingArea(rect: NSRect? = nil, options: NSTrackingArea.Options = [
         .mouseMoved,
         .mouseEnteredAndExited,
         .activeInKeyWindow]) {
@@ -132,14 +132,14 @@ public extension NSView {
                 owner: self))
         }
     
-    func removeAllTrackingAreas() {
+    public func removeAllTrackingAreas() {
         for trackingArea in self.trackingAreas {
             self.removeTrackingArea(trackingArea)
         }
     }
     
     @available(macOS 10.12, *)
-    static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void) {
+    public  static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void) {
         NSAnimationContext.runAnimationGroup() {
             context in
             context.duration = duration
@@ -149,7 +149,7 @@ public extension NSView {
     }
     
     @available(OSX 10.12, *)
-    func animateLayout(changes: (NSAnimationContext) -> Void) {
+    public func animateLayout(changes: (NSAnimationContext) -> Void) {
         layoutSubtreeIfNeeded()
 
         NSAnimationContext.runAnimationGroup { (context) in
@@ -161,15 +161,15 @@ public extension NSView {
         }
     }
     
-    func setNeedsDisplay() {
+    public func setNeedsDisplay() {
         self.needsDisplay = true
     }
     
-    func setNeedsLayout() {
+    public  func setNeedsLayout() {
         self.needsLayout = true
     }
     
-    func setNeedsUpdateConstraints() {
+    public  func setNeedsUpdateConstraints() {
         self.needsUpdateConstraints = true
     }
 }
@@ -185,7 +185,7 @@ public extension NSView.AutoresizingMask {
 #if canImport(UIKit)
 import UIKit
 extension View {
-    var cornerRadius: CGFloat {
+   open var cornerRadius: CGFloat {
         get {
             return self.layer.cornerRadius ?? 0.0
         }

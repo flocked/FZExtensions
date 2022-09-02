@@ -8,7 +8,7 @@ public extension Path {
     
     /// The builder for `Path.find()`
     class Finder {
-        @available(macOS 11.0, *)
+        @available(macOS 11.0, iOS 14.0, *)
         fileprivate init(path: Path, types: [Path.EntryType]? = nil, contenttypes: [UTType]? = nil) {
             self.path = path
             self.contentTypeIDs = nil
@@ -92,7 +92,7 @@ public extension Path {
             }
         }
         
-        @available(macOS 11.0, *)
+        @available(macOS 11.0, iOS 14.0, *)
         private var contentTypes: [UTType]? {
            return contentTypeIDs?.compactMap({UTType($0)})
         }
@@ -148,7 +148,7 @@ extension Path.Finder: Sequence, IteratorProtocol {
             
             if let filter = self.filter, !filter(path) { continue }
             if let type = path.type, !types.contains(type) { continue }
-            if #available(macOS 11.0, *) {
+            if #available(macOS 11.0, iOS 14.0, *) {
                 if let contentTypes = contentTypes, let contentType = path.contentType, !contentType.conforms(toAny: contentTypes){ continue }
             } else {
                 if let contentTypes = contentTypeIDs, let contentTypeID = path.contentTypeID, !self.contentTypeID(contentTypeID, conformstoAny: Array(contentTypes)){ continue }
