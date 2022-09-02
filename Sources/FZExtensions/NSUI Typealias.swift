@@ -17,7 +17,7 @@ public typealias NSUICollectionViewLayout = NSCollectionViewLayout
 public typealias NSUICollectionViewDelegate = NSCollectionViewDelegate
 public typealias NSUICollectionViewCompositionalLayoutConfiguration = NSCollectionViewCompositionalLayoutConfiguration
 #elseif canImport(UIKit)
-public import UIKit
+import UIKit
 public typealias NSUIImage = UIImage
 public typealias NSUIColor = UIColor
 public typealias NSUICollectionView = UICollectionView

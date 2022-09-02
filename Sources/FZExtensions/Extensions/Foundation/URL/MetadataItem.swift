@@ -9,6 +9,7 @@ public class MetadataItem {
     internal let item: NSMetadataItem
     internal let values: [String:Any]
     
+    @available(macOS 10.12, *)
     public init?(url: URL) {
         if let item = NSMetadataItem(url: url) {
             self.item = item
@@ -23,6 +24,7 @@ public class MetadataItem {
             self.values = [:]
     }
     
+    @available(macOS 10.12, *)
     internal init?(url: URL, values: [String:Any]? = nil) {
         if let item = NSMetadataItem(url: url) {
             self.item = item
@@ -96,6 +98,7 @@ public extension MetadataItem {
     }
 }
 
+#if os(macOS)
 @available(macOS 10.12, *)
 public extension MetadataItem {
     var keywords: [String]? {
@@ -536,6 +539,7 @@ public extension MetadataItem {
     var isApplicationManaged: Bool? {
         get { self.value(NSMetadataItemIsApplicationManagedKey, type: Bool.self) } }
 }
+#endif
 
 #if canImport(UniformTypeIdentifiers)
 import UniformTypeIdentifiers

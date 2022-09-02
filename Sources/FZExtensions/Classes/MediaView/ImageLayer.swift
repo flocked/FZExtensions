@@ -11,7 +11,7 @@ import Combine
 #if os(macOS)
 import AppKit
 #elseif canImport(UIKit)
-public import UIKit
+import UIKit
 #endif
 
 public class ImageLayer: CALayer {

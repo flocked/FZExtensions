@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public struct ThumbnailOptions: Codable {
     public var shouldCache: Bool? = true

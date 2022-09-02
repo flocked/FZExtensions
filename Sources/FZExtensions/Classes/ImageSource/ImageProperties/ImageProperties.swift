@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public struct ImageProperties: Codable {
     public var fileSize: Int?
