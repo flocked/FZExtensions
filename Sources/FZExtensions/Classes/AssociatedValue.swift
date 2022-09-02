@@ -8,6 +8,12 @@
 import Foundation
 import ObjectiveC.runtime
 
+fileprivate extension String {
+     var address: UnsafeRawPointer {
+        return UnsafeRawPointer(bitPattern: abs(hashValue))!
+    }
+}
+
 public func getAssociatedValue<T>(key: String, object: AnyObject) -> T? {
     return (objc_getAssociatedObject(object, key.address) as? AssociatedValue)?.value as? T
 }

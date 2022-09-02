@@ -57,10 +57,11 @@ public extension Pathish {
     var resources: URLResources {
         return url.resources
     }
-    
-   var metadata: MetadataItem? {
-       return url.metadata
-   }
+
+#if os(macOS)
+    var metadata: MetadataItem? {
+        return url.metadata }
+#endif
     
     /**
      Returns the contentType of the file.

@@ -23,11 +23,15 @@ private enum Foo {
     /// Returns a `Path` representing the user’s home directory
     static var home: DynamicPath {
         let string: String
+        #if os(macOS)
         if #available(OSX 10.12, *) {
             string = FileManager.default.homeDirectoryForCurrentUser.path
         } else {
             string = NSHomeDirectory()
         }
+        #else
+        string = NSHomeDirectory()
+        #endif
         return .init(string: string)
     }
 

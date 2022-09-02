@@ -30,7 +30,7 @@ protocol TargetActionProtocol: AnyObject {
    
 fileprivate let ActionBlockAssociatedObjectKey = "ActionBlock".address
 
-internal extension String {
+fileprivate extension String {
      var address: UnsafeRawPointer {
         return UnsafeRawPointer(bitPattern: abs(hashValue))!
     }

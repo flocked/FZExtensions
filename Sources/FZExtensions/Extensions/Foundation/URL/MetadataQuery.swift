@@ -108,7 +108,6 @@ self.searchScopes = [.local]
 self.searchScopes = [.ubiquitousDocuments]
 #endif
         self.predicate =  NSPredicate(format: "%K like '*.*'", NSMetadataItemFSNameKey)
-        query.searchScopes = [NSMetadataQueryLocalComputerScope]
     }
 }
 
@@ -175,10 +174,6 @@ extension NSMetadataQuery {
             let values = self.values(of: self.valueListAttributes, forResultsAt: index)
             if let metadataItem = result as? NSMetadataItem {
                 items.append(MetadataItem(item: metadataItem, values: values))
-            } else if let path = result as? String, let item = MetadataItem(url: URL(fileURLWithPath: path), values: values) {
-                items.append(item)
-            } else if let url = result as? URL, let item = MetadataItem(url: url, values: values) {
-                items.append(item)
             }
         }
         return items
