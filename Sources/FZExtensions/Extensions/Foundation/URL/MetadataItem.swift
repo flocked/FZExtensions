@@ -8,36 +8,36 @@ public extension URL {
 public class MetadataItem {
     internal let item: NSMetadataItem
     internal let values: [String:Any]
-    
-    @available(macOS 10.12, *)
-    public init?(url: URL) {
-        if let item = NSMetadataItem(url: url) {
-            self.item = item
-            self.values = [:]
-        } else {
-            return nil
-        }
-    }
-    
+        
     public init(item: NSMetadataItem) {
             self.item = item
             self.values = [:]
-    }
-    
-    @available(macOS 10.12, *)
-    internal init?(url: URL, values: [String:Any]? = nil) {
-        if let item = NSMetadataItem(url: url) {
-            self.item = item
-            self.values = values ?? [:]
-        } else {
-            return nil
-        }
     }
     
     internal init(item: NSMetadataItem, values: [String:Any]?) {
             self.item = item
             self.values = values ?? [:]
     }
+    
+#if os(macOS)
+public init?(url: URL) {
+    if let item = NSMetadataItem(url: url) {
+        self.item = item
+        self.values = [:]
+    } else {
+        return nil
+    }
+}
+
+internal init?(url: URL, values: [String:Any]? = nil) {
+    if let item = NSMetadataItem(url: url) {
+        self.item = item
+        self.values = values ?? [:]
+    } else {
+        return nil
+    }
+}
+#endif
     
     public var queryAttributes: [String] {
         return [String](values.keys)

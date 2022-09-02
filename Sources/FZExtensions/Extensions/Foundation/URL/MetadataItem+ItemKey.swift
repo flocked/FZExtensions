@@ -200,7 +200,6 @@ public extension PartialKeyPath where Root == MetadataItem {
         case \Root.fsContentChangeDate: return "kMDItemFSContentChangeDate"
         case \Root.contentType: return "kMDItemContentType"
         case \Root.contentTypeTree: return "kMDItemContentTypeTree"
-        case \Root.attributeChangeDate: return "kMDItemAttributeChangeDate"
         case \Root.isScreenCapture: return "kMDItemIsScreenCapture"
         case \Root.queryResultContentRelevance: return "kMDQueryResultContentRelevance"
         default: return "kMDItemTextContent"

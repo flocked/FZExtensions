@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 extension ImageProperties {
     public struct HEIC: Codable {

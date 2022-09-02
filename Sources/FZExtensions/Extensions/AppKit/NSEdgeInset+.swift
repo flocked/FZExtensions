@@ -13,8 +13,11 @@ import UIKit
 
 #if os(macOS)
 public extension NSEdgeInsets {
-    static var zero = NSDirectionalEdgeInsets(0)
+    static var zero = NSEdgeInsets(0)
+}
+#endif
     
+public extension NSUIEdgeInsets {
     var directional: NSDirectionalEdgeInsets {
         return .init(top: self.top, leading: self.left, bottom: self.bottom, trailing: self.right)
     }
@@ -47,7 +50,6 @@ public extension NSEdgeInsets {
         }
     }
 }
-#endif
 
 
 public extension NSDirectionalEdgeInsets {

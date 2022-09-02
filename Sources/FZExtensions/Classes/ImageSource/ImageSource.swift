@@ -158,9 +158,9 @@ extension ImageSource: Equatable {
 
 extension ImageSource {
     public var isAnimatable: Bool {
-        let utIdentifier = self.typeIdentifier
-        let animatableUTTs: [CFString] = [kUTTypeGIF, kUTTypePNG, "public.heif-standard" as CFString]
-        if self.count > 1, let utIdentifier = utIdentifier, animatableUTTs.contains(utIdentifier as CFString) {
+      //  let utIdentifier = self.typeIdentifier
+   //     let animatableUTTs: [CFString] = [kUTTypeGIF, kUTTypePNG, "public.heif-standard" as CFString]
+        if self.count > 1 {
             return true
         }
         return false

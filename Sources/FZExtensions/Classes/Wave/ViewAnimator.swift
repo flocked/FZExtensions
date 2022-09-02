@@ -318,7 +318,7 @@ public class ViewAnimator {
     /// The alpha of the attached `UIView`.
     public var alpha: CGFloat {
         get {
-            runningAlphaAnimator?.target ?? view.alphaValue
+            runningAlphaAnimator?.target ?? view.alpha
         }
         set {
             guard alpha != newValue else {
@@ -333,7 +333,7 @@ public class ViewAnimator {
                 return
             }
 
-            let initialValue = view.alphaValue
+            let initialValue = view.alpha
             let targetValue = newValue
 
             let animationType = AnimatableProperty.alpha
@@ -346,7 +346,7 @@ public class ViewAnimator {
 
             animation.target = targetValue
             animation.valueChanged = { [weak self] value in
-                self?.view.alphaValue = value
+                self?.view.alpha = value
             }
 
             animation.completion = { [weak self] event in

@@ -12,7 +12,7 @@ import AppKit
 import UIKit
 #endif
 
-extension  NSCollectionLayoutSection {
+extension  NSUICollectionLayoutSection {
     func addSupplementaryItem(_ kind: String, height: NSCollectionLayoutDimension = .estimated(44), floating: Bool = true, alignment: NSRectAlignment = .top) {
         let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
                                                       heightDimension: height)
@@ -26,10 +26,10 @@ extension  NSCollectionLayoutSection {
     }
     
     func addFooter(height: NSCollectionLayoutDimension = .estimated(44), floating: Bool = true) {
-        self.addSupplementaryItem(NSCollectionView.elementKindSectionFooter, height: height, floating: floating, alignment: .bottom)
+        self.addSupplementaryItem(NSUICollectionView.elementKindSectionFooter, height: height, floating: floating, alignment: .bottom)
     }
     
     func addHeader(height: NSCollectionLayoutDimension = .estimated(44), floating: Bool = true) {
-        self.addSupplementaryItem(NSCollectionView.elementKindSectionHeader, height: height, floating: floating, alignment: .top)
+        self.addSupplementaryItem(NSUICollectionView.elementKindSectionHeader, height: height, floating: floating, alignment: .top)
     }
 }

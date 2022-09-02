@@ -8,9 +8,7 @@
 
 #if os(macOS)
 import AppKit
-#elseif canImport(UIKit)
-import UIKit
-#endif
+
 
 private func < <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     switch (lhs, rhs) {
@@ -49,7 +47,7 @@ public protocol NSUICollectionViewWaterfallLayoutDelegate: NSUICollectionViewDel
     
     func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
-                        insetsFor section: Int) -> NSDirectionalEdgeInsets
+                        insetsFor section: Int) -> NSUIEdgeInsets
      
     
     func collectionView(_ collectionView: NSUICollectionView,
@@ -75,8 +73,8 @@ public extension NSUICollectionViewWaterfallLayoutDelegate {
     
     func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
-                        insetsFor section: Int) -> NSDirectionalEdgeInsets {
-        return NSDirectionalEdgeInsets(top: -1, leading: -1, bottom: -1, trailing: -1) }
+                        insetsFor section: Int) -> NSUIEdgeInsets {
+        return NSUIEdgeInsets(-1) }
      
     
     func collectionView(_ collectionView: NSUICollectionView,
@@ -122,7 +120,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
     public var footerHeight: CGFloat = 0 {
         didSet { invalidateLayout() } }
 
-    public var sectionInset: NSDirectionalEdgeInsets = .zero {
+    public var sectionInset: NSUIEdgeInsets = .zero {
         didSet { invalidateLayout() } }
     
     public var itemRenderDirection: ItemRenderDirection = .shortestFirst {
@@ -152,20 +150,37 @@ public class WaterfallLayout: NSUICollectionViewLayout {
         return cCount
     }
     
+    #if os(macOS)
     private var collectionViewContentWidth: CGFloat {
-        var insets: NSEdgeInsets = NSEdgeInsetsZero
+        var insets: NSUIEdgeInsets = .zero
         switch sectionInsetReference {
         case .fromContentInset:
             if let contentInsets = collectionView?.enclosingScrollView?.contentInsets {
                 insets = contentInsets
-            } else { insets = NSEdgeInsetsZero  }
+            } else { insets = .zero  }
         case .fromSafeArea:
             if #available(macOS 11.0, *) {
                 insets = collectionView!.safeAreaInsets
-            } else { insets = NSEdgeInsetsZero  }
+            } else { insets = .zero  }
         }
         return collectionView!.bounds.size.width - insets.left - insets.right
     }
+    #elseif canImport(UIKit)
+    private var collectionViewContentWidth: CGFloat {
+        var insets: NSUIEdgeInsets = .zero
+        switch sectionInsetReference {
+        case .fromContentInset:
+            if let contentInsets = collectionView?.contentInset {
+                insets = contentInsets.directional
+            } else { insets = .zero  }
+        case .fromSafeArea:
+            if let contentInsets = collectionView?.adjustedContentInset {
+                insets = contentInsets.directional
+            } else { insets = .zero  }
+        }
+        return collectionView!.bounds.size.width - insets.trailing - insets.leading
+    }
+    #endif
     
     private func collectionViewContentWidth(ofSection section: Int) -> CGFloat {
         var insets = delegate?.collectionView(collectionView!, layout: self, insetsFor: section) ?? sectionInset
@@ -173,7 +188,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
         if (insets.bottom == -1) {
             insets = self.sectionInset
         }
-        return collectionViewContentWidth - insets.leading - insets.trailing
+        return collectionViewContentWidth - insets.left - insets.right
     }
     
     public func itemWidth(inSection section: Int) -> CGFloat {
@@ -246,7 +261,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
                 let indexPath = IndexPath(item: idx, section: section)
                 
                 let columnIndex = nextColumnIndexForItem(idx, inSection: section)
-                let xOffset = sectionInsets.leading + (itemWidth + minimumColumnSpacing) * CGFloat(columnIndex)
+                let xOffset = sectionInsets.left + (itemWidth + minimumColumnSpacing) * CGFloat(columnIndex)
                 
                 let yOffset = columnHeights[section][columnIndex]
                 var itemHeight: CGFloat = 0.0
@@ -376,3 +391,4 @@ public class WaterfallLayout: NSUICollectionViewLayout {
     }
 }
 }
+#endif

@@ -30,7 +30,7 @@ extension NSView {
         set {  self.frame.center = newValue } }
     
     
-   open var backgroundColor: NSColor? {
+    public var backgroundColor: NSColor? {
         get {
             if let cgColor = self.layer?.backgroundColor {
                 return NSColor(cgColor: cgColor)
@@ -43,7 +43,17 @@ extension NSView {
             self.layer?.backgroundColor = newValue?.cgColor }
     }
     
-   open var roundedCorners: CACornerMask {
+    public var alpha: CGFloat {
+        get { if let cgValue =  self.layer?.opacity {
+            return CGFloat(cgValue)
+        }
+            return 1.0  }
+        set {
+            self.wantsLayer = true
+            self.layer?.opacity = Float(newValue) }
+    }
+    
+    public var roundedCorners: CACornerMask {
         get { self.layer?.maskedCorners ?? CACornerMask() }
         set {
             self.wantsLayer = true
@@ -51,7 +61,7 @@ extension NSView {
         }
     }
     
-   open var cornerRadius: CGFloat {
+    public var cornerRadius: CGFloat {
         get { self.layer?.cornerRadius ?? 0.0 }
         set {
             self.wantsLayer = true
@@ -185,7 +195,7 @@ public extension NSView.AutoresizingMask {
 #if canImport(UIKit)
 import UIKit
 extension View {
-   open var cornerRadius: CGFloat {
+   public var cornerRadius: CGFloat {
         get {
             return self.layer.cornerRadius ?? 0.0
         }
@@ -193,6 +203,7 @@ extension View {
             self.layer.cornerRadius = newValue
         }
     }
+    
 }
 #endif
 

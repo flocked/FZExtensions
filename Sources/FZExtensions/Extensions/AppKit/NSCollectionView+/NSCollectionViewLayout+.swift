@@ -5,13 +5,8 @@
 //  Created by Florian Zand on 23.08.22.
 //
 
-import Foundation
 #if os(macOS)
 import AppKit
-#elseif canImport(UIKit)
-import UIKit
-#endif
-
 public extension NSCollectionViewLayout {
 func invalidateLayout(animated duration: TimeInterval = 0.15) {
     guard duration != 0.0 else { self.invalidateLayout()
@@ -23,3 +18,21 @@ func invalidateLayout(animated duration: TimeInterval = 0.15) {
     NSAnimationContext.endGrouping()
 }
 }
+#elseif canImport(UIKit)
+import UIKit
+public extension UICollectionViewLayout {
+func invalidateLayout(animated duration: TimeInterval = 0.15) {
+    guard let collectionView = self.collectionView, duration != 0.0 else { self.invalidateLayout()
+        return }
+    collectionView.performBatchUpdates({
+        
+        CATransaction.perform(animated: true, duration: CGFloat(duration), animations: {
+            collectionView.performBatchUpdates({
+            })
+        }, completinonHandler: nil)
+        
+    })
+
+}
+}
+#endif
