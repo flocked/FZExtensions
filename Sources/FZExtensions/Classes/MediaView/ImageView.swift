@@ -10,6 +10,11 @@ import Foundation
 import AppKit
 
 public class ImageView: NSView {
+    public  var contentTintColor: NSColor? {
+        get { self.imageLayer.contentTintColor  }
+        set { self.imageLayer.contentTintColor  = newValue  }
+    }
+    
     public var image: NSImage?  {
         get {
             self.imageLayer.image

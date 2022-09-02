@@ -19,8 +19,12 @@ public class MediaView: NSView {
     
    internal let imageView = ImageView()
     internal let videoView = NoKeyDownPlayerView()
-
     
+    public  var contentTintColor: NSColor? {
+        get { self.imageView.contentTintColor  }
+        set { self.imageView.contentTintColor  = newValue  }
+    }
+
     public  var loopVideos: Bool = true
     public  var isMuted: Bool = false { didSet { self.updateVideoViewConfiguration() } }
     public var volume: Float = 0.2  { didSet { self.updateVideoViewConfiguration() } }

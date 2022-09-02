@@ -105,6 +105,16 @@ extension NSUICollectionViewLayout.WaterfallLayout {
 
 extension NSUICollectionViewLayout {
 public class WaterfallLayout: NSUICollectionViewLayout {
+    public typealias ItemSizeProvider = ((IndexPath) -> CGSize)
+    
+    convenience init(itemSizeProvider: @escaping ItemSizeProvider) {
+        self.init()
+        self.itemSizeProvider = itemSizeProvider
+    }
+    
+    public var itemSizeProvider: ItemSizeProvider? = nil {
+        didSet { invalidateLayout() } }
+    
     public var columnCount: Int = 2 {
         didSet { invalidateLayout(animated: animationDuration ?? 0.0) } }
             
@@ -170,13 +180,9 @@ public class WaterfallLayout: NSUICollectionViewLayout {
         var insets: NSUIEdgeInsets = .zero
         switch sectionInsetReference {
         case .fromContentInset:
-            if let contentInsets = collectionView?.contentInset {
-                insets = contentInsets.directional
-            } else { insets = .zero  }
+            insets = collectionView?.contentInset.contentInset ?? .zero
         case .fromSafeArea:
-            if let contentInsets = collectionView?.adjustedContentInset {
-                insets = contentInsets.directional
-            } else { insets = .zero  }
+            insets = collectionView?.contentInset.adjustedContentInset ?? .zero
         }
         return collectionView!.bounds.size.width - insets.trailing - insets.leading
     }
@@ -184,7 +190,6 @@ public class WaterfallLayout: NSUICollectionViewLayout {
     
     private func collectionViewContentWidth(ofSection section: Int) -> CGFloat {
         var insets = delegate?.collectionView(collectionView!, layout: self, insetsFor: section) ?? sectionInset
-    //        var insets =  sectionInset
         if (insets.bottom == -1) {
             insets = self.sectionInset
         }
@@ -265,7 +270,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
                 
                 let yOffset = columnHeights[section][columnIndex]
                 var itemHeight: CGFloat = 0.0
-                if let itemSize = delegate?.collectionView(collectionView!, layout: self, sizeForItemAt: indexPath),
+                if let itemSize = self.itemSizeProvider?(indexPath) ?? delegate?.collectionView(collectionView!, layout: self, sizeForItemAt: indexPath),
                    itemSize.height > 0 {
                     itemHeight = itemSize.height
                     if itemSize.width > 0 {

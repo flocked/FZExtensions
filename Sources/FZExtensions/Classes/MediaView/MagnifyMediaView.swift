@@ -18,6 +18,12 @@ public class MagnifyMediaView: NSView {
         return true
     }
     
+    
+    public  var contentTintColor: NSColor? {
+        get { self.mediaView.contentTintColor  }
+        set { self.mediaView.contentTintColor  = newValue  }
+    }
+    
     public var doubleClickZoomFactor: CGFloat = 0.5
     public override func mouseDown(with event: NSEvent) {
         self.window?.makeFirstResponder(self)

@@ -12,6 +12,11 @@ import Foundation
 import Combine
 
 public class ImageLayer: CALayer {
+    public  var contentTintColor: NSColor? = nil {
+        didSet {
+        }
+    }
+    
     public var image: NSUIImage?  {
         get {
             self.images.first
