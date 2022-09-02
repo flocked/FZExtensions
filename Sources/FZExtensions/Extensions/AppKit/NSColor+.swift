@@ -6,7 +6,11 @@
 //
 
 import Foundation
+#if os(macOS)
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 extension NSUIColor {
     public static func interpolate(from fromColor: NSUIColor, to toColor: NSUIColor, with progress: CGFloat) -> NSUIColor {
