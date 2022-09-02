@@ -5,6 +5,7 @@
 //  Created by Florian Zand on 29.08.22.
 //
 
+#if os(macOS)
 import Foundation
 import Cocoa
 
@@ -30,3 +31,4 @@ open class ViewController<View: NSView>: NSViewController {
         return typedView
     }
 }
+#endif

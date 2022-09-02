@@ -5,6 +5,7 @@
 //  Created by Florian Zand on 29.05.22.
 //
 
+#if os(macOS)
 import Foundation
 import AppKit
 
@@ -36,3 +37,4 @@ var items: [NSMenuItem] {
         }
     }
 }
+#endif
