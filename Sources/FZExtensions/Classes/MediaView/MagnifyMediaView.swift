@@ -5,11 +5,11 @@
 //  Created by Florian Zand on 30.05.22.
 //
 
+
+#if os(macOS)
 import Foundation
 import Cocoa
 import AVKit
-
-#if os(macOS)
 public class MagnifyMediaView: NSView {
     private let mediaView = MediaView()
     private let scrollView = NSScrollView()
