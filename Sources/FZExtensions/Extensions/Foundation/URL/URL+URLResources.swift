@@ -105,13 +105,6 @@ public class URLResources {
              }
         }
 
-        /// True if the resource is scriptable. Only applies to applications.
-        @available(macOS 10.11, *)
-        public var applicationIsScriptable: Bool {
-            get {
-                return (try? url.resourceValues(for: .applicationIsScriptableKey).applicationIsScriptable) ?? false
-             }
-        }
 
         /// True for system-immutable resources.
         public var isSystemImmutable: Bool {
@@ -329,18 +322,6 @@ public class URLResources {
              }
         }
 
-        @available(macOS 10.10, *)
-        public var quarantineProperties: [String : Any]? {
-            get {
-                return try? url.resourceValues(for: .quarantinePropertiesKey).quarantineProperties
-             }
-            set {
-                var urlResouceValues = URLResourceValues()
-                urlResouceValues.quarantineProperties = newValue
-                try? url.setResourceValues(urlResouceValues)
-            }
-        }
-
         @available(macOS 11.0, iOS 14.0, tvOS 14.0, watchOS 7.0, *)
         public var mayHaveExtendedAttributes: Bool {
             get {
@@ -451,29 +432,37 @@ public class URLResources {
         }
     }
     
-    public  var customIcon: NSUIImage? {
-        get {
-           return try? url.resourceValues(for: .customIconKey).customIcon
-        }
-    }
-    
-    public  var effectiveIcon: NSUIImage? {
-        get {
-           return try? url.resourceValues(for: .effectiveIconKey).effectiveIcon as? NSUIImage
-        }
-    }
-    
-    public  var labelColor: NSUIColor? {
-        get {
-           return try? url.resourceValues(for: .labelColorKey).labelColor
-        }
-    }
-    
     var dataSize: DataSize? {
         if let bytes = self.totalFileAllocatedSize ?? self.fileAllocatedSize {
             return DataSize(bytes)
         }
         return nil
+    }
+    
+    
+}
+
+#if os(macOS)
+public extension URLResources {
+    
+    /// True if the resource is scriptable. Only applies to applications.
+    @available(macOS 10.11, *)
+     var applicationIsScriptable: Bool {
+        get {
+            return (try? url.resourceValues(for: .applicationIsScriptableKey).applicationIsScriptable) ?? false
+         }
+    }
+    
+    @available(macOS 10.10, *)
+     var quarantineProperties: [String : Any]? {
+        get {
+            return try? url.resourceValues(for: .quarantinePropertiesKey).quarantineProperties
+         }
+        set {
+            var urlResouceValues = URLResourceValues()
+            urlResouceValues.quarantineProperties = newValue
+            try? url.setResourceValues(urlResouceValues)
+        }
     }
     
     @available(macOS 10.9, *)
@@ -490,4 +479,23 @@ public class URLResources {
                 } catch { print("Cant set tagNames") } }
         }
     
+      var customIcon: NSUIImage? {
+        get {
+           return try? url.resourceValues(for: .customIconKey).customIcon
+        }
+    }
+    
+      var effectiveIcon: NSUIImage? {
+        get {
+           return try? url.resourceValues(for: .effectiveIconKey).effectiveIcon as? NSUIImage
+        }
+    }
+    
+      var labelColor: NSUIColor? {
+        get {
+           return try? url.resourceValues(for: .labelColorKey).labelColor
+        }
+    }
+    
 }
+#endif

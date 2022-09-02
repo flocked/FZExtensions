@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreGraphics
 
 public extension NumberFormatter {
     static func decimal(min: Int = 0, max: Int = 0) -> NumberFormatter {

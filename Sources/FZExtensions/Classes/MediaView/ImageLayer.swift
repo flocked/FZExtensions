@@ -5,14 +5,11 @@
 //  Created by Florian Zand on 30.05.22.
 //
 
-import Foundation
-import Combine
 
 #if os(macOS)
 import AppKit
-#elseif canImport(UIKit)
-import UIKit
-#endif
+import Foundation
+import Combine
 
 public class ImageLayer: CALayer {
     public var image: NSUIImage?  {
@@ -280,3 +277,4 @@ public class ImageLayer: CALayer {
     }
     
 }
+#endif

@@ -5,6 +5,7 @@
 //  Created by Florian Zand on 06.06.22.
 //
 import Foundation
+import CoreGraphics
 
 public extension NSAttributedString {
      func height(using width: CGFloat) -> CGFloat {
