@@ -32,55 +32,55 @@ private func > <T: Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 }
 
-public protocol NSCollectionViewWaterfallLayoutDelegate: NSUICollectionViewDelegate {
-    func collectionView(_ collectionView: NSCollectionView,
+public protocol NSUICollectionViewWaterfallLayoutDelegate: NSUICollectionViewDelegate {
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize
     
     // Optional
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         heightForHeaderIn section: Int) -> CGFloat
     
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         heightForFooterIn section: Int) -> CGFloat
     
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         insetsFor section: Int) -> NSEdgeInsets
     
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         minimumInteritemSpacingFor section: Int) -> CGFloat
     
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         columnCountFor section: Int) -> Int
 }
 
-public extension NSCollectionViewWaterfallLayoutDelegate {
-    func collectionView(_ collectionView: NSCollectionView,
+public extension NSUICollectionViewWaterfallLayoutDelegate {
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         heightForHeaderIn section: Int) -> CGFloat {
         return -1 }
     
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         heightForFooterIn section: Int) -> CGFloat {
         return -1 }
     
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         insetsFor section: Int) -> NSEdgeInsets{
         return NSEdgeInsets(top: -1, left: -1, bottom: -1, right: -1) }
     
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         minimumInteritemSpacingFor section: Int) -> CGFloat {
         return -1 }
     
-    func collectionView(_ collectionView: NSCollectionView,
+    func collectionView(_ collectionView: NSUICollectionView,
                         layout collectionViewLayout: NSUICollectionViewLayout,
                         columnCountFor section: Int) -> Int {
         return -1 }
@@ -127,8 +127,8 @@ public class WaterfallLayout: NSUICollectionViewLayout {
     public var sectionInsetReference: SectionInsetReference = .fromContentInset {
         didSet { invalidateLayout() } }
     
-    public var delegate: NSCollectionViewWaterfallLayoutDelegate? {
-        get { return collectionView!.delegate as? NSCollectionViewWaterfallLayoutDelegate } }
+    public var delegate: NSUICollectionViewWaterfallLayoutDelegate? {
+        get { return collectionView!.delegate as? NSUICollectionViewWaterfallLayoutDelegate } }
     
     public var animationDuration: TimeInterval? = nil
     
@@ -221,7 +221,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
                 heightHeader =  self.headerHeight
             }
             if heightHeader > 0 {
-                attributes = NSUICollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSCollectionView.elementKindSectionHeader, with: IndexPath(item: 0, section: section))
+                attributes = NSUICollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSUICollectionView.elementKindSectionHeader, with: IndexPath(item: 0, section: section))
                 attributes.frame = CGRect(x: 0, y: top, width: collectionView!.bounds.size.width, height: heightHeader)
                 headersAttributes[section] = attributes
                 allItemAttributes.append(attributes)
@@ -269,7 +269,7 @@ public class WaterfallLayout: NSUICollectionViewLayout {
             }
             
             if footerHeight > 0 {
-                attributes = NSUICollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSCollectionView.elementKindSectionFooter, with: IndexPath(item: 0, section: section))
+                attributes = NSUICollectionViewLayoutAttributes(forSupplementaryViewOfKind: NSUICollectionView.elementKindSectionFooter, with: IndexPath(item: 0, section: section))
                 attributes.frame = CGRect(x: 0, y: top, width: collectionView!.bounds.size.width, height: footerHeight)
                 footersAttributes[section] = attributes
                 allItemAttributes.append(attributes)
@@ -318,9 +318,9 @@ public class WaterfallLayout: NSUICollectionViewLayout {
     
     override public func layoutAttributesForSupplementaryView(ofKind elementKind: String, at indexPath: IndexPath) -> NSUICollectionViewLayoutAttributes {
         var attribute: NSUICollectionViewLayoutAttributes?
-        if elementKind == NSCollectionView.elementKindSectionHeader {
+        if elementKind == NSUICollectionView.elementKindSectionHeader {
             attribute = headersAttributes[indexPath.section]
-        } else if elementKind == NSCollectionView.elementKindSectionFooter {
+        } else if elementKind == NSUICollectionView.elementKindSectionFooter {
             attribute = footersAttributes[indexPath.section]
         }
         return attribute ?? NSUICollectionViewLayoutAttributes()
