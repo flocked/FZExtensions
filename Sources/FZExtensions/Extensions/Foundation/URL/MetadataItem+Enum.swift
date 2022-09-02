@@ -8,7 +8,7 @@
 import Foundation
 
 extension MetadataQuery {
-public struct SortOption {
+    public struct SortOption {
     public    var key: SortParamter
     public  var ascending: Bool
     public  init(_ key: SortParamter, ascending: Bool) {
@@ -29,7 +29,6 @@ public enum SortParamter: String {
     case fsContentChangeDate = "kMDItemFSContentChangeDate"
     case contentType = "kMDItemContentType"
     case contentUTType = "kMDItemContentTypeTree"
-    // case contentTypeTree = "kMDItemContentTypeTree"
     case attributeChangeDate = "kMDItemAttributeChangeDate"
     case keywords = "kMDItemwords"
     case title = "kMDItemTitle"

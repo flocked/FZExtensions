@@ -14,6 +14,10 @@ public extension NSWindow {
         styleMask.contains(.fullScreen)
     }
     
+    var tabIndex: Int? {
+        self.tabbedWindows?.firstIndex(of: self)
+    }
+    
     /// Make the receiver a sensible size, given the current screen
     ///
     /// This method attempts to size the window to match the current screen
