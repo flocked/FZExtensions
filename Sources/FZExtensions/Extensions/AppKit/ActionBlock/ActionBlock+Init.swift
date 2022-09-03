@@ -12,7 +12,7 @@ import AppKit
 
 fileprivate let TargetActionProtocolAssociatedObjectKey = UnsafeMutablePointer<Int8>.allocate(capacity: 1)
 
-extension NSMenuItem {
+public extension NSMenuItem {
     convenience init(_ title: String, state: NSControl.StateValue = .off, image: NSImage? = nil, action: @escaping ActionBlock) {
         self.init(title: title, action: action)
         self.state = state
@@ -29,7 +29,7 @@ extension NSMenuItem {
     }
 }
 
-extension NSMenu {
+public extension NSMenu {
     convenience init(items: [NSMenuItem], action: @escaping NSMenuItem.ActionBlock) {
         self.init(items: items)
         for i in 0...items.count-1 {
@@ -38,35 +38,35 @@ extension NSMenu {
     }
 }
 
-extension NSMagnificationGestureRecognizer {
+public extension NSMagnificationGestureRecognizer {
     convenience init(action: @escaping ActionBlock) {
         self.init()
         self.actionBlock = action
     }
 }
 
-extension NSRotationGestureRecognizer {
+public extension NSRotationGestureRecognizer {
     convenience init(action: @escaping ActionBlock) {
         self.init()
         self.actionBlock = action
     }
 }
 
-extension NSClickGestureRecognizer {
+public extension NSClickGestureRecognizer {
     convenience init(action: @escaping ActionBlock) {
         self.init()
         self.actionBlock = action
     }
 }
 
-extension NSPanGestureRecognizer {
+public extension NSPanGestureRecognizer {
     convenience init(action: @escaping ActionBlock) {
         self.init()
         self.actionBlock = action
     }
 }
 
-extension NSPressGestureRecognizer {
+public extension NSPressGestureRecognizer {
     convenience init(action: @escaping ActionBlock) {
         self.init()
         self.actionBlock = action

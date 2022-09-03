@@ -3,13 +3,13 @@
 import Foundation
 import Cocoa
    
-protocol TargetActionProtocol: AnyObject {
-     typealias ActionBlock = (Self) -> Void
+public protocol TargetActionProtocol: AnyObject {
+   typealias ActionBlock = (Self) -> Void
      var target: AnyObject? { get set }
      var action: Selector? { get set }
  }
 
- extension NSControl: TargetActionProtocol {}
+extension NSControl: TargetActionProtocol {}
  extension NSToolbarItem: TargetActionProtocol {}
  extension NSGestureRecognizer: TargetActionProtocol {}
  extension NSMenuItem: TargetActionProtocol { }
@@ -36,7 +36,7 @@ fileprivate extension String {
     }
 }
 
- extension TargetActionProtocol {
+ public extension TargetActionProtocol {
     var actionBlock: ActionBlock? {
         set {
             guard let action = newValue else {
