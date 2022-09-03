@@ -6,7 +6,6 @@
 //
 
 #if os(macOS)
-
 import AppKit
 
 extension NSView {
@@ -207,3 +206,29 @@ extension UIView {
 }
 #endif
 
+#if os(macOS)
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
+
+extension NSUIView {
+    public func removeAllConstraints() {
+        var _superview = self.superview
+        while let superview = _superview {
+            for constraint in superview.constraints {
+                
+                if let first = constraint.firstItem as? NSUIView, first == self {
+                    superview.removeConstraint(constraint)
+                }
+                
+                if let second = constraint.secondItem as? NSUIView, second == self {
+                    superview.removeConstraint(constraint)
+                }
+            }
+            
+            _superview = superview.superview
+        }
+        self.removeConstraints(self.constraints)
+    }
+}
