@@ -7,17 +7,37 @@ public extension NSView {
         case relative
         case absolute
         case full
+        case insets(NSEdgeInsets)
     }
 
     @discardableResult
     func addSubview(_ view: NSView,  constraint: ConstraintMode) -> [NSLayoutConstraint] {
-        let constants: [CGFloat] = (constraint == .absolute) ? calculateConstants(view) : [0, 0, 0, 0]
-        let multipliers: [CGFloat] = (constraint == .relative) ? calculateMultipliers(view) : [1.0, 1.0 , 1.0, 1.0]
+        let constants: [CGFloat]
+        switch constraint {
+        case .absolute:
+            constants = calculateConstants(view)
+        case .insets(let insets):
+            constants = [insets.left, insets.bottom, 0.0-insets.right, 0.0-insets.top]
+        default:
+            constants = [0, 0, 0, 0]
+        }
+
+        let multipliers: [CGFloat]
+        switch constraint {
+        case .relative:
+            multipliers = calculateMultipliers(view)
+        default:
+            multipliers = [1.0, 1.0 , 1.0, 1.0]
+        }
 
         self.addSubview(view)
-        if (constraint == .full) {
+        switch constraint {
+        case .full:
             view.frame = self.bounds
+        default:
+            break
         }
+
         view.translatesAutoresizingMaskIntoConstraints = false
         let left: NSLayoutConstraint = .init(item: view, attribute: .left, relatedBy: .equal, toItem: self, attribute: .left, multiplier: multipliers[0], constant: constants[0])
         let bottom: NSLayoutConstraint = .init(item: view, attribute: .bottom, relatedBy: .equal, toItem: self, attribute: .bottom, multiplier: multipliers[1], constant: constants[1])
