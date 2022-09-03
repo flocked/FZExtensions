@@ -12,7 +12,9 @@ import AppKit
 
 extension NSImageScaling: CaseIterable {
     public static var allCases: [NSImageScaling] = [.scaleProportionallyDown, .scaleAxesIndependently, .scaleNone, .scaleProportionallyUpOrDown]
-    
+}
+
+public extension NSImageScaling {
     static var reize: Self { return .scaleAxesIndependently }
     static var reizeAspect: Self { return .scaleProportionallyDown }
     static var reizeAspectFill: Self { return .scaleProportionallyUpOrDown }
