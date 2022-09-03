@@ -111,8 +111,8 @@ extension NSView {
         return view.constraint(to: self)
     }
     
-    public  func subviews(type: NSView.Type) -> [NSView] {
-        self.subviews.filter({$0.isKind(of: type)})
+    public  func subviews<V: NSView>(type: V.Type) -> [V] {
+        (self.subviews.filter({$0.isKind(of: type)}) as? [V]) ?? []
     }
     
     public func removeSubviews(type: NSView.Type) {
