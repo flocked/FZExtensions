@@ -23,6 +23,30 @@ public extension NSCollectionLayoutBoundarySupplementaryItem {
         return item
     }
     
+    static func sectionHeader(height: NSCollectionLayoutDimension = .estimated(44), floating: Bool = false) -> NSCollectionLayoutBoundarySupplementaryItem {
+        let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                      heightDimension: height)
+        let item = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: layoutSize,
+            elementKind:  NSCollectionView.ElementKind.sectionHeader, alignment: .top)
+        
+        item.zIndex = .max
+        item.pinToVisibleBounds = floating
+        return item
+   }
+    
+    static func sectionFooter(height: NSCollectionLayoutDimension = .estimated(44), floating: Bool = false) -> NSCollectionLayoutBoundarySupplementaryItem {
+        let layoutSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0),
+                                                      heightDimension: height)
+        let item = NSCollectionLayoutBoundarySupplementaryItem(
+            layoutSize: layoutSize,
+            elementKind:  NSCollectionView.ElementKind.sectionFooter, alignment: .bottom)
+        
+        item.zIndex = .max
+        item.pinToVisibleBounds = floating
+        return item
+   }
+    
     static func sectionBackground() -> NSCollectionLayoutBoundarySupplementaryItem {
         return NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)),
                                                         elementKind: NSCollectionView.ElementKind.sectionBackground,
