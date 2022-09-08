@@ -1,3 +1,3 @@
 # FZExtensions
 
-AppKit/UIKit extensions and useful classes.
+Swift, AppKit & UIKit Extensions and Classes written by Florian Zand.

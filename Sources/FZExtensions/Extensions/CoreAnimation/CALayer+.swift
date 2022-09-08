@@ -35,6 +35,21 @@ func sendToBack() {
     superlayer.insertSublayer(self, at: 0)
 }
     
+     func addSublayer(withAutoresizing layer: CALayer) {
+        layer.frame = self.bounds
+        layer.cornerRadius = self.cornerRadius
+        layer.maskedCorners = self.maskedCorners
+        layer.masksToBounds = true
+        layer.autoresizingMask = [.layerWidthSizable, .layerHeightSizable]
+        self.addSublayer(layer)
+    }
+    
+    @discardableResult
+     func addSublayer(withConstraint layer: CALayer) -> [NSLayoutConstraint]  {
+        self.addSublayer(layer)
+        return layer.constraintTo(layer: self)
+    }
+    
     @discardableResult
     func constraintTo(layer: CALayer) -> [NSLayoutConstraint] {
         self.frame = layer.bounds
