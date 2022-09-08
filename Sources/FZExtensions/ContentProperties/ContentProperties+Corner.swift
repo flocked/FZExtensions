@@ -9,7 +9,7 @@ import Foundation
 import CoreGraphics
 
 public extension ContentProperties {
-    enum CornerStlye {
+       enum CornerStlye {
         case radius(CGFloat)
         case capsule
     }

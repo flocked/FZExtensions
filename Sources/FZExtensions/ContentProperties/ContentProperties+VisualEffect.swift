@@ -13,21 +13,21 @@ import AppKit
 extension ContentProperties {
     
     public  struct VisualEffect: Hashable {
-        var appearance: NSAppearance.Name? = nil
-        var material: NSVisualEffectView.Material
-        var blendingMode: NSVisualEffectView.BlendingMode
+        public  var appearance: NSAppearance.Name? = nil
+        public var material: NSVisualEffectView.Material
+        public var blendingMode: NSVisualEffectView.BlendingMode
         
-        static func appearance(_ appearance: NSAppearance.Name) -> VisualEffect {
+        public  static func appearance(_ appearance: NSAppearance.Name) -> VisualEffect {
             return VisualEffect(appearance: appearance, material: .popover, blendingMode: .withinWindow)
         }
         
-        static func defaultVisualEffect() -> Self { return .withinWindow() }
-        static func withinWindow() -> Self { return Self(appearance: nil, material: .popover, blendingMode: .withinWindow) }
-        static func behindWindow() -> Self { return Self(appearance: nil, material: .popover, blendingMode: .behindWindow) }
-        static func aqua() -> Self { return .appearance(.aqua) }
-        static func darkAqua() -> Self { return .appearance(.darkAqua) }
-        static func vibrantLight() -> Self { return .appearance(.vibrantLight) }
-        static func vibrantDark() -> Self { return .appearance(.vibrantDark) }
+        public  static func defaultVisualEffect() -> Self { return .withinWindow() }
+        public static func withinWindow() -> Self { return Self(appearance: nil, material: .popover, blendingMode: .withinWindow) }
+        public static func behindWindow() -> Self { return Self(appearance: nil, material: .popover, blendingMode: .behindWindow) }
+        public static func aqua() -> Self { return .appearance(.aqua) }
+        public static func darkAqua() -> Self { return .appearance(.darkAqua) }
+        public    static func vibrantLight() -> Self { return .appearance(.vibrantLight) }
+        public    static func vibrantDark() -> Self { return .appearance(.vibrantDark) }
     }
 }
 

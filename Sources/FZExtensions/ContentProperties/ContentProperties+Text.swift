@@ -11,7 +11,7 @@ import Foundation
 import AppKit
 
 public extension ContentProperties {
-    struct Text {
+      struct Text {
         public  enum TextTransform {
         case none
         case capitalized
@@ -19,23 +19,23 @@ public extension ContentProperties {
         case uppercase
     }
     
-    var font: NSFont = .systemFont(ofSize: NSFont.systemFontSize)
-    var color: NSColor = .black
-    var colorTransform: NSUIConfigurationColorTransformer? = nil
-    func resolvedColor() -> NSColor {
+        public  var font: NSFont = .systemFont(ofSize: NSFont.systemFontSize)
+        public  var color: NSColor = .black
+        public var colorTransform: NSUIConfigurationColorTransformer? = nil
+        public func resolvedColor() -> NSColor {
         return colorTransform?(color) ?? color
     }
-    var alignment: NSTextAlignment = .left
-    var lineBreakMode: NSLineBreakMode = .byTruncatingTail
+        public var alignment: NSTextAlignment = .left
+        public var lineBreakMode: NSLineBreakMode = .byTruncatingTail
     var numberOfLines: Int = 1
-    var adjustsFontSizeToFitWidth: Bool = false
-    var minimumScaleFactor: CGFloat = 1.0
-    var allowsDefaultTighteningForTruncation: Bool = false
-    var adjustsFontForContentSizeCategory: Bool = false
-    var transform: TextTransform = .none
-    var showsExpansionTextWhenTruncated: Bool = false
+        public var adjustsFontSizeToFitWidth: Bool = false
+        public   var minimumScaleFactor: CGFloat = 1.0
+        public    var allowsDefaultTighteningForTruncation: Bool = false
+        public   var adjustsFontForContentSizeCategory: Bool = false
+        public   var transform: TextTransform = .none
+        public   var showsExpansionTextWhenTruncated: Bool = false
     
-        static func system(size: CGFloat, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
+        public     static func system(size: CGFloat, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
             let font: NSFont
             if let weight = weight {
                 font = NSFont.systemFont(ofSize: size, weight: weight)
@@ -48,7 +48,7 @@ public extension ContentProperties {
             return properties
         }
         
-    static func system(controlSize: NSControl.ControlSize, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
+        public static func system(controlSize: NSControl.ControlSize, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
         let size = NSFont.systemFontSize(for: controlSize)
         return self.system(size: size, weight: weight, color: color)
     }

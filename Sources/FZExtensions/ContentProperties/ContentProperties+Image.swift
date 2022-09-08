@@ -11,24 +11,23 @@ import CoreGraphics
 
 extension ContentProperties {
     public   struct Image {
-    var tintColor: NSUIColor? = nil
-    var tintColorTransformer: NSUIConfigurationColorTransformer? = nil
-    func resolvedTintColor(for color: NSUIColor) -> NSUIColor {
+        public  var tintColor: NSUIColor? = nil
+        public   var tintColorTransformer: NSUIConfigurationColorTransformer? = nil
+        public  func resolvedTintColor(for color: NSUIColor) -> NSUIColor {
         return tintColorTransformer?(color) ?? color
     }
-    var cornerRadius: CGFloat = 0.0
-    var maximumSize: CGSize = .zero
-    var reservedLayoutSize: CGSize = .zero
-    //    static let standardDimension: CGFloat
-    var accessibilityIgnoresInvertColors: Bool = false
-    var scaling: CALayerContentsGravity = .resizeAspectFill
+        public   var cornerRadius: CGFloat = 0.0
+        public  var maximumSize: CGSize = .zero
+        public var reservedLayoutSize: CGSize = .zero
+        public   var accessibilityIgnoresInvertColors: Bool = false
+        public    var scaling: CALayerContentsGravity = .resizeAspectFill
     
-        static func scaled(_ scaling: CALayerContentsGravity, maxSize: CGSize = .zero) -> Self { return Self(tintColor: nil, tintColorTransformer: nil, cornerRadius: 0.0, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
-    static func scaledTinted(_ scaling: CALayerContentsGravity, tintColor: NSUIColor) -> Self { return Self(tintColor: tintColor, tintColorTransformer: nil, cornerRadius: 0.0, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
-    static func rounded(_ cornerRadius: CGFloat, scaling: CALayerContentsGravity = .resizeAspectFill) -> Self { return Self(tintColor: nil, tintColorTransformer: nil, cornerRadius: cornerRadius, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
+      public  static func scaled(_ scaling: CALayerContentsGravity, maxSize: CGSize = .zero) -> Self { return Self(tintColor: nil, tintColorTransformer: nil, cornerRadius: 0.0, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
+        public  static func scaledTinted(_ scaling: CALayerContentsGravity, tintColor: NSUIColor) -> Self { return Self(tintColor: tintColor, tintColorTransformer: nil, cornerRadius: 0.0, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
+        public static func rounded(_ cornerRadius: CGFloat, scaling: CALayerContentsGravity = .resizeAspectFill) -> Self { return Self(tintColor: nil, tintColorTransformer: nil, cornerRadius: cornerRadius, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
 
 
-    static func `default`() -> Self { return .scaled(.resizeAspectFill)}
+        public static func `default`() -> Self { return .scaled(.resizeAspectFill)}
     
 }
 }

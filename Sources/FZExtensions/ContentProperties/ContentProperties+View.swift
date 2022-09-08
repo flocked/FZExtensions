@@ -12,21 +12,21 @@ import AppKit
 
 extension ContentProperties {
     public   struct View {
-        var cornerRadius: CGFloat = 0.0
-        var roundedCorners: CACornerMask = .all
-        var opacity: CGFloat = 1.0
-        var border: Border = Border()
-        var innerShadow: Shadow? = nil
-        var outerShadow: Shadow? = nil
-        var visualEffect: VisualEffect? = nil
-        var customView: NSView? = nil
-        var image: NSImage? = nil
-        var imageProperties: Image = .scaled(.resizeAspect)
+        public  var cornerRadius: CGFloat = 0.0
+        public  var roundedCorners: CACornerMask = .all
+        public   var opacity: CGFloat = 1.0
+        public   var border: Border = Border()
+        public   var innerShadow: Shadow? = nil
+        public    var outerShadow: Shadow? = nil
+        public     var visualEffect: VisualEffect? = nil
+        public     var customView: NSView? = nil
+        public    var image: NSImage? = nil
+        public    var imageProperties: Image = .scaled(.resizeAspect)
         
-        var backgroundColor: NSUIColor? = nil
-        var backgroundColorTransformer: NSUIConfigurationColorTransformer? = nil
+        public     var backgroundColor: NSUIColor? = nil
+        public     var backgroundColorTransformer: NSUIConfigurationColorTransformer? = nil
                 
-        func resolvedBackgroundColor(for color: NSUIColor) -> NSUIColor {
+        public     func resolvedBackgroundColor(for color: NSUIColor) -> NSUIColor {
             return backgroundColorTransformer?(color) ?? color
         }
         

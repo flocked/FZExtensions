@@ -12,18 +12,18 @@ import CoreGraphics
 
 extension ContentProperties {
      public struct Shadow: Hashable {
-        var color: NSUIColor? = .shadowColor
-        var opacity: CGFloat = 0.3
-        var radius: CGFloat = 2.0
-        var offset: CGSize = CGSize(width: 1.0, height: -1.5)
+         public   var color: NSUIColor? = .shadowColor
+         public   var opacity: CGFloat = 0.3
+         public   var radius: CGFloat = 2.0
+         public   var offset: CGSize = CGSize(width: 1.0, height: -1.5)
         
         internal var isInvisible: Bool {
             return (self.color == nil || self.opacity == 0.0)
         }
         
-        static func defaultShadow() -> Self { return Self() }
-        static func defaultShadowAccent() -> Self { return Self(color: .controlAccentColor) }
-        static func color(_ color: NSUIColor) -> Self {
+         public static func defaultShadow() -> Self { return Self() }
+         public  static func defaultShadowAccent() -> Self { return Self(color: .controlAccentColor) }
+         public  static func color(_ color: NSUIColor) -> Self {
             var value = Self()
             value.color = color
             return value }

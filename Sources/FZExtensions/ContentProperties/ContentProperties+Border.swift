@@ -11,15 +11,15 @@ import CoreGraphics
 
 extension ContentProperties {
     public   struct Border {
-        var color: NSUIColor? = nil
-        var width: CGFloat = 0.0
-        var pattern: [PatternValue] = [.line]
-        var colorTransformer: NSUIConfigurationColorTransformer? = nil
-        func resolvedColor(for color: NSUIColor) -> NSUIColor {
+        public  var color: NSUIColor? = nil
+        public   var width: CGFloat = 0.0
+        public   var pattern: [PatternValue] = [.line]
+        public    var colorTransformer: NSUIConfigurationColorTransformer? = nil
+        public   func resolvedColor(for color: NSUIColor) -> NSUIColor {
             return colorTransformer?(color) ?? color
         }
         
-        enum PatternValue: Int {
+        public    enum PatternValue: Int {
             case line
             case noLine
         }
