@@ -37,8 +37,7 @@ public extension ContentProperties {
         public var transform: TextTransform = .none
         public var showsExpansionTextWhenTruncated: Bool = false
         
-        public init(font: NSUIFont = NSUIFont.
-                    systemFont(ofSize: NSUIFont.systemFontSize),
+        public init(font: NSUIFont = NSUIFont.systemFont(ofSize: NSUIFont.systemFontSize),
                     color: NSUIColor = .black,
                     colorTransform: NSUIConfigurationColorTransformer? = nil,
                     alignment: NSTextAlignment = .left,
