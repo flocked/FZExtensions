@@ -22,5 +22,17 @@ public extension NSCollectionLayoutBoundarySupplementaryItem {
         item.contentInsets = properties.insets
         return item
     }
+    
+    static func sectionBackground() -> NSCollectionLayoutBoundarySupplementaryItem {
+        return NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)),
+                                                        elementKind: NSCollectionView.ElementKind.sectionBackground,
+                                                        containerAnchor: .init(edges: .all))
+   }
+    
+    static func itemBackground() -> NSCollectionLayoutBoundarySupplementaryItem {
+        return NSCollectionLayoutBoundarySupplementaryItem(layoutSize: NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .fractionalHeight(1.0)),
+                                                        elementKind: NSCollectionView.ElementKind.itemBackground,
+                                                        containerAnchor: .init(edges: .all))
+   }
 }
 #endif
