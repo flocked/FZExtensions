@@ -8,7 +8,7 @@
 #if os(macOS)
 import AppKit
 
-public class NSSeperatorView: NSView, NSCollectionViewElement {
+public class SeperatorView: NSView, NSCollectionViewElement {
     public var color: NSColor = .black
     public var leadingInset: CGFloat = 0.0
     public var trailingInset: CGFloat = 0.0
