@@ -10,12 +10,12 @@ import Foundation
 import AppKit
 
 public struct NSConfigurationColorTransformer {
-    init(_ transform: @escaping (NSColor) -> NSColor) {
+    public  init(_ transform: @escaping (NSColor) -> NSColor) {
         self.transform = transform
     }
     
-    let transform: (NSColor) -> NSColor
-    func callAsFunction(_ input: NSColor) -> NSColor {
+    public let transform: (NSColor) -> NSColor
+  public  func callAsFunction(_ input: NSColor) -> NSColor {
         return transform(input)
     }
     static func alpha(_ value: CGFloat) -> Self {
@@ -26,7 +26,7 @@ public struct NSConfigurationColorTransformer {
         return Self(transform)
     }
     
-    static let grayscale: Self = Self({ color in
+    public static let grayscale: Self = Self({ color in
             var color = color
         var white: CGFloat = 0
          var alpha: CGFloat = 0
