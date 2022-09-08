@@ -5,10 +5,12 @@
 //  Created by Florian Zand on 03.09.22.
 //
 
-#if os(macOS)
 
-import Foundation
+#if os(macOS)
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 public extension ContentProperties {
     struct Text {
@@ -19,7 +21,7 @@ public extension ContentProperties {
             case uppercase
         }
         
-        public var font: NSFont = .systemFont(ofSize: NSFont.systemFontSize)
+        public var font: NSUIFont = NSUIFont.systemFont(ofSize: NSUIFont.systemFontSize)
         public var color: NSUIColor = .black
         public var colorTransform: NSUIConfigurationColorTransformer? = nil
         public func resolvedColor() -> NSUIColor {
@@ -35,8 +37,9 @@ public extension ContentProperties {
         public var transform: TextTransform = .none
         public var showsExpansionTextWhenTruncated: Bool = false
         
-        public init(font: NSFont = .systemFont(ofSize: NSFont.systemFontSize),
-                    color: NSColor = .black,
+        public init(font: NSUIFont = NSUIFont.
+                    systemFont(ofSize: NSUIFont.systemFontSize),
+                    color: NSUIColor = .black,
                     colorTransform: NSUIConfigurationColorTransformer? = nil,
                     alignment: NSTextAlignment = .left,
                     lineBreakMode: NSLineBreakMode = .byTruncatingTail,
@@ -60,12 +63,12 @@ public extension ContentProperties {
             self.showsExpansionTextWhenTruncated = showsExpansionTextWhenTruncated
         }
         
-        public static func system(size: CGFloat, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
-            let font: NSFont
+        public static func system(size: CGFloat, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor) -> Self {
+            let font: NSUIFont
             if let weight = weight {
-                font = NSFont.systemFont(ofSize: size, weight: weight)
+                font = NSUIFont.systemFont(ofSize: size, weight: weight)
             } else {
-                font = NSFont.systemFont(ofSize: size)
+                font = NSUIFont.systemFont(ofSize: size)
             }
             var properties = Self()
             properties.font = font
@@ -73,10 +76,13 @@ public extension ContentProperties {
             return properties
         }
         
-        public static func system(controlSize: NSControl.ControlSize, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
-            let size = NSFont.systemFontSize(for: controlSize)
+#if os(macOS)
+        public static func system(controlSize: NSControl.ControlSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor) -> Self {
+            let size = NSUIFont.systemFontSize(for: controlSize)
             return self.system(size: size, weight: weight, color: color)
         }
+#endif
+
     }
 }
 
@@ -100,7 +106,7 @@ extension ContentProperties.Text: Hashable {
     }
 }
 
-
+#if os(macOS)
 public extension NSTextField {
     func configurate(using textProperties: ContentProperties.Text) {
         self.font = textProperties.font
@@ -108,8 +114,8 @@ public extension NSTextField {
         self.lineBreakMode = textProperties.lineBreakMode
         self.alignment = textProperties.alignment
         self.maximumNumberOfLines = textProperties.numberOfLines
-        self.attributedStringValue = self.attributedStringValue.transform(using: textProperties.transform)
         self.stringValue = self.stringValue.transform(using: textProperties.transform)
+        self.attributedStringValue = self.attributedStringValue.transform(using: textProperties.transform)
     }
 }
 
@@ -123,6 +129,43 @@ public extension NSTextView {
         self.string = self.string.transform(using: textProperties.transform)
     }
 }
+#elseif canImport(UIKit)
+public extension UILabel {
+    func configurate(using textProperties: ContentProperties.Text) {
+        self.font = textProperties.font
+        self.textColor = textProperties.resolvedColor()
+        self.numberOfLines = textProperties.numberOfLines
+        self.textAlignment = textProperties.alignment
+        self.lineBreakMode = textProperties.lineBreakMode
+        self.attributedText = self.attributedText.transform(using: textProperties.transform)
+        self.text = self.text.transform(using: textProperties.transform)
+    }
+}
+
+public extension UITextField {
+    func configurate(using textProperties: ContentProperties.Text) {
+        self.font = textProperties.font
+        self.textColor = textProperties.resolvedColor()
+        self.textAlignment = textProperties.alignment
+        self.lineBreakMode = textProperties.lineBreakMode
+        self.attributedText = self.attributedText.transform(using: textProperties.transform)
+        self.text = self.text.transform(using: textProperties.transform)
+    }
+}
+
+public extension UITextView {
+    func configurate(using textProperties: ContentProperties.Text) {
+        self.font = textProperties.font
+        self.textColor = textProperties.resolvedColor()
+        self.textAlignment = textProperties.alignment
+        self.attributedText = self.attributedText.transform(using: textProperties.transform)
+        self.text = self.text.transform(using: textProperties.transform)
+        self.textView.textContainer.maximumNumberOfLines = textProperties.numberOfLines
+        self.textView.textContainer.lineBreakMode = textProperties.lineBreakMode
+    }
+}
+// maximumNumberOfLines
+#endif
 
 public extension String {
     func transform(using transform: ContentProperties.Text.TextTransform) -> String {
@@ -153,5 +196,3 @@ extension NSAttributedString {
         }
     }
 }
-
-#endif

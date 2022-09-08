@@ -47,3 +47,11 @@ public extension NSVisualEffectView {
 #endif
 
 
+#if canImport(UIKit)
+import UIKit
+public extension UIVisualEffectView {
+    func configurate(using properties: UIVisualEffect) {
+        self.effect = properties
+    }
+}
+#endif
