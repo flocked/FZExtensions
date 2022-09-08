@@ -9,7 +9,7 @@ import Foundation
 import CoreGraphics
 
 public extension ContentProperties {
-    enum CornerStlye {
+    enum CornerStyle {
         case radius(CGFloat)
         case capsule
     }
@@ -18,7 +18,7 @@ public extension ContentProperties {
 #if os(macOS)
 import AppKit
 public extension NSView {
-    func configurate(using cornerStlyeProperties: ContentProperties.CornerStlye) {
+    func configurate(using cornerStlyeProperties: ContentProperties.CornerStyle) {
         self.wantsLayer = true
         switch cornerStlyeProperties {
         case .radius(let radius):
@@ -32,7 +32,7 @@ public extension NSView {
 #elseif canImport(UIKit)
 import UIKit
 public extension UIView {
-    func configurate(using cornerStlyeProperties: ContentProperties.CornerStlye) {
+    func configurate(using cornerStlyeProperties: ContentProperties.CornerStyle) {
         switch cornerStlyeProperties {
         case .radius(let radius):
             self.layer.cornerRadius = radius
