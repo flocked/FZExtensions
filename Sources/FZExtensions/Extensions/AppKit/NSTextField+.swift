@@ -10,7 +10,7 @@
 import AppKit
 
 public extension NSTextField {
-    var layout: Layout? {
+    var textLayout: TextLayout? {
         get {
             switch (self.lineBreakMode, cell?.wraps, cell?.isScrollable) {
             case (.byWordWrapping, true, false):
@@ -33,7 +33,7 @@ public extension NSTextField {
         }
     }
     
-    enum Layout {
+    enum TextLayout {
         case wraps
         case truncates
         case scrolls
