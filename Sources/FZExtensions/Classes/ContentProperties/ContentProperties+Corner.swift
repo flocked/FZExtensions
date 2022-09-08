@@ -12,6 +12,10 @@ public extension ContentProperties {
     enum CornerStyle: Hashable {
         case radius(CGFloat)
         case capsule
+        
+        static var none: Self {
+            return .radius(0.0)
+        }
     }
 }
 

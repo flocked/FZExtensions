@@ -32,8 +32,9 @@ extension ContentProperties {
             self.offset = offset
         }
         
-        public static func defaultShadow() -> Self { return Self() }
-        public static func defaultShadowAccent() -> Self { return Self(color: .controlAccentColor) }
+        public static func none() -> Self { return Self(color: nil, opacity: 0.0)}
+        public static func `default`() -> Self { return Self() }
+        public static func defaultAccent() -> Self { return Self(color: .controlAccentColor) }
         public static func color(_ color: NSUIColor) -> Self {
             var value = Self()
             value.color = color

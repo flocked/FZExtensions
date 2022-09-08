@@ -36,6 +36,10 @@ extension ContentProperties {
             self.pattern = pattern
             self.colorTransformer = colorTransformer
         }
+        
+        public static func none() -> Self {
+            return Self()
+        }
     }
 }
 

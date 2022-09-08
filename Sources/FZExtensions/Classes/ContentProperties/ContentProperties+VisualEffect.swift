@@ -25,7 +25,7 @@ extension ContentProperties {
             return VisualEffect(appearance: appearance, material: .popover, blendingMode: .withinWindow)
         }
         
-        public static func defaultVisualEffect() -> Self { return .withinWindow() }
+        public static func `default`() -> Self { return .withinWindow() }
         public static func withinWindow() -> Self { return Self(appearance: nil, material: .popover, blendingMode: .withinWindow) }
         public static func behindWindow() -> Self { return Self(appearance: nil, material: .popover, blendingMode: .behindWindow) }
         public static func aqua() -> Self { return .appearance(.aqua) }
