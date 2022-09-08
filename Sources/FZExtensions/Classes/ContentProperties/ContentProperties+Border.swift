@@ -59,15 +59,20 @@ extension ContentProperties.Border: Hashable {
 public extension NSView {
     func configurate(using borderProperties: ContentProperties.Border) {
         self.wantsLayer = true
-        self.layer?.borderColor = borderProperties.color?.cgColor
-        self.layer?.borderWidth = borderProperties.width
+        self.layer?.configurate(using: borderProperties)
     }
 }
 #elseif canImport(UIKit)
 public extension UIView {
     func configurate(using borderProperties: ContentProperties.Border) {
-        self.layer?.borderColor = borderProperties.color?.cgColor
-        self.layer?.borderWidth = borderProperties.width
+        self.layer.configurate(using: borderProperties)
     }
 }
 #endif
+
+public extension CALayer {
+    func configurate(using borderProperties: ContentProperties.Border) {
+        self.borderColor = borderProperties.color?.cgColor
+        self.borderWidth = borderProperties.width
+    }
+}

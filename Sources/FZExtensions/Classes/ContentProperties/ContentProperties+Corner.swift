@@ -19,30 +19,31 @@ public extension ContentProperties {
     }
 }
 
+public extension CALayer {
+    func configurate(using cornerStyleProperties: ContentProperties.CornerStyle) {
+        switch cornerStyleProperties {
+        case .radius(let radius):
+            self.cornerRadius = radius
+        case .capsule:
+            self.cornerRadius = self.bounds.height / 2.0
+        }
+    }
+}
+
 #if os(macOS)
 import AppKit
 public extension NSView {
-    func configurate(using cornerStlyeProperties: ContentProperties.CornerStyle) {
+    func configurate(using cornerStyleProperties: ContentProperties.CornerStyle) {
         self.wantsLayer = true
-        switch cornerStlyeProperties {
-        case .radius(let radius):
-            self.layer?.cornerRadius = radius
-        case .capsule:
-            self.layer?.cornerRadius = self.bounds.height / 2.0
-        }
+        self.layer?.configurate(using: cornerStyleProperties)
     }
 }
 
 #elseif canImport(UIKit)
 import UIKit
 public extension UIView {
-    func configurate(using cornerStlyeProperties: ContentProperties.CornerStyle) {
-        switch cornerStlyeProperties {
-        case .radius(let radius):
-            self.layer.cornerRadius = radius
-        case .capsule:
-            self.layer.cornerRadius = self.bounds.height / 2.0
-        }
+    func configurate(using cornerStyleProperties: ContentProperties.CornerStyle) {
+        self.layer.configurate(using: cornerStyleProperties)
     }
 }
 
