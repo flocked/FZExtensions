@@ -211,7 +211,6 @@ import AppKit
 #elseif canImport(UIKit)
 import UIKit
 #endif
-
 extension NSUIView {
     public func removeAllConstraints() {
         var _superview = self.superview
