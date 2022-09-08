@@ -17,6 +17,7 @@ public typealias NSUICollectionViewCompositionalLayout = NSCollectionViewComposi
 public typealias NSUICollectionViewLayout = NSCollectionViewLayout
 public typealias NSUICollectionViewDelegate = NSCollectionViewDelegate
 public typealias NSUICollectionViewCompositionalLayoutConfiguration = NSCollectionViewCompositionalLayoutConfiguration
+public typealias NSUIConfigurationColorTransformer = NSConfigurationColorTransformer
 #elseif canImport(UIKit)
 import UIKit
 public typealias NSUIImage = UIImage
@@ -29,4 +30,5 @@ public typealias NSUICollectionViewCompositionalLayout = UICollectionViewComposi
 public typealias NSUICollectionViewLayout = UICollectionViewLayout
 public typealias NSUICollectionViewDelegate = UICollectionViewDelegate
 public typealias NSUICollectionViewCompositionalLayoutConfiguration = UICollectionViewCompositionalLayoutConfiguration
+public typealias NSUIConfigurationColorTransformer = UIConfigurationColorTransformer
 #endif

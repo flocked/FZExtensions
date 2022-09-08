@@ -87,3 +87,17 @@ public extension NSDirectionalEdgeInsets {
         return .init(top: self.top, left: self.leading, bottom: self.bottom, right: self.trailing)
     }
 }
+
+extension NSDirectionalEdgeInsets: Hashable {
+    public static func == (lhs: NSDirectionalEdgeInsets, rhs: NSDirectionalEdgeInsets) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.top)
+        hasher.combine(self.bottom)
+        hasher.combine(self.trailing)
+        hasher.combine(self.leading)
+
+    }
+}
