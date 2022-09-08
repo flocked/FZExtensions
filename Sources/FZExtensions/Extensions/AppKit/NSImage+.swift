@@ -37,7 +37,11 @@ public extension NSImage {
     }
     
     var cgImage: CGImage? {
-        return self.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        guard let imageData = self.tiffRepresentation else { return nil }
+            guard let sourceData = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
+            return CGImageSourceCreateImageAtIndex(sourceData, 0, nil)
+        
+   //     return self.cgImage(forProposedRect: nil, context: nil, hints: nil)
     }
     
     var cgImageSource: CGImageSource? {

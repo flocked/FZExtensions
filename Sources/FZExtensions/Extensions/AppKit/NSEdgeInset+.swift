@@ -88,7 +88,8 @@ public extension NSDirectionalEdgeInsets {
     }
 }
 
-extension NSDirectionalEdgeInsets: Hashable {
+
+ extension NSDirectionalEdgeInsets: Hashable {
     public static func == (lhs: NSDirectionalEdgeInsets, rhs: NSDirectionalEdgeInsets) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
