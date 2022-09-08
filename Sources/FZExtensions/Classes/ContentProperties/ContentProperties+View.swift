@@ -5,9 +5,15 @@
 //  Created by Florian Zand on 03.09.22.
 //
 
-#if os(macOS)
 
+#if os(macOS)
 import AppKit
+public typealias VisualEffect = ContentProperties.VisualEffect
+#elseif canImport(UIKit)
+import UIKit
+public typealias VisualEffect = UIVisualEffect
+#endif
+
 extension ContentProperties {
     public struct View {
         public var cornerRadius: CGFloat = 0.0
@@ -17,7 +23,8 @@ extension ContentProperties {
         public var innerShadow: Shadow? = nil
         public var outerShadow: Shadow? = nil
         public var visualEffect: VisualEffect? = nil
-        public var customView: NSView? = nil
+
+        public var customView: NSUIView? = nil
         public var image: NSImage? = nil
         public var imageProperties: Image = .scaled(.resizeAspect)
         
@@ -53,7 +60,6 @@ extension ContentProperties {
             self.backgroundColor = backgroundColor
             self.backgroundColorTransformer = backgroundColorTransformer
         }
-        
     }
 }
 
@@ -61,7 +67,6 @@ extension ContentProperties.View: Hashable {
     public static func == (lhs: ContentProperties.View, rhs: ContentProperties.View) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
-    
     public func hash(into hasher: inout Hasher) {
         hasher.combine(self.cornerRadius)
         hasher.combine(self.opacity)
@@ -139,4 +144,3 @@ extension ContentProperties.View: Hashable {
  }
  }
  */
-#endif

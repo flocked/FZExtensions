@@ -6,8 +6,10 @@
 //
 
 #if os(macOS)
-import Foundation
-import CoreGraphics
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 extension ContentProperties {
     public struct Shadow: Hashable {
@@ -38,5 +40,3 @@ extension ContentProperties {
             return value }
     }
 }
-
-#endif

@@ -6,7 +6,6 @@
 //
 
 #if canImport(UIKit)
-
 import UIKit
 
 extension UIView.ContentType : CaseIterable {

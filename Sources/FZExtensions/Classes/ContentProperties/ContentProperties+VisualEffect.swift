@@ -6,10 +6,7 @@
 //
 
 #if os(macOS)
-
-import Foundation
 import AppKit
-
 extension ContentProperties {
     public struct VisualEffect: Hashable {
         public var appearance: NSAppearance.Name? = nil
@@ -47,6 +44,6 @@ public extension NSVisualEffectView {
         }
     }
 }
-
 #endif
+
 
