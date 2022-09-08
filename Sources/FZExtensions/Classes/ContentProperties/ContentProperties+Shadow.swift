@@ -41,3 +41,21 @@ extension ContentProperties {
             return value }
     }
 }
+
+public extension CALayer {
+    func configurate(using shadowProperties: ContentProperties.Shadow) {
+        self.shadowColor = shadowProperties.color?.cgColor
+        self.shadowOffset = shadowProperties.offset
+        self.shadowRadius = shadowProperties.radius
+        self.shadowOpacity = Float(shadowProperties.opacity)
+        if (shadowProperties.color != nil && shadowProperties.opacity != 0.0) {
+            if (self.cornerRadius == 0.0) {
+                self.shadowPath = NSUIBezierPath(rect: self.bounds).cgPath
+            } else if (self.maskedCorners == .all || self.maskedCorners == .none) {
+                self.shadowPath = NSUIBezierPath(rect: self.bounds, cornerRadius: self.cornerRadius).cgPath
+            } else {
+                self.shadowPath = NSUIBezierPath(rect: self.bounds, cornerRadius: self.cornerRadius, roundedCorners: self.maskedCorners).cgPath
+            }
+        }
+    }
+}

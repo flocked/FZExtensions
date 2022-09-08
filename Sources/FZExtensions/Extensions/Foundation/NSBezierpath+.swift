@@ -6,8 +6,6 @@
 //
 
 #if os(macOS)
-
-import Foundation
 import AppKit
 
 public extension NSBezierPath {
@@ -149,4 +147,15 @@ public extension NSBezierPath {
     }
 }
 
+#endif
+
+#if canImport(UIKit)
+import UIKit
+public extension UIBezierPath {
+    convenience init(rect: CGRect, cornerRadius: CGFloat, roundedCorners: CACornerMask = .all) {
+        self.init(roundedRect: self.rect,
+                  byRoundingCorners: roundedCorners,
+                  cornerRadii: CGSize(width: cornerRadius/2.0, height: cornerRadius/2.0))
+    }
+}
 #endif

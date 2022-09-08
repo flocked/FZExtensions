@@ -9,6 +9,7 @@
 import AppKit
 public typealias NSUIImage = NSImage
 public typealias NSUIView = NSView
+public typealias NSUIBezierPath = NSBezierPath
 public typealias NSUIColor = NSColor
 public typealias NSUIFont = NSFont
 public typealias NSUIEdgeInsets = NSEdgeInsets
@@ -26,6 +27,7 @@ public typealias NSUIColor = UIColor
 public typealias NSUIFont = UIFont
 public typealias NSUICollectionView = UICollectionView
 public typealias NSUIView = UIView
+public typealias NSUIBezierPath = UIBezierPath
 public typealias NSUIEdgeInsets = UIEdgeInsets
 public typealias NSUICollectionViewLayoutAttributes = UICollectionViewLayoutAttributes
 public typealias NSUICollectionViewCompositionalLayout = UICollectionViewCompositionalLayout
