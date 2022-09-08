@@ -16,6 +16,16 @@ public extension ContentProperties {
         static var none: Self {
             return .radius(0.0)
         }
+        
+        static var small: Self {
+            return .radius(4.0)
+        }
+        static var medium: Self {
+            return .radius(8.0)
+        }
+        static var large: Self {
+            return .radius(12.0)
+        }
     }
 }
 
