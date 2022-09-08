@@ -62,7 +62,7 @@ public extension ContentProperties {
             self.showsExpansionTextWhenTruncated = showsExpansionTextWhenTruncated
         }
         
-        public static func system(size: CGFloat, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor) -> Self {
+        public static func system(size: CGFloat, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
             let font: NSUIFont
             if let weight = weight {
                 font = NSUIFont.systemFont(ofSize: size, weight: weight)
@@ -72,13 +72,19 @@ public extension ContentProperties {
             var properties = Self()
             properties.font = font
             properties.color = color
+            properties.numberOfLines = numberOfLines
+            if (numberOfLines == 1) {
+                properties.lineBreakMode = .byTruncatingTail
+            } else {
+                properties.lineBreakMode = .byWordWrapping
+            }
             return properties
         }
         
 #if os(macOS)
-        public static func system(controlSize: NSControl.ControlSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor) -> Self {
+        public static func system(controlSize: NSControl.ControlSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
             let size = NSUIFont.systemFontSize(for: controlSize)
-            return self.system(size: size, weight: weight, color: color)
+            return self.system(size: size, weight: weight, color: color, numberOfLines: numberOfLines)
         }
 #endif
 
