@@ -12,11 +12,21 @@ import CoreGraphics
 extension ContentProperties {
     public   struct Border {
         public  var color: NSUIColor? = nil
+        public    var colorTransformer: NSUIConfigurationColorTransformer? = nil
         public   var width: CGFloat = 0.0
         public   var pattern: [PatternValue] = [.line]
-        public    var colorTransformer: NSUIConfigurationColorTransformer? = nil
         public   func resolvedColor(for color: NSUIColor) -> NSUIColor {
             return colorTransformer?(color) ?? color
+        }
+        
+        public init(color: NSUIColor? = nil,
+                    colorTransformer: NSUIConfigurationColorTransformer? = nil,
+                    width: CGFloat = 0.0,
+                    pattern: [PatternValue] = [.line]) {
+            self.color = color
+            self.width = width
+            self.pattern = pattern
+            self.colorTransformer = colorTransformer
         }
         
         public    enum PatternValue: Int {

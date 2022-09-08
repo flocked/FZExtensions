@@ -27,7 +27,18 @@ extension ContentProperties {
             var value = Self()
             value.color = color
             return value }
+         
+         public init(color: NSUIColor? = .shadowColor,
+                     opacity: CGFloat = 0.3,
+                     radius: CGFloat = 2.0,
+                     offset: CGSize = CGSize(width: 1.0, height: -1.5)) {
+             self.color = color
+             self.opacity = opacity
+             self.radius = radius
+             self.offset = offset
+         }
     }
+    
 }
 
 #endif

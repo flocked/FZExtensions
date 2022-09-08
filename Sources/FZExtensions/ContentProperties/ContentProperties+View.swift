@@ -30,6 +30,32 @@ extension ContentProperties {
             return backgroundColorTransformer?(color) ?? color
         }
         
+        public init(cornerRadius: CGFloat = 0.0,
+                    roundedCorners: CACornerMask = .all,
+                    opacity: CGFloat = 1.0,
+                    border: Border = Border(),
+                    innerShadow: Shadow? = nil,
+                    outerShadow: Shadow? = nil,
+                    visualEffect: VisualEffect? = nil,
+                    customView: NSView? = nil,
+                    image: NSImage? = nil,
+                    imageProperties: Image = .scaled(.resizeAspect),
+                    backgroundColor: NSUIColor? = nil,
+                    backgroundColorTransformer: NSUIConfigurationColorTransformer? = nil) {
+            self.cornerRadius = cornerRadius
+            self.roundedCorners = roundedCorners
+            self.opacity = opacity
+            self.border = border
+            self.innerShadow = innerShadow
+            self.outerShadow = outerShadow
+            self.visualEffect = visualEffect
+            self.customView = customView
+            self.image = image
+            self.imageProperties = imageProperties
+            self.backgroundColor = backgroundColor
+            self.backgroundColorTransformer = backgroundColorTransformer
+        }
+        
     }
 }
 

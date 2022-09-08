@@ -27,13 +27,38 @@ public extension ContentProperties {
     }
         public var alignment: NSTextAlignment = .left
         public var lineBreakMode: NSLineBreakMode = .byTruncatingTail
-    var numberOfLines: Int = 1
+          public var numberOfLines: Int = 1
         public var adjustsFontSizeToFitWidth: Bool = false
         public   var minimumScaleFactor: CGFloat = 1.0
         public    var allowsDefaultTighteningForTruncation: Bool = false
         public   var adjustsFontForContentSizeCategory: Bool = false
         public   var transform: TextTransform = .none
         public   var showsExpansionTextWhenTruncated: Bool = false
+          
+        public init(font: NSFont = .systemFont(ofSize: NSFont.systemFontSize),
+                    color: NSColor = .black,
+                    colorTransform: NSUIConfigurationColorTransformer? = nil,
+                    alignment: NSTextAlignment = .left,
+                    lineBreakMode: NSLineBreakMode = .byTruncatingTail,
+                    numberOfLines: Int = 1,
+                    adjustsFontSizeToFitWidth: Bool = false,
+                    minimumScaleFactor: CGFloat = 1.0,
+                    allowsDefaultTighteningForTruncation: Bool = false,
+                    adjustsFontForContentSizeCategory: Bool = false,
+                    transform: TextTransform = .none,
+                    showsExpansionTextWhenTruncated: Bool = false) {
+            self.color = color
+            self.colorTransform = colorTransform
+            self.alignment = alignment
+            self.lineBreakMode = lineBreakMode
+            self.numberOfLines = numberOfLines
+            self.adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth
+            self.minimumScaleFactor = minimumScaleFactor
+            self.allowsDefaultTighteningForTruncation = allowsDefaultTighteningForTruncation
+            self.adjustsFontSizeToFitWidth = adjustsFontSizeToFitWidth
+            self.transform = transform
+            self.showsExpansionTextWhenTruncated = showsExpansionTextWhenTruncated
+        }
     
         public     static func system(size: CGFloat, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
             let font: NSFont
