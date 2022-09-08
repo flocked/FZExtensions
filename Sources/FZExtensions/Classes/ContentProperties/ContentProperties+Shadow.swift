@@ -48,6 +48,7 @@ public extension CALayer {
         self.shadowOffset = shadowProperties.offset
         self.shadowRadius = shadowProperties.radius
         self.shadowOpacity = Float(shadowProperties.opacity)
+        /*
         if (shadowProperties.color != nil && shadowProperties.opacity != 0.0) {
             if (self.cornerRadius == 0.0) {
                 self.shadowPath = NSUIBezierPath(rect: self.bounds).cgPath
@@ -57,5 +58,6 @@ public extension CALayer {
                 self.shadowPath = NSUIBezierPath(rect: self.bounds, cornerRadius: self.cornerRadius, roundedCorners: self.maskedCorners).cgPath
             }
         }
+         */
     }
 }
