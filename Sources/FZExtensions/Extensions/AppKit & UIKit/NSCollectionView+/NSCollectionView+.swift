@@ -11,7 +11,8 @@ import Foundation
 import AppKit
 
 public extension NSCollectionView {
-    static let elementKindItemSeperator: String = "ElementKindItemSeperator"
+    static let elementKindItemTopSeperator: String = "ElementKindItemTopSeperator"
+    static let elementKindItemBottomSeperator: String = "ElementKindBottomSeperator"
     
     func displayingIndexPaths() -> [IndexPath] {
         return self.displayingItems().compactMap({self.indexPath(for: $0)}).sorted()
