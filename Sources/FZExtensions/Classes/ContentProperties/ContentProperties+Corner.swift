@@ -13,17 +13,17 @@ public extension ContentProperties {
         case radius(CGFloat)
         case capsule
         
-        static var none: Self {
+       public static var none: Self {
             return .radius(0.0)
         }
         
-        static var small: Self {
+        public static var small: Self {
             return .radius(4.0)
         }
-        static var medium: Self {
+        public  static var medium: Self {
             return .radius(8.0)
         }
-        static var large: Self {
+        public static var large: Self {
             return .radius(12.0)
         }
     }
