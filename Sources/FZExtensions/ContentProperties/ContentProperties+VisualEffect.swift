@@ -11,31 +11,30 @@ import Foundation
 import AppKit
 
 extension ContentProperties {
-    
-    public  struct VisualEffect: Hashable {
-        public  var appearance: NSAppearance.Name? = nil
+    public struct VisualEffect: Hashable {
+        public var appearance: NSAppearance.Name? = nil
         public var material: NSVisualEffectView.Material
         public var blendingMode: NSVisualEffectView.BlendingMode
-        
-        public  static func appearance(_ appearance: NSAppearance.Name) -> VisualEffect {
-            return VisualEffect(appearance: appearance, material: .popover, blendingMode: .withinWindow)
-        }
         
         public init(appearance: NSAppearance.Name? = nil,
                     material: NSVisualEffectView.Material,
                     blendingMode: NSVisualEffectView.BlendingMode) {
-                            self.appearance = appearance
-                            self.material = material
-                            self.blendingMode = blendingMode
+            self.appearance = appearance
+            self.material = material
+            self.blendingMode = blendingMode
         }
         
-        public  static func defaultVisualEffect() -> Self { return .withinWindow() }
+        public static func appearance(_ appearance: NSAppearance.Name) -> VisualEffect {
+            return VisualEffect(appearance: appearance, material: .popover, blendingMode: .withinWindow)
+        }
+        
+        public static func defaultVisualEffect() -> Self { return .withinWindow() }
         public static func withinWindow() -> Self { return Self(appearance: nil, material: .popover, blendingMode: .withinWindow) }
         public static func behindWindow() -> Self { return Self(appearance: nil, material: .popover, blendingMode: .behindWindow) }
         public static func aqua() -> Self { return .appearance(.aqua) }
         public static func darkAqua() -> Self { return .appearance(.darkAqua) }
-        public    static func vibrantLight() -> Self { return .appearance(.vibrantLight) }
-        public    static func vibrantDark() -> Self { return .appearance(.vibrantDark) }
+        public static func vibrantLight() -> Self { return .appearance(.vibrantLight) }
+        public static func vibrantDark() -> Self { return .appearance(.vibrantDark) }
     }
 }
 

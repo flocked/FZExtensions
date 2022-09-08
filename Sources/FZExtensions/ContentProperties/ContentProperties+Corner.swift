@@ -9,7 +9,7 @@ import Foundation
 import CoreGraphics
 
 public extension ContentProperties {
-       enum CornerStlye {
+    enum CornerStlye {
         case radius(CGFloat)
         case capsule
     }
@@ -30,7 +30,6 @@ public extension NSView {
 }
 
 #elseif canImport(UIKit)
-
 import UIKit
 public extension UIView {
     func configurate(using cornerStlyeProperties: ContentProperties.CornerStlye) {

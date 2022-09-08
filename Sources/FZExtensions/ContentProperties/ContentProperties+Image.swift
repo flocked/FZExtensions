@@ -6,26 +6,25 @@
 //
 
 
-import Foundation
-import CoreGraphics
+#if os(macOS)
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
 extension ContentProperties {
-    public   struct Image {
-        public  var tintColor: NSUIColor? = nil
-        public   var tintColorTransformer: NSUIConfigurationColorTransformer? = nil
-        public  func resolvedTintColor(for color: NSUIColor) -> NSUIColor {
-        return tintColorTransformer?(color) ?? color
-    }
-        public   var cornerRadius: CGFloat = 0.0
-        public  var maximumSize: CGSize = .zero
+    public struct Image {
+        public var tintColor: NSUIColor? = nil
+        public var tintColorTransformer: NSUIConfigurationColorTransformer? = nil
+        public func resolvedTintColor(for color: NSUIColor) -> NSUIColor {
+            return tintColorTransformer?(color) ?? color
+        }
+        public var cornerRadius: CGFloat = 0.0
+        public var maximumSize: CGSize = .zero
         public var reservedLayoutSize: CGSize = .zero
-        public   var accessibilityIgnoresInvertColors: Bool = false
-        public    var scaling: CALayerContentsGravity = .resizeAspectFill
-    
-      public  static func scaled(_ scaling: CALayerContentsGravity, maxSize: CGSize = .zero) -> Self { return Self(tintColor: nil, tintColorTransformer: nil, cornerRadius: 0.0, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
-        public  static func scaledTinted(_ scaling: CALayerContentsGravity, tintColor: NSUIColor) -> Self { return Self(tintColor: tintColor, tintColorTransformer: nil, cornerRadius: 0.0, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
-        public static func rounded(_ cornerRadius: CGFloat, scaling: CALayerContentsGravity = .resizeAspectFill) -> Self { return Self(tintColor: nil, tintColorTransformer: nil, cornerRadius: cornerRadius, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
-
+        public var accessibilityIgnoresInvertColors: Bool = false
+        public var scaling: CALayerContentsGravity = .resizeAspectFill
+        
         public init(tintColor: NSUIColor? = nil,
                     tintColorTransformer: NSUIConfigurationColorTransformer? = nil,
                     cornerRadius: CGFloat = 0.0,
@@ -42,30 +41,35 @@ extension ContentProperties {
             self.scaling = scaling
         }
         
+        public static func scaled(_ scaling: CALayerContentsGravity, maxSize: CGSize = .zero) -> Self { return Self(tintColor: nil, tintColorTransformer: nil, cornerRadius: 0.0, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
+        
+        public static func scaledTinted(_ scaling: CALayerContentsGravity, tintColor: NSUIColor) -> Self { return Self(tintColor: tintColor, tintColorTransformer: nil, cornerRadius: 0.0, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
+        
+        public static func rounded(_ cornerRadius: CGFloat, scaling: CALayerContentsGravity = .resizeAspectFill) -> Self { return Self(tintColor: nil, tintColorTransformer: nil, cornerRadius: cornerRadius, maximumSize: .zero, reservedLayoutSize: .zero, accessibilityIgnoresInvertColors: false, scaling: scaling)}
+        
         public static func `default`() -> Self { return .scaled(.resizeAspectFill)}
-    
-}
+        
+    }
 }
 
 extension ContentProperties.Image: Hashable {
-    public   static func == (lhs: ContentProperties.Image, rhs: ContentProperties.Image) -> Bool {
+    public static func == (lhs: ContentProperties.Image, rhs: ContentProperties.Image) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
     
     public func hash(into hasher: inout Hasher) {
-       hasher.combine(self.tintColor)
-       hasher.combine(self.cornerRadius)
+        hasher.combine(self.tintColor)
+        hasher.combine(self.cornerRadius)
         hasher.combine(self.maximumSize)
         hasher.combine(self.reservedLayoutSize)
         hasher.combine(self.accessibilityIgnoresInvertColors)
         hasher.combine(self.scaling)
-   }
+    }
 }
 
 
 
 #if os(macOS)
-import AppKit
 public extension ImageView {
     func configurate(using imageProperties: ContentProperties.Image) {
         self.contentTintColor = imageProperties.tintColor
@@ -83,7 +87,6 @@ public extension NSImageView {
 }
 
 #elseif canImport(UIKit)
-import UIKit
 public extension UIImageView {
     func configurate(using imageProperties: ContentProperties.Image) {
         self.contentTintColor = imageProperties.tintColor

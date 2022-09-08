@@ -11,30 +11,30 @@ import Foundation
 import AppKit
 
 public extension ContentProperties {
-      struct Text {
-        public  enum TextTransform {
-        case none
-        case capitalized
-        case lowercase
-        case uppercase
-    }
-    
-        public  var font: NSFont = .systemFont(ofSize: NSFont.systemFontSize)
-        public  var color: NSColor = .black
+    struct Text {
+        public enum TextTransform {
+            case none
+            case capitalized
+            case lowercase
+            case uppercase
+        }
+        
+        public var font: NSFont = .systemFont(ofSize: NSFont.systemFontSize)
+        public var color: NSUIColor = .black
         public var colorTransform: NSUIConfigurationColorTransformer? = nil
-        public func resolvedColor() -> NSColor {
-        return colorTransform?(color) ?? color
-    }
+        public func resolvedColor() -> NSUIColor {
+            return colorTransform?(color) ?? color
+        }
         public var alignment: NSTextAlignment = .left
         public var lineBreakMode: NSLineBreakMode = .byTruncatingTail
-          public var numberOfLines: Int = 1
+        public var numberOfLines: Int = 1
         public var adjustsFontSizeToFitWidth: Bool = false
-        public   var minimumScaleFactor: CGFloat = 1.0
-        public    var allowsDefaultTighteningForTruncation: Bool = false
-        public   var adjustsFontForContentSizeCategory: Bool = false
-        public   var transform: TextTransform = .none
-        public   var showsExpansionTextWhenTruncated: Bool = false
-          
+        public var minimumScaleFactor: CGFloat = 1.0
+        public var allowsDefaultTighteningForTruncation: Bool = false
+        public var adjustsFontForContentSizeCategory: Bool = false
+        public var transform: TextTransform = .none
+        public var showsExpansionTextWhenTruncated: Bool = false
+        
         public init(font: NSFont = .systemFont(ofSize: NSFont.systemFontSize),
                     color: NSColor = .black,
                     colorTransform: NSUIConfigurationColorTransformer? = nil,
@@ -59,8 +59,8 @@ public extension ContentProperties {
             self.transform = transform
             self.showsExpansionTextWhenTruncated = showsExpansionTextWhenTruncated
         }
-    
-        public     static func system(size: CGFloat, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
+        
+        public static func system(size: CGFloat, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
             let font: NSFont
             if let weight = weight {
                 font = NSFont.systemFont(ofSize: size, weight: weight)
@@ -74,10 +74,10 @@ public extension ContentProperties {
         }
         
         public static func system(controlSize: NSControl.ControlSize, weight: NSFont.Weight? = nil, color: NSColor = .textColor) -> Self {
-        let size = NSFont.systemFontSize(for: controlSize)
-        return self.system(size: size, weight: weight, color: color)
+            let size = NSFont.systemFontSize(for: controlSize)
+            return self.system(size: size, weight: weight, color: color)
+        }
     }
-}
 }
 
 extension ContentProperties.Text: Hashable {
@@ -86,8 +86,8 @@ extension ContentProperties.Text: Hashable {
     }
     
     public  func hash(into hasher: inout Hasher) {
-       hasher.combine(self.font)
-       hasher.combine(self.color)
+        hasher.combine(self.font)
+        hasher.combine(self.color)
         hasher.combine(self.alignment)
         hasher.combine(self.lineBreakMode)
         hasher.combine(self.numberOfLines)
@@ -97,7 +97,7 @@ extension ContentProperties.Text: Hashable {
         hasher.combine(self.adjustsFontForContentSizeCategory)
         hasher.combine(self.transform)
         hasher.combine(self.showsExpansionTextWhenTruncated)
-   }
+    }
 }
 
 
@@ -134,7 +134,7 @@ public extension String {
         case .lowercase:
             return self.lowercased()
         case .uppercase:
-           return self.uppercased()
+            return self.uppercased()
         }
     }
 }
@@ -149,7 +149,7 @@ extension NSAttributedString {
         case .lowercase:
             return self.lowercased()
         case .uppercase:
-           return self.uppercased()
+            return self.uppercased()
         }
     }
 }

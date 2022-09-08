@@ -9,11 +9,7 @@
 import AppKit
 
 public class InnershadowView: NSView {
-    public var shadowProperties: ContentProperties.Shadow {
-        get { innershadowLayer.properties }
-        set {  innershadowLayer.properties = newValue } }
-    
-    public  var shadowOpacity: Float {
+    public var shadowOpacity: Float {
         get {  return innershadowLayer.shadowOpacity }
         set { innershadowLayer.shadowOpacity = newValue } }
     
@@ -28,6 +24,10 @@ public class InnershadowView: NSView {
     public var shadowColor: NSColor?  {
         get { innershadowLayer.color }
         set { innershadowLayer.color = newValue } }
+    
+    public var shadowProperties: ContentProperties.Shadow {
+        get { innershadowLayer.properties }
+        set {  innershadowLayer.properties = newValue } }
     
     internal var innershadowLayer: InnerShadowLayer {
         self.wantsLayer = true
@@ -49,11 +49,7 @@ public class InnershadowView: NSView {
 #elseif canImport(UIKit)
 import UIKit
 public class InnershadowView: UIView {
-    public var shadowProperties: ContentProperties.Shadow {
-        get { innershadowLayer.properties }
-        set {  innershadowLayer.properties = newValue } }
-    
-    public  var shadowOpacity: Float {
+    public var shadowOpacity: Float {
         get {  return innershadowLayer.shadowOpacity }
         set { innershadowLayer.shadowOpacity = newValue } }
     
@@ -69,14 +65,16 @@ public class InnershadowView: UIView {
         get { innershadowLayer.color }
         set { innershadowLayer.color = newValue } }
     
+    public var shadowProperties: ContentProperties.Shadow {
+        get { innershadowLayer.properties }
+        set {  innershadowLayer.properties = newValue } }
+    
     internal var innershadowLayer: InnerShadowLayer {
         return self.layer as! shadowLayer
     }
     
     override class var layerClass: AnyClass {
-        get {
-            return InnerShadowLayer.self
-        }
+        get { return InnerShadowLayer.self }
     }
 }
 #endif
