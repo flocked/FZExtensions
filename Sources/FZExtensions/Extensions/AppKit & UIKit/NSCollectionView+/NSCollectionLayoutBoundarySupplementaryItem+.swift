@@ -11,14 +11,14 @@ import AppKit
 public extension NSCollectionLayoutBoundarySupplementaryItem {
      static func topSeperator(using properties: ContentProperties.Seperator) -> NSCollectionLayoutBoundarySupplementaryItem {
         let lineItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(properties.height))
-        let item = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: lineItemSize, elementKind: NSCollectionView.elementKindItemTopSeperator, alignment: .top)
+         let item = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: lineItemSize, elementKind: NSCollectionView.ElementKind.itemTopSeperator, alignment: .top)
         item.contentInsets = properties.insets
         return item
     }
     
     static func bottomSeperator(using properties: ContentProperties.Seperator) -> NSCollectionLayoutBoundarySupplementaryItem {
         let lineItemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(properties.height))
-        let item = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: lineItemSize, elementKind: NSCollectionView.elementKindItemBottomSeperator, alignment: .bottom)
+        let item = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: lineItemSize, elementKind: NSCollectionView.ElementKind.itemBottomSeperator, alignment: .bottom)
         item.contentInsets = properties.insets
         return item
     }

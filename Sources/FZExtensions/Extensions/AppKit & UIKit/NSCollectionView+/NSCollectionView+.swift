@@ -11,9 +11,21 @@ import Foundation
 import AppKit
 
 public extension NSCollectionView {
-    static let elementKindItemTopSeperator: String = "ElementKindItemTopSeperator"
-    static let elementKindItemBottomSeperator: String = "ElementKindBottomSeperator"
-    
+    struct ElementKind {
+       public static let itemTopSeperator: String = "ElementKindItemTopSeperator"
+       public static let itemBottomSeperator: String = "ElementKindBottomSeperator"
+       public static let itemBackground: String = "ElementKindItemBackground"
+       public static let groupBackground: String = "ElementKindGroumBackground"
+       public static let sectionBackground: String = "ElementKindSectionBackground"
+       public static var sectionHeader: String {
+           return NSCollectionView.elementKindSectionHeader
+       }
+       public static var sectionFooter: String {
+           return NSCollectionView.elementKindSectionFooter
+       }
+
+    }
+
     func displayingIndexPaths() -> [IndexPath] {
         return self.displayingItems().compactMap({self.indexPath(for: $0)}).sorted()
     }
