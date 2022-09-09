@@ -178,6 +178,25 @@ public extension CGRect {
         }
         return rect
     }
+    
+    
+    func scaled(toWidth newWidth: CGFloat) -> CGRect {
+        let scale = newWidth / self.width
+        let newHeight = self.height * scale
+        var rect = self
+        rect.width = newWidth
+        rect.height = newHeight
+        return rect
+    }
+    
+    func scaled(toHeight newHeight: CGFloat) -> CGRect {
+        let scale = newHeight / self.height
+        let newWidth = self.width * scale
+        var rect = self
+        rect.width = newWidth
+        rect.height = newHeight
+        return rect
+    }
 }
 
 public extension CGSize {
