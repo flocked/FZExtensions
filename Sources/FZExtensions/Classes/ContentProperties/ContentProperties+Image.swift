@@ -67,6 +67,36 @@ extension ContentProperties.Image: Hashable {
     }
 }
 
+public extension ContentProperties {
+    enum ImagePlaceholder: Hashable {
+        case color(NSUIColor)
+        case none
+        case image(NSUIImage)
+    }
+}
+
+public extension ImageLayer {
+    func configurate(using imageProperties: ContentProperties.Image) {
+        self.contentTintColor = imageProperties.tintColor
+        self.cornerRadius = imageProperties.cornerRadius
+        self.imageScaling = imageProperties.scaling
+    }
+    
+    func configurate(using placeholderProperty: ContentProperties.ImagePlaceholder) {
+        if (self.image == nil) {
+            switch placeholderProperty {
+            case .color(let value):
+                self.backgroundColor = value.cgColor
+            case .image(let value):
+                self.backgroundColor = nil
+                self.image = value
+            case .none:
+                self.backgroundColor = nil
+                self.image = nil
+            }
+        }
+    }
+}
 
 
 #if os(macOS)
@@ -76,6 +106,21 @@ public extension ImageView {
         self.cornerRadius = imageProperties.cornerRadius
         self.imageScaling = imageProperties.scaling
     }
+    
+    func configurate(using placeholderProperty: ContentProperties.ImagePlaceholder) {
+        if (self.image == nil) {
+            switch placeholderProperty {
+            case .color(let value):
+                self.backgroundColor = value
+            case .image(let value):
+                self.backgroundColor = nil
+                self.image = value
+            case .none:
+                self.backgroundColor = nil
+                self.image = nil
+            }
+        }
+    }
 }
 
 public extension NSImageView {
@@ -83,6 +128,21 @@ public extension NSImageView {
         self.contentTintColor = imageProperties.tintColor
         self.cornerRadius = imageProperties.cornerRadius
         self.imageScaling = NSImageScaling(contentsGravity: imageProperties.scaling)
+    }
+    
+    func configurate(using placeholderProperty: ContentProperties.ImagePlaceholder) {
+        if (self.image == nil) {
+            switch placeholderProperty {
+            case .color(let value):
+                self.backgroundColor = value
+            case .image(let value):
+                self.backgroundColor = nil
+                self.image = value
+            case .none:
+                self.backgroundColor = nil
+                self.image = nil
+            }
+        }
     }
 }
 
@@ -92,6 +152,21 @@ public extension UIImageView {
         self.contentTintColor = imageProperties.tintColor
         self.cornerRadius = imageProperties.cornerRadius
         self.contentMode = UIView.ContentType(contentsGravity: imageProperties.scaling)
+    }
+    
+    func configurate(using placeholderProperty: ContentProperties.ImagePlaceholder) {
+        if (self.image == nil) {
+            switch placeholderProperty {
+            case .color(let value):
+                self.backgroundColor = value
+            case .image(let value):
+                self.backgroundColor = nil
+                self.image = value
+            case .none:
+                self.backgroundColor = nil
+                self.image = nil
+            }
+        }
     }
 }
 
