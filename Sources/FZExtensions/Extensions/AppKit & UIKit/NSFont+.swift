@@ -14,6 +14,31 @@ public extension NSFont {
     var lineHeight: CGFloat {
         return self.boundingRectForFont.size.height
     }
+        
+    static func systemFont(ofTableRowSize tableRowSize: NSTableView.RowSizeStyle) -> NSFont {
+        return .systemFont(ofSize: self.systemFontSize(for: tableRowSize))
+    }
+    
+    static func systemFont(ofTableRowSize tableRowSize: NSTableView.RowSizeStyle, weight: NSFont.Weight) -> NSFont {
+        return .systemFont(ofSize: self.systemFontSize(for: tableRowSize), weight: weight)
+    }
+    
+    
+    static func systemFontSize(for tableRowSize: NSTableView.RowSizeStyle) -> CGFloat {
+        switch tableRowSize {
+        case .small:
+            return 11.0
+        case .large:
+            if #available(macOS 11.0, *) {
+                return 15.0
+            } else {
+                return  13.0
+            }
+        default:
+            return  13.0
+        }
+    }
+    
     
     func sized(toFit text: String, width: CGFloat) -> NSFont {
         let font = self.withSize(1)

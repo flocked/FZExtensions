@@ -86,6 +86,11 @@ public extension ContentProperties {
             let size = NSUIFont.systemFontSize(for: controlSize)
             return self.system(size: size, weight: weight, color: color, numberOfLines: numberOfLines)
         }
+        
+        public static func system(tableRowSize: NSTableView.RowSizeStyle, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
+            let size = NSUIFont.systemFontSize(for: tableRowSize)
+            return self.system(size: size, weight: weight, color: color, numberOfLines: numberOfLines)
+        }
 #endif
 
     }
