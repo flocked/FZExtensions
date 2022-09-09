@@ -7,7 +7,7 @@
 
 import Foundation
 extension ContentProperties {
-    public struct Size {
+    public  struct Resize {
         internal var option: SizeOption = .size
         public var value: CGSize
         public var resizing: Option = .resizing
@@ -25,37 +25,43 @@ extension ContentProperties {
         }
         
         public static func min(size: CGSize, resizing option: Option) -> Self {
-           return self.init(option: .min, value: size, resizing: option)
+            return self.init(option: .min, value: size, resizing: option)
         }
-        
         public static func min(width: CGFloat, resizing option: Option) -> Self {
             return self.init(option: .min, value: CGSize(width: width, height: .infinity), resizing: option)
         }
-        
         public static func min(height: CGFloat, resizing option: Option) -> Self {
             return self.init(option: .min, value: CGSize(width: .infinity, height: height), resizing: option)
         }
         
         public static func max(size: CGSize, resizing option: Option) -> Self {
-          return self.init(option: .min, value: size, resizing: option)
+            return self.init(option: .max, value: size, resizing: option)
         }
-        
         public static func max(width: CGFloat, resizing option: Option) -> Self {
             return self.init(option: .max, value: CGSize(width: width, height: .infinity), resizing: option)
         }
-        
         public static func max(height: CGFloat, resizing option: Option) -> Self {
             return self.init(option: .max, value: CGSize(width: .infinity, height: height), resizing: option)
         }
         
-        internal enum SizeOption {
-             case min
-             case max
-             case size
-         }
+        public static func size(_ size: CGSize, resizing option: Option) -> Self {
+            return self.init(option: .size, value: size, resizing: option)
+        }
+        public static func size(width: CGFloat, resizing option: Option) -> Self {
+            return self.init(option: .size, value: CGSize(width: width, height: .infinity), resizing: option)
+        }
+        public static func size(height: CGFloat, resizing option: Option) -> Self {
+            return self.init(option: .size, value: CGSize(width: .infinity, height: height), resizing: option)
+        }
         
-    
-       public enum SizeValue {
+        internal enum SizeOption {
+            case min
+            case max
+            case size
+        }
+        
+        
+        public enum SizeValue {
             case size(CGSize)
             case width(CGFloat)
             case height(CGFloat)
@@ -63,11 +69,11 @@ extension ContentProperties {
         
         public enum Option {
             case scaledToFill
-             case scaledToFit
+            case scaledToFit
             case scaledToFitWidth
             case scaledToFitHeight
-             case resizing
-         }
+            case resizing
+        }
         
     }
 }
@@ -79,7 +85,7 @@ import UIKit
 #endif
 
 public extension NSUIView {
-    func configurate(using sizeProperty: ContentProperties.Size) {
+    func configurate(using sizeProperty: ContentProperties.Resize) {
         var size = sizeProperty.value
         if (size.width == .infinity) {
             size.width = self.frame.width
