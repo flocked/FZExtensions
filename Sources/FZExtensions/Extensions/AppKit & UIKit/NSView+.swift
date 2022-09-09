@@ -87,10 +87,55 @@ extension NSView {
         layer.anchorPoint = anchorPoint
     }
     
-    
     public func sendToFront() {
         if let superview = self.superview {
             superview.addSubview(self)
+        }
+    }
+    
+    public func moveSubview(_ view: NSView, to toIndex: Int) {
+        if let index = self.subviews.firstIndex(of: view) {
+            self.moveSubview(at: index, to: toIndex)
+        }
+    }
+    
+    public func moveSubviews(_ views: [NSView], to toIndex: Int, reorder: Bool = false) {
+        var indexSet = IndexSet()
+        for view in views {
+            if let index = self.subviews.firstIndex(of: view), indexSet.contains(index) == false {
+                indexSet.insert(index)
+            }
+        }
+        if (indexSet.isEmpty == false) {
+            self.moveSubviews(at: indexSet, to: toIndex, reorder: reorder)
+        }
+    }
+    
+    public func moveSubview(at index: Int, to toIndex: Int) {
+        self.moveSubviews(at: IndexSet(integer: index), to: toIndex)
+    }
+    
+    public func moveSubviews(at indexes: IndexSet, to toIndex: Int, reorder: Bool = false) {
+        let subviewsCount = self.subviews.count
+        if (self.subviews.isEmpty == false) {
+            if (toIndex >= 0 && toIndex < subviewsCount) {
+                var newIndexSet = IndexSet()
+                for value in indexes {
+                    if (value < subviewsCount && newIndexSet.contains(value) == false ) {
+                        newIndexSet.insert(value)
+                    }
+                }
+                
+                var subviews = self.subviews
+                if (reorder) {
+                    for index in newIndexSet.reversed() {
+                        subviews.moveItems(from: IndexSet(integer: index), to: toIndex)
+                    }
+                } else {
+                    subviews.moveItems(from: newIndexSet, to: toIndex)
+                }
+                self.subviews = subviews
+            }
         }
     }
     
