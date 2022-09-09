@@ -8,26 +8,33 @@
 #if os(macOS)
 import AppKit
 
-public extension NSTableView {
-    static func tableRowHeight(rowSizeStyle: NSTableView.RowSizeStyle, verticalPadding: CGFloat = 2.0) -> CGFloat  {
-        let textFieldFontSize: CGFloat
-        switch rowSizeStyle {
-        case .small: textFieldFontSize = 11
-        case .large:
-            if #available(macOS 11.0, *) {
-                textFieldFontSize = 15
-            } else {
-                textFieldFontSize = 13
-            }
-        default: textFieldFontSize = 13
+extension NSTableView {
+    /*
+     public static func tableRowHeight(rowSize: NSTableView.RowSizeStyle, secondaryRowSize: NSTableView.RowSizeStyle? = nil, textPadding: CGFloat = 0.0, verticalPadding: CGFloat = 2.0) -> CGFloat  {
+        var secondaryFontSize: CGFloat? = nil
+        if let secondaryRowSize = secondaryRowSize {
+            secondaryFontSize = NSFont.systemFontSize(for: secondaryRowSize)
         }
-        return self.tableRowHeight(systemFontSize: textFieldFontSize, verticalPadding: verticalPadding)
+        return self.tableRowHeight(fontSize: NSFont.systemFontSize(for: controlSize), secondaryTextFontSize: secondaryFontSize, textPadding: textPadding, verticalPadding: verticalPadding)
     }
     
-    static func tableRowHeight(systemFontSize: CGFloat, verticalPadding: CGFloat = 2.0) -> CGFloat  {
+     public static func tableRowHeight(controlSize: NSControl.ControlSize, secondaryControlSize: NSControl.ControlSize? = nil, textPadding: CGFloat = 0.0, verticalPadding: CGFloat = 2.0) -> CGFloat  {
+        var secondaryFontSize: CGFloat? = nil
+        if let secondaryControlSize = secondaryControlSize {
+            secondaryFontSize = NSFont.systemFontSize(for: secondaryControlSize)
+        }
+        return self.tableRowHeight(fontSize: NSFont.systemFontSize(for: controlSize), secondaryTextFontSize: secondaryFontSize, textPadding: textPadding, verticalPadding: verticalPadding)
+    }
+     */
+    
+   public static func tableRowHeight(text: RowTextConfiguration, secondaryText: RowTextConfiguration? = nil, textPadding: CGFloat = 0.0, verticalPadding: CGFloat = 2.0) -> CGFloat  {
+       return self.tableRowHeight(fontSize: text.fontSize, secondaryTextFontSize: secondaryText?.fontSize, textPadding: textPadding, verticalPadding: verticalPadding)
+    }
+    
+    public static func tableRowHeight(fontSize: CGFloat, secondaryTextFontSize: CGFloat? = nil, textPadding: CGFloat = 0.0, verticalPadding: CGFloat = 2.0) -> CGFloat  {
         let textField = NSTextField()
         
-        textField.font = .systemFont(ofSize: systemFontSize)
+        textField.font = .systemFont(ofSize: fontSize)
         textField.stringValue = " "
         textField.isBezeled = false
         textField.isEditable = false
@@ -38,12 +45,28 @@ public extension NSTableView {
         textField.maximumNumberOfLines = 1
         textField.lineBreakMode = .byTruncatingTail
         
-        return textField.fittingSize.height + (2.0 * verticalPadding)
+        var height = textField.fittingSize.height + (2.0 * verticalPadding)
+        if let secondaryTextFontSize = secondaryTextFontSize {
+            height = height + self.tableRowHeight(fontSize: secondaryTextFontSize, textPadding: 0.0, verticalPadding: 0.0) + textPadding
+        }
+        return height
     }
     
-    static func tableRowHeight(controlSize: NSControl.ControlSize, verticalPadding: CGFloat = 2.0) -> CGFloat  {
-        let textFieldFontSize:CGFloat = NSFont.systemFontSize(for: controlSize)
-        return self.tableRowHeight(systemFontSize: textFieldFontSize, verticalPadding: verticalPadding)
-    }
+    public enum RowTextConfiguration {
+         case fontSize(CGFloat)
+         case controlSize(NSControl.ControlSize)
+         case rowSize(NSTableView.RowSizeStyle)
+        internal var fontSize: CGFloat {
+             switch self {
+             case .fontSize(let value):
+                 return value
+             case .controlSize(let value):
+                 return NSFont.systemFontSize(for: value)
+             case .rowSize(let value):
+                 return NSFont.systemFontSize(for: value)
+             }
+         }
+     }
+    
 }
 #endif
