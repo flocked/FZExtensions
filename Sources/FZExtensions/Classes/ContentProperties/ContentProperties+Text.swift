@@ -82,14 +82,16 @@ public extension ContentProperties {
         }
         
 #if os(macOS)
+        public static func system(_ fontSize: FontSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
+            return self.system(size: fontSize.value, weight: weight, color: color, numberOfLines: numberOfLines)
+        }
+        
         public static func system(controlSize: NSControl.ControlSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
-            let size = NSUIFont.systemFontSize(for: controlSize)
-            return self.system(size: size, weight: weight, color: color, numberOfLines: numberOfLines)
+            return self.system(.controlSize(controlSize), weight: weight, color: color, numberOfLines: numberOfLines)
         }
         
         public static func system(tableRowSize: NSTableView.RowSizeStyle, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
-            let size = NSUIFont.systemFontSize(for: tableRowSize)
-            return self.system(size: size, weight: weight, color: color, numberOfLines: numberOfLines)
+            return self.system(.tableRowSize(tableRowSize), weight: weight, color: color, numberOfLines: numberOfLines)
         }
 #endif
 
@@ -115,6 +117,26 @@ extension ContentProperties.Text: Hashable {
         hasher.combine(self.showsExpansionTextWhenTruncated)
     }
 }
+
+#if os(macOS)
+public extension ContentProperties.Text {
+     enum FontSize: Hashable {
+        case absolute(CGFloat)
+        case controlSize(NSControl.ControlSize)
+        case tableRowSize(NSTableView.RowSizeStyle)
+        public var value: CGFloat {
+            switch self {
+            case .absolute(let value):
+                return value
+            case .controlSize(let value):
+                return NSFont.systemFontSize(for: value)
+            case .tableRowSize(let value):
+                return NSFont.systemFontSize(for: value)
+            }
+        }
+    }
+}
+#endif
 
 #if os(macOS)
 public extension NSTextField {
