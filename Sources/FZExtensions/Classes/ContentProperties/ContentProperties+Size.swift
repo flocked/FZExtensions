@@ -6,6 +6,20 @@
 //
 
 import Foundation
+import CoreGraphics
+
+/*
+protocol SizeProperty {
+    func apply(to size: CGSize) -> CGSize
+}
+
+extension CGSize: SizeProperty {
+    func apply(to size: CGSize) -> CGSize {
+        return self
+    }
+}
+*/
+
 extension ContentProperties {
     public  struct Resize {
         internal var option: SizeOption = .size
