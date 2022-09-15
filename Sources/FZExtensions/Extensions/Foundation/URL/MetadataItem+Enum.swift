@@ -15,11 +15,21 @@ extension MetadataQuery {
         self.key = key
         self.ascending = ascending
     }
+
+        public init?(sortDescriptor: NSSortDescriptor) {
+            if let parameter = SortParamter.allCases.first(where: {$0.rawValue == sortDescriptor.key}) {
+                self.key = parameter
+                self.ascending = sortDescriptor.ascending
+            } else {
+                return nil
+            }
+        }
+        
     internal var sortDescriptor: NSSortDescriptor {
         return NSSortDescriptor(key: key.rawValue, ascending: true) }
 }
 
-public enum SortParamter: String {
+public enum SortParamter: String, CaseIterable {
     case fsName = "kMDItemFSName"
     case displayName = "kMDItemDisplayName"
     case url = "kMDItemURL"

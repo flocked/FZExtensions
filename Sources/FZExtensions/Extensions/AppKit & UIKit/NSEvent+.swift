@@ -18,7 +18,7 @@ public extension NSEvent {
     
      static var current: NSEvent? {
       NSApplication.shared.currentEvent
-    }
+    } 
 }
 
 public extension NSEvent {

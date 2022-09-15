@@ -39,6 +39,8 @@ public extension Sequence where Element: Identifiable {
        first { $0.id == id }
     }
     
+    
+    
     subscript<S: Sequence>(ids ids: S) -> [Element] where S.Element == Element.ID {
         self.filter({ids.contains($0.id)})
     }

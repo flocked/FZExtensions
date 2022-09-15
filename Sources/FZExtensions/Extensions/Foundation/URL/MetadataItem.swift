@@ -34,7 +34,9 @@ public init?(url: URL) {
 internal init?(url: URL, values: [String:Any]? = nil) {
     if let item = NSMetadataItem(url: url) {
         self.item = item
-        self.values = values ?? [:]
+        var values = values ?? [:]
+        values[NSMetadataItemURLKey] = url
+        self.values = values
     } else {
         return nil
     }
@@ -51,6 +53,14 @@ internal init?(url: URL, values: [String:Any]? = nil) {
     
     public var url: URL? {
         get { self.value( NSMetadataItemURLKey, type: URL.self) } }
+    
+    public var pathExtension: String? {
+        get { url?.pathExtension } }
+    
+    public var fileType: URL.FileType? {
+        get { if let pathExtension = self.pathExtension {
+            return URL.FileType(pathExtension: pathExtension) }
+            return nil } }
        
     public var fsName: String? {
         get { self.value( NSMetadataItemFSNameKey, type: String.self) } }

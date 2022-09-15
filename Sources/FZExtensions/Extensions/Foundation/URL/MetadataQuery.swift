@@ -13,19 +13,45 @@ public class MetadataQuery: NSObject, NSMetadataQueryDelegate {
     internal let query = NSMetadataQuery()
     public var completionHandler: Handler? = nil
     public var updateHandler: Handler? = nil
+    public var name = ""
+    
+#if os(macOS)
+   public func items(types: [URL.FileType], at urls: [URL], handler: @escaping Handler) {
+        self.attributes = [NSMetadataItemFSNameKey]
+        self.predicate =  NSPredicate(format: "%K like '*.*'", NSMetadataItemFSNameKey)
+        query.searchScopes = [urls as [NSURL]]
+        self.completionHandler = { items in
+        
+          let items = items.filter({
+              if let fileType = $0.fileType {
+                  return types.contains(fileType)
+          } else {
+              return false}
+          })
+            handler(items)
+        }
+        start()
+    }
+#endif
     
     func query(attributes: [String], for urls: [URL]) {
         self.stop()
         self.attributes = attributes
+#if os(macOS)
+        self.searchScopes = [.local]
+#elseif canImport(UIKit)
+        self.searchScopes = [.ubiquitousDocuments]
+#endif
+        self.predicate =  NSPredicate(format: "%K like '*.*'", NSMetadataItemFSNameKey)
         self.urls = urls
         self.start()
     }
     
     public func start() {
-        if (isStopped) {
+      //  if (isStopped) {
             self.addObserver()
             query.start()
-        }
+    //    }
     }
     
     public func stop() {
@@ -83,9 +109,12 @@ public class MetadataQuery: NSObject, NSMetadataQueryDelegate {
         set { self.query.notificationBatchingInterval = newValue } }
     
     
-    public var sortedBy: [SortOption] = [SortOption(.displayName, ascending: true)]
+    public var sortedBy: [SortOption]  {
+        set { self.sortDescriptors =  newValue.compactMap({$0.sortDescriptor}) }
+        get { self.sortDescriptors.compactMap({SortOption(sortDescriptor: $0)})  }
+    }
  
-    public var sortDescriptors: [NSSortDescriptor] {
+    internal var sortDescriptors: [NSSortDescriptor] {
         get { self.query.sortDescriptors }
         set { self.query.sortDescriptors = newValue } }
     
@@ -114,6 +143,7 @@ self.searchScopes = [.ubiquitousDocuments]
 extension MetadataQuery {
 #if os(macOS)
     public enum SearchScope: String {
+
         case home
         case local
         case localIndexed
@@ -158,6 +188,10 @@ extension NSMetadataQuery {
         for (index, result) in self.results.enumerated() {
             let values = self.values(of: self.valueListAttributes, forResultsAt: index)
             if let metadataItem = result as? NSMetadataItem {
+                var values = values
+                if let path = metadataItem.value(NSMetadataItemPathKey, type: String.self) {
+                    values[NSMetadataItemURLKey] = URL(fileURLWithPath: path)
+                }
                 items.append(MetadataItem(item: metadataItem, values: values))
             } else if let path = result as? String, let item = MetadataItem(url: URL(fileURLWithPath: path), values: values) {
                 items.append(item)
