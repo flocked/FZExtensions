@@ -13,6 +13,7 @@ public extension NSSegmentedControl {
     struct Segment: Equatable, ExpressibleByStringLiteral {
         public typealias StringLiteralType = String
  
+        internal weak var segmentedControl: NSSegmentedControl?
         var title: String? {
             didSet { segmentedControl?.update(self)  } }
         var image: NSImage? {
@@ -68,8 +69,6 @@ public extension NSSegmentedControl {
              self.isSelected = isSelected
              self.segmentedControl = segmentedControl
          }
-        
-        internal weak var segmentedControl: NSSegmentedControl?
     }
     
     convenience init(frame: CGRect, segments: [Segment]) {
@@ -93,8 +92,11 @@ public extension NSSegmentedControl {
             return segments
         }
         set {
+            
             self.segmentCount = newValue.count
             for (index, segment) in newValue.enumerated() {
+                var segment = segment
+                segment.segmentedControl = self
                 self.setLabel(segment.title ?? "", forSegment: index)
                 self.setImage(segment.image, forSegment: index)
                 self.setSelected(segment.isSelected, forSegment: index)
