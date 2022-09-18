@@ -50,7 +50,7 @@ public extension NSSegmentedControl {
         
         public init(image: NSImage, isSelected: Bool) {
              self.title = nil
-             self.image = selected
+             self.image = image
              self.isSelected = isSelected
              self.segmentedControl = nil
          }
