@@ -27,6 +27,34 @@ public extension NSSegmentedControl {
             self.segmentedControl = nil
         }
         
+        public init(title: String) {
+             self.title = title
+             self.image = nil
+             self.isSelected = false
+             self.segmentedControl = nil
+         }
+        
+        public init(image: NSImage) {
+             self.title = nil
+             self.image = image
+             self.isSelected = false
+             self.segmentedControl = nil
+         }
+        
+        public init(title: String, isSelected: Bool) {
+             self.title = title
+             self.image = nil
+             self.isSelected = isSelected
+             self.segmentedControl = nil
+         }
+        
+        public init(image: NSImage, isSelected: Bool) {
+             self.title = nil
+             self.image = selected
+             self.isSelected = isSelected
+             self.segmentedControl = nil
+         }
+        
         public init(stringLiteral value: String) {
             self.title = value
             self.isSelected = false
