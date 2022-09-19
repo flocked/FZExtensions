@@ -39,6 +39,18 @@ public extension NSFont {
         }
     }
     
+    func sized(toFit text: String, height: CGFloat) -> NSFont {
+        let font = self.withSize(1)
+        var textSize = text.size(withAttributes: [.font: font])
+        var newPointSize = font.pointSize
+
+        while textSize.height < height {
+            newPointSize += 1
+            let newFont = NSFont(name: font.fontName, size: newPointSize)!
+            textSize = text.size(withAttributes: [.font: newFont])
+        }
+        return self.withSize(newPointSize)
+    }
     
     func sized(toFit text: String, width: CGFloat) -> NSFont {
         let font = self.withSize(1)
