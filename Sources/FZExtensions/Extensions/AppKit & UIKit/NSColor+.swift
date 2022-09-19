@@ -11,17 +11,17 @@ import Foundation
 import AppKit
 
 public extension NSColor {
-    func tinted(factor: CGFloat = 0.25)-> NSColor {
-        return self.mixed(with: .white, using: factor)
+    func tinted(amount: CGFloat = 0.2)-> NSColor {
+        return self.mixed(with: .white, amount: amount)
     }
     
-    func shaded(factor: CGFloat = 0.25)-> NSColor {
-        return self.mixed(with: .black, using: factor)
+    func shaded(amount: CGFloat = 0.2)-> NSColor {
+        return self.mixed(with: .black, amount: amount)
     }
     
-    func mixed(with other: NSColor, using factor: CGFloat = 0.5) -> NSColor {
-        var inverseFactor = 1.0 - factor
-        inverseFactor = factor
+    func mixed(with color: NSColor, amount: CGFloat = 0.5) -> NSColor {
+        var inverseFactor = 1.0 - amount
+        inverseFactor = amount
         var leftRed: CGFloat = 0
         var leftGreen: CGFloat = 0
         var leftBlue: CGFloat = 0
@@ -33,7 +33,7 @@ public extension NSColor {
         var rightGreen: CGFloat = 0
         var rightBlue: CGFloat = 0
         var rightAlpha: CGFloat = 0
-        let other = other.usingColorSpace(.deviceRGB)!
+        let other = color.usingColorSpace(.deviceRGB)!
         other.getRed(&rightRed, green: &rightGreen, blue: &rightBlue, alpha: &rightAlpha)
 
         return NSColor(calibratedRed: leftRed * factor + rightRed * inverseFactor,
@@ -48,11 +48,11 @@ public extension NSColor {
         let saturation = lightness > 0 ? 2 * offset / brightness : 0
         self.init(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
     }
-    var lighter: NSColor {
+    func lighter() -> NSColor {
         return color(brightness: 1.25)
     }
     
-    var darker: NSColor {
+    func darkened() -> NSColor {
         return color(brightness: 0.75)
     }
     
