@@ -19,15 +19,16 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
     
     public var editingStateHandler: ((EditState)->Void)?
     
-    /*
-    override func becomeFirstResponder() -> Bool {
-        let textView = window?.fieldEditor(true, for: nil) as? NSTextView
-        textView?.insertionPointColor = .yellow
-        return super.becomeFirstResponder()
+    public  override func becomeFirstResponder() -> Bool {
+        let canBecome = super.becomeFirstResponder()
+        if (self.isEditable && canBecome) {
+            self.editingStateHandler?(.didBegin)
+        }
+        return canBecome
     }
-    */
     
-   private func isConforming(_ string: String) -> Bool {
+    
+   internal func isConforming(_ string: String) -> Bool {
             if (string == "" && allowsEmptyString == false) {
                 return false
             } else if let minimumChars = self.minAmountChars, string.count < minimumChars {
@@ -57,30 +58,38 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
    
    private(set) var isEditing = false
 
-   private var placeholderSize: NSSize? { didSet {
+   internal var placeholderSize: NSSize? { didSet {
        if let placeholderSize_ = placeholderSize {
            placeholderSize = NSSize(width: ceil(placeholderSize_.width), height: ceil(placeholderSize_.height))
        }
    }}
-   private var lastContentSize = NSSize() { didSet {
+   internal var lastContentSize = NSSize() { didSet {
        lastContentSize = NSSize(width: ceil(self.lastContentSize.width), height: ceil(self.lastContentSize.height))
    }}
    
    override init(frame frameRect: NSRect) {
        super.init(frame: frameRect)
        _init()
+       Swift.print("initframe")
    }
+    
+    
    
    required init?(coder: NSCoder) {
        super.init(coder: coder)
        _init()
    }
    
-   private func _init() {
+   internal func _init() {
+       self.drawsBackground = false
+       self.isBordered = false
+       
        // Receive text change notifications during Japanese input conversion (while `marked text` is present).
        (self.cell as? NSTextFieldCell)?.setWantsNotificationForMarkedText(true)
        self.translatesAutoresizingMaskIntoConstraints = false
        self.delegate = self
+
+       
        #if DEBUG
        //self.wantsLayer = true
        //self.layer?.setBorder(with: NSColor.red.cgColor)
@@ -88,8 +97,9 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
    }
    
    public override func awakeFromNib() {
+
        super.awakeFromNib()
-       
+       self._init()
        // If you use `.byClipping`, the width calculation does not seem to be done correctly.
        self.cell?.isScrollable = true
        self.cell?.wraps = true
@@ -99,6 +109,8 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
        if let placeholderString = self.placeholderString {
            self.placeholderSize = size(placeholderString)
        }
+       
+       
    }
     
     public var allowsEmptyString: Bool = false
@@ -126,7 +138,7 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
         }
     }
    
-   private func size(_ string: String) -> NSSize {
+   internal func size(_ string: String) -> NSSize {
        let font = self.font ?? NSFont.systemFont(ofSize: NSFont.systemFontSize, weight: .regular)
        let stringSize = NSAttributedString(string: string, attributes: [.font : font]).size()
        
@@ -134,9 +146,9 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
    }
    
     
-    private var previousStringValue: String = ""
-    private var previousCharStringValue: String = ""
-    private var previousSelectedRange: NSRange? = nil
+    internal var previousStringValue: String = ""
+    internal var previousCharStringValue: String = ""
+    internal var previousSelectedRange: NSRange? = nil
 
    public override func textDidBeginEditing(_ notification: Notification) {
        super.textDidBeginEditing(notification)

@@ -23,26 +23,21 @@ public class TokenView: NSView {
     public enum BackgroundStyle {
         case clear
         case color(NSColor)
-        case visualEffect(NSAppearance.Name)
+        case visualEffect(VisualEffectStyle)
         
-        public enum VisualEffectStlye: Codable {
-            case aqua
-            case darkAqua
-            case vibrant
-            case vibrantLight
-            var appe: NSAppearance {
-                switch self {
-                case .aqua:
-                   return NSAppearance(named: .aqua)!
-                case .darkAqua:
-                    return NSAppearance(named: .darkAqua)!
-                case .vibrant:
-                    return NSAppearance(named: .vibrantLight)!
-                case .vibrantLight:
-                    return NSAppearance(named: .vibrantDark)!
-                }
-            }
+        public struct VisualEffectStyle {
+            public   var blendingMode: NSVisualEffectView.BlendingMode = .withinWindow
+            public   var material: NSVisualEffectView.Material = .hudWindow
+            public   var appearance: NSAppearance.Name? = nil
+            public    static func `default`() -> Self { return self.init() }
+            public    static func appearance(_ name: NSAppearance.Name) -> Self { return self.init(appearance: name) }
+
+            public   static func darkAqua() -> Self { return self.init(appearance: .darkAqua) }
+            public   static func aqua() -> Self { return self.init(appearance: .aqua) }
+            public  static func vibrantDark() -> Self { return self.init(appearance: .vibrantDark) }
+            public  static func vibrantLight() -> Self { return self.init(appearance: .vibrantLight) }
         }
+        
     }
     
     public var backgroundStyle: BackgroundStyle = .color(.controlAccentColor) {
@@ -83,7 +78,7 @@ public class TokenView: NSView {
         }
     }
     
-    public   var currentConfiguration: Configuration {
+    var currentConfiguration: Configuration {
         return Configuration(opacity: self.opacity,
                              cornerStyle: self.cornerStyle,
                              font: self.font,
@@ -141,8 +136,8 @@ public class TokenView: NSView {
         }
     }
     
-    private let textField = ResizingTextField(labelWithString: "")
-    private var imageView: NSImageView? = nil
+    internal let textField = ResizingTextField(labelWithString: "")
+    internal var imageView: NSImageView? = nil
 
     public var title: String {
         get { textField.stringValue }
@@ -158,8 +153,7 @@ public class TokenView: NSView {
     
     public var font: NSFont  {
         get { textField.font ?? .systemFont(ofSize: self.bounds.height) }
-        set { textField.font = newValue
-        }
+        set { textField.font = newValue}
     }
     
     public var foregroundColor = NSColor.white {
@@ -173,7 +167,7 @@ public class TokenView: NSView {
         didSet { self.updateImageView() }
     }
     
-    private func addImageView() {
+    internal func addImageView() {
         if (imageView == nil) {
             self.imageView = NSImageView()
             self.imageView?.imageScaling = self.imageScaling
@@ -183,12 +177,12 @@ public class TokenView: NSView {
         }
     }
     
-    private func removeImageView() {
+    internal func removeImageView() {
         self.imageView?.removeFromSuperview()
         self.imageView = nil
     }
     
-    private func updateImageView() {
+    internal func updateImageView() {
         if let image = image {
             self.addImageView()
             self.imageView?.image = image
@@ -215,7 +209,7 @@ public class TokenView: NSView {
         didSet { updateActiveConstraints() }
     }
     
-    private var fittingString: String {
+    internal var fittingString: String {
         var fitString = self.title
         if (self.title == "") {
             if let placeholder = self.placeholderString, placeholder != "" {
@@ -246,13 +240,18 @@ public class TokenView: NSView {
         get { textField.isEditable }
         set { textField.isEditable = newValue }
     }
-
+    
+   // public var isSelectable: Bool = true {
+  //      didSet { needsDisplay = true } }
     
     public var placeholderString: String? {
         get { textField.placeholderString }
         set { textField.placeholderString = newValue }
     }
     
+ //   public var backgroundColor: NSColor? = NSColor.controlAccentColor {
+   //     didSet { needsDisplay = true } }
+
     public var borderWidth = 0.0 {
         didSet { needsDisplay = true } }
     
@@ -284,11 +283,11 @@ public class TokenView: NSView {
         }
     }
     
-    public  var selectedConfiguration: Configuration? = .opacity(1.0)
-    public  var nonSelectedConfiguration: Configuration? = .opacity(0.7)
+    var selectedConfiguration: Configuration? = .opacity(1.0)
+    var nonSelectedConfiguration: Configuration? = .opacity(0.7)
 
     
-    public var paddings = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4) {
+    public var paddings = NSDirectionalEdgeInsets(1) {
         didSet {
             updateActiveConstraints()
         }
@@ -299,12 +298,18 @@ public class TokenView: NSView {
         self.paddings =  NSDirectionalEdgeInsets(value)
     }
     
-    private var activeLayoutConstraints: [NSLayoutConstraint] = []
-    private func updateActiveConstraints() {
+    public override var acceptsFirstResponder: Bool {
+        return true
+    }
+    
+    internal var activeLayoutConstraints: [NSLayoutConstraint] = []
+    internal func updateActiveConstraints() {
         NSLayoutConstraint.deactivate(activeLayoutConstraints)
         var paddings = self.paddings
-        paddings.trailing = paddings.trailing * 3.0
-        paddings.leading = paddings.leading * 3.0
+        paddings.leading = self.paddings.leading + 2
+        paddings.trailing = self.paddings.trailing + 2
+        Swift.print(paddings)
+
         if let imageView = imageView {
             switch imagePosition {
             case .leading, .bottom:
@@ -312,7 +317,7 @@ public class TokenView: NSView {
                 imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: paddings.leading),
                 imageView.trailingAnchor.constraint(equalTo: textField.leadingAnchor, constant: -imagePadding),
                 textField.topAnchor.constraint(equalTo: self.topAnchor, constant: paddings.top),
-                textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -paddings.bottom),
+                textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: paddings.bottom),
                 textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -paddings.trailing),
                 imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
                 imageView.heightAnchor.constraint(equalToConstant: textField.bounds.height*self.imageSizeScaling),
@@ -322,9 +327,9 @@ public class TokenView: NSView {
                 activeLayoutConstraints = [
                 imageView.leadingAnchor.constraint(equalTo: textField.trailingAnchor, constant: imagePadding),
                 imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -paddings.trailing),
-                textField.topAnchor.constraint(equalTo: self.topAnchor, constant: paddings.top),
+                textField.topAnchor.constraint(equalTo: self.topAnchor, constant: -paddings.top),
                 textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: paddings.leading),
-                textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -paddings.bottom),
+                textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: paddings.bottom),
                 imageView.widthAnchor.constraint(equalTo: imageView.heightAnchor),
                 imageView.heightAnchor.constraint(equalToConstant: textField.bounds.height*self.imageSizeScaling),
                 imageView.centerYAnchor.constraint(equalTo: textField.centerYAnchor)
@@ -335,16 +340,17 @@ public class TokenView: NSView {
             }
         } else {
             activeLayoutConstraints = [
-                textField.topAnchor.constraint(equalTo: self.topAnchor, constant: paddings.top),
-                textField.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: paddings.leading + capsulePading),
-                textField.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: -paddings.bottom),
-                textField.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -paddings.trailing - capsulePading)
+            self.topAnchor.constraint(equalTo: textField.topAnchor, constant: -paddings.top),
+            self.leadingAnchor.constraint(equalTo: textField.leadingAnchor, constant: -paddings.leading),
+            self.bottomAnchor.constraint(equalTo: textField.bottomAnchor, constant: paddings.bottom),
+            self.trailingAnchor.constraint(equalTo: textField.trailingAnchor, constant: paddings.trailing),
             ]
             NSLayoutConstraint.activate(activeLayoutConstraints)
         }
+         
     }
     
-    private var capsulePading: CGFloat = 0.0 {
+    internal var capsulePading: CGFloat = 0.0 {
         didSet {
             self.updateActiveConstraints()
         }
@@ -357,34 +363,63 @@ public class TokenView: NSView {
         self.placeholderString = placeholder
         self.backgroundColor = color
         self.image = image
-        self.sizeToFit(height: height)
+     //   self.sizeToFit(height: height)
     }
     
-    private let isSelectedAlphaValue: CGFloat = 0.75
-    public  init(string: String? = nil, color: NSColor = .controlAccentColor , paddings: NSDirectionalEdgeInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)) {
+    internal let isSelectedAlphaValue: CGFloat = 0.75
+    public init(string: String? = nil, color: NSColor = .controlAccentColor, paddings: NSDirectionalEdgeInsets = NSDirectionalEdgeInsets(2)) {
         self.paddings = paddings
         super.init(frame: NSRect(x: 0, y: 0, width: 10, height: 10))
         wantsLayer = true
+        self.translatesAutoresizingMaskIntoConstraints = false
         layerContentsRedrawPolicy = .onSetNeedsDisplay
         textField.translatesAutoresizingMaskIntoConstraints = false
         addSubview(textField)
-        self.updateActiveConstraints()
+        textField.drawsBackground = false
+        textField.font = .systemFont(ofSize: NSFont.systemFontSize(for: .regular))
+    //    textField.backgroundColor = nil
+        textField.isBordered = false
         textField.textColor = self.foregroundColor
         textField.isEditable = false
+        textField.focusRingType = .none
         NSLayoutConstraint.activate(activeLayoutConstraints)
         self.backgroundColor = color
         if let string = string {
+            textField.stringValue = string
             self.title = string
+        }
+        self.font = .systemFont(ofSize: NSFont.systemFontSize(for: .regular))
+        self.invalidateIntrinsicContentSize()
+        self.frame.size = self.textField.fittingSize
+        self.updateActiveConstraints()
+        textField.editingStateHandler = textFieldEditStateChanged
+    }
+    
+   internal func textFieldEditStateChanged(_ state: ResizingTextField.EditState) {
+        if (state != .didEnd) {
+            Swift.print("dfdff")
+            self.wantsLayer = true
+            self.layer?.masksToBounds = false
+            self.layer?.shadowColor = NSColor.controlAccentColor.cgColor
+            self.layer?.shadowOpacity = 1.0
+            self.layer?.shadowRadius = 2.0
+       //     self.layer?.borderColor = .white
+     //       self.layer?.borderWidth = 0.5
+            self.layer?.shadowOffset = CGSize(width: 0.0, height: 0.0)
+        } else {
+            self.layer?.shadowOpacity = 0.0
+  //          self.layer?.borderWidth = 0.0
+            self.layer?.shadowColor = nil
         }
     }
     
     @available(*, unavailable)
-    public  required init?(coder: NSCoder) {
+    required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private var visualEffectView: NSVisualEffectView? = nil
-    private func addVisualEffectView() {
+    internal var visualEffectView: NSVisualEffectView? = nil
+    internal func addVisualEffectView() {
         if (self.visualEffectView == nil) {
             self.visualEffectView = NSVisualEffectView()
             self.visualEffectView?.blendingMode = .withinWindow
@@ -395,7 +430,7 @@ public class TokenView: NSView {
         }
     }
     
-    private func removeVisualEffectView() {
+    internal func removeVisualEffectView() {
         self.visualEffectView?.removeFromSuperview()
         self.visualEffectView = nil
     }
@@ -411,10 +446,13 @@ public class TokenView: NSView {
         case .color(let color):
             self.removeVisualEffectView()
             layer.backgroundColor = color.withAlphaComponent(CGFloat(self.opacity)).cgColor
-        case .visualEffect(let name):
+        case .visualEffect(let style):
             self.addVisualEffectView()
-            let appearance = NSAppearance(named: name)!
-            self.visualEffectView?.appearance = appearance
+            if let name = style.appearance {
+                self.visualEffectView?.appearance = NSAppearance(named: name)!
+            }
+            self.visualEffectView?.material = style.material
+            self.visualEffectView?.blendingMode = style.blendingMode
             layer.opacity = self.opacity
         }
         
