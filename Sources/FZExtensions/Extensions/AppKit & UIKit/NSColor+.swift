@@ -60,17 +60,7 @@ public extension NSColor {
         let hsii = hsl
         return NSColor(hue: hsii.hue, saturation: hsii.saturation, lightness: hsii.lightness * percent, alpha: hsii.alpha)
     }
-    
-    func color(brightnessFactor: CGFloat) -> NSColor {
-        var hue : CGFloat = 0
-        var saturation : CGFloat = 0
-        var brightness : CGFloat = 0
-        var alpha : CGFloat = 0
-        let main = self.usingColorSpace(.deviceRGB)!
-        main.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-        return NSColor(hue: hue, saturation: saturation, brightness: brightness * brightnessFactor, alpha: alpha)
-    }
-    
+        
    internal var hsl: (hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0, hue: CGFloat = 0
        let main = self.usingColorSpace(.deviceRGB)!
