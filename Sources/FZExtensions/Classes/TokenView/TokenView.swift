@@ -58,22 +58,26 @@ public class TokenView: NSView {
         var borderColor: NSColor?
         var size: CGFloat?
         
-        static func colored(_ color: NSColor) -> Configuration {
+        public static func tinted(_ color: NSColor) -> Configuration {
+            return Configuration(cornerStyle: .small,foregorundColor: color,  backgroundColor: color.color(brightness: 1.5))
+        }
+        
+        public static func colored(_ color: NSColor) -> Configuration {
             return Configuration(cornerStyle: .small, backgroundColor: color)
         }
         
-        static func opacity(_ opacity: Float) -> Configuration {
+        public static func opacity(_ opacity: Float) -> Configuration {
             return Configuration(opacity: opacity)
         }
         
-        static func coloredBorered(_ color: NSColor) -> Configuration {
+        public static func coloredBorered(_ color: NSColor) -> Configuration {
             return Configuration(cornerStyle: .small, backgroundColor: color, borderWidth: 2.0)
         }
         
-        static func bordered(_ color: NSColor) -> Configuration {
+        public  static func bordered(_ color: NSColor) -> Configuration {
             return Configuration(cornerStyle: .small, foregorundColor: nil, backgroundColor: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
         }
-        static func borderedColored(_ color: NSColor) -> Configuration {
+        public static func borderedColored(_ color: NSColor) -> Configuration {
             return Configuration(cornerStyle: .small, foregorundColor: color, backgroundColor: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
         }
     }
@@ -453,6 +457,7 @@ public class TokenView: NSView {
             }
             self.visualEffectView?.material = style.material
             self.visualEffectView?.blendingMode = style.blendingMode
+            layer.backgroundColor = nil
             layer.opacity = self.opacity
         }
         
