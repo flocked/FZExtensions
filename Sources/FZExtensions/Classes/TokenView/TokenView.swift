@@ -8,6 +8,7 @@
 #if os(macOS)
 
 import AppKit
+import SwiftUI
 
 public class TokenView: NSView {
     public enum CornerStyle: Codable {
@@ -48,7 +49,7 @@ public class TokenView: NSView {
         var cornerStyle: CornerStyle?
         var font: NSFont?
         var foregorundColor: NSColor?
-        var backgroundColor: NSColor?
+        var backgroundStyle: BackgroundStyle?
         var imageSizeScaling: CGFloat?
         var paddings: NSDirectionalEdgeInsets?
         var imagePadding: CGFloat?
@@ -59,11 +60,11 @@ public class TokenView: NSView {
         var size: CGFloat?
         
         public static func tinted(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small,foregorundColor: color,  backgroundColor: color.color(brightness: 1.5))
+            return Configuration(cornerStyle: .small,foregorundColor: color, backgroundStyle: .color(color.color(brightness: 1.5)))
         }
         
         public static func colored(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small, backgroundColor: color)
+            return Configuration(cornerStyle: .small, backgroundStyle: .color(color))
         }
         
         public static func opacity(_ opacity: Float) -> Configuration {
@@ -71,14 +72,14 @@ public class TokenView: NSView {
         }
         
         public static func coloredBorered(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small, backgroundColor: color, borderWidth: 2.0)
+            return Configuration(cornerStyle: .small, backgroundStyle: .color(color), borderWidth: 2.0)
         }
         
         public  static func bordered(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small, foregorundColor: nil, backgroundColor: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
+            return Configuration(cornerStyle: .small, foregorundColor: nil, backgroundStyle: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
         }
         public static func borderedColored(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small, foregorundColor: color, backgroundColor: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
+            return Configuration(cornerStyle: .small, foregorundColor: color, backgroundStyle: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
         }
     }
     
@@ -87,7 +88,7 @@ public class TokenView: NSView {
                              cornerStyle: self.cornerStyle,
                              font: self.font,
                              foregorundColor: self.foregroundColor,
-                             backgroundColor: self.backgroundColor,
+                             backgroundStyle: self.backgroundStyle,
                              imageSizeScaling: self.imageSizeScaling,
                              paddings: self.paddings,
                              imagePadding: self.imagePadding,
@@ -111,8 +112,8 @@ public class TokenView: NSView {
         if let value = newConfiguration.foregorundColor {
             self.foregroundColor = value
         }
-        if let value = newConfiguration.backgroundColor {
-            self.backgroundColor = value
+        if let value = newConfiguration.backgroundStyle {
+            self.backgroundStyle = value
         }
         if let value = newConfiguration.imageSizeScaling {
             self.imageSizeScaling = value
