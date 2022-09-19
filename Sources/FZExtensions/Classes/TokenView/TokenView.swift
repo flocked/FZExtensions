@@ -83,7 +83,7 @@ public class TokenView: NSView {
         }
     }
     
-    var currentConfiguration: Configuration {
+    public   var currentConfiguration: Configuration {
         return Configuration(opacity: self.opacity,
                              cornerStyle: self.cornerStyle,
                              font: self.font,
@@ -98,7 +98,7 @@ public class TokenView: NSView {
                              borderColor: self.borderColor)
     }
     
-    func applyConfiguration(_ newConfiguration: Configuration) {
+    public  func applyConfiguration(_ newConfiguration: Configuration) {
         if let value = newConfiguration.opacity {
             self.opacity = value
         }
@@ -284,8 +284,8 @@ public class TokenView: NSView {
         }
     }
     
-    var selectedConfiguration: Configuration? = .opacity(1.0)
-    var nonSelectedConfiguration: Configuration? = .opacity(0.7)
+    public  var selectedConfiguration: Configuration? = .opacity(1.0)
+    public  var nonSelectedConfiguration: Configuration? = .opacity(0.7)
 
     
     public var paddings = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4) {
@@ -352,7 +352,7 @@ public class TokenView: NSView {
     
     public override var wantsUpdateLayer: Bool { true }
     
-    convenience init(string: String? = nil, placeholder: String? = nil, color: NSColor = .controlAccentColor, image: NSImage? = nil, height: CGFloat) {
+    public  convenience init(string: String? = nil, placeholder: String? = nil, color: NSColor = .controlAccentColor, image: NSImage? = nil, height: CGFloat) {
         self.init(string: string)
         self.placeholderString = placeholder
         self.backgroundColor = color
@@ -361,7 +361,7 @@ public class TokenView: NSView {
     }
     
     private let isSelectedAlphaValue: CGFloat = 0.75
-    init(string: String? = nil, color: NSColor = .controlAccentColor , paddings: NSDirectionalEdgeInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)) {
+    public  init(string: String? = nil, color: NSColor = .controlAccentColor , paddings: NSDirectionalEdgeInsets = NSDirectionalEdgeInsets(top: 4, leading: 4, bottom: 4, trailing: 4)) {
         self.paddings = paddings
         super.init(frame: NSRect(x: 0, y: 0, width: 10, height: 10))
         wantsLayer = true
@@ -379,7 +379,7 @@ public class TokenView: NSView {
     }
     
     @available(*, unavailable)
-    required init?(coder: NSCoder) {
+    public  required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     

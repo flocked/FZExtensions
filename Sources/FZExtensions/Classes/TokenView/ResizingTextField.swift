@@ -10,7 +10,7 @@
 import Foundation
 import AppKit
 
-class ResizingTextField: NSTextField, NSTextFieldDelegate {
+public class ResizingTextField: NSTextField, NSTextFieldDelegate {
     public enum EditState {
         case didBegin
         case didEnd
@@ -38,7 +38,7 @@ class ResizingTextField: NSTextField, NSTextFieldDelegate {
         return true
     }
     
-    func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
+    public func control(_ control: NSControl, textView: NSTextView, doCommandBy commandSelector: Selector) -> Bool {
         if commandSelector == #selector(NSResponder.insertNewline(_:)) {
             if (isConforming(stringValue)) {
                 self.window?.makeFirstResponder(nil)
