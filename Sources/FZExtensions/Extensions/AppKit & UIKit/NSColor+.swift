@@ -66,14 +66,16 @@ public extension NSColor {
         var saturation : CGFloat = 0
         var brightness : CGFloat = 0
         var alpha : CGFloat = 0
-        self.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        let main = self.usingColorSpace(.deviceRGB)!
+        main.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
         return NSColor(hue: hue, saturation: saturation, brightness: brightness * brightnessFactor, alpha: alpha)
     }
     
    internal var hsl: (hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0, hue: CGFloat = 0
-        self.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-        self.getHue(&hue, saturation: nil, brightness: nil, alpha: nil)
+       let main = self.usingColorSpace(.deviceRGB)!
+       main.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+       main.getHue(&hue, saturation: nil, brightness: nil, alpha: nil)
         let upper = max(red, green, blue)
         let lower = min(red, green, blue)
         let range = upper - lower
