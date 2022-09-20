@@ -332,6 +332,11 @@ internal class EdgeParameters {
         case stuck
     }
     
+    public enum TriggerBehaviour {
+        case instant
+        case overThreshold
+    }
+    
     init(_ view: PullRefreshableScrollView, edge myEdge: PullRefreshableScrollView.ViewEdge) {
         scrollView = view
         edge = myEdge

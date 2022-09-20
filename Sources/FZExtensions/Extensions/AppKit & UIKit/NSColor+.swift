@@ -11,54 +11,32 @@ import Foundation
 import AppKit
 
 public extension NSColor {
-    func tinted(amount: CGFloat = 0.2)-> NSColor {
-        return self.mixed(with: .white, amount: amount)
+    func tinted(amount: CGFloat = 0.2)-> NSColor? {
+        return self.blended(withFraction: amount, of: .white)
     }
     
-    func shaded(amount: CGFloat = 0.2)-> NSColor {
-        return self.mixed(with: .black, amount: amount)
+    func shaded(amount: CGFloat = 0.2)-> NSColor? {
+        return self.blended(withFraction: amount, of: .black)
     }
     
-    func mixed(with color: NSColor, amount: CGFloat = 0.5) -> NSColor {
-        var inverseFactor = 1.0 - amount
-        inverseFactor = amount
-        var leftRed: CGFloat = 0
-        var leftGreen: CGFloat = 0
-        var leftBlue: CGFloat = 0
-        var leftAlpha: CGFloat = 0
-        let main = self.usingColorSpace(.deviceRGB)!
-        main.getRed(&leftRed, green: &leftGreen, blue: &leftBlue, alpha: &leftAlpha)
-
-        var rightRed: CGFloat = 0
-        var rightGreen: CGFloat = 0
-        var rightBlue: CGFloat = 0
-        var rightAlpha: CGFloat = 0
-        let other = color.usingColorSpace(.deviceRGB)!
-        other.getRed(&rightRed, green: &rightGreen, blue: &rightBlue, alpha: &rightAlpha)
-
-        return NSColor(calibratedRed: leftRed * amount + rightRed * inverseFactor,
-                       green: leftGreen * amount + rightGreen * inverseFactor,
-                       blue: leftBlue * amount + rightBlue * inverseFactor,
-                       alpha: leftAlpha * amount + rightAlpha * inverseFactor)
-    }
-
     convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat = 1)  {
         let offset = saturation * (lightness < 0.5 ? lightness : 1 - lightness)
         let brightness = lightness + offset
         let saturation = lightness > 0 ? 2 * offset / brightness : 0
         self.init(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
     }
+    
     func lighter() -> NSColor {
-        return color(brightness: 1.25)
+        return withBrightness(1.25)
     }
     
     func darkened() -> NSColor {
-        return color(brightness: 0.75)
+        return withBrightness(0.75)
     }
     
-    func color(brightness percent: CGFloat) -> NSColor {
+    func withBrightness(_ amount: CGFloat) -> NSColor {
         let hsii = hsl
-        return NSColor(hue: hsii.hue, saturation: hsii.saturation, lightness: hsii.lightness * percent, alpha: hsii.alpha)
+        return NSColor(hue: hsii.hue, saturation: hsii.saturation, lightness: hsii.lightness * amount, alpha: hsii.alpha)
     }
         
    internal var hsl: (hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {

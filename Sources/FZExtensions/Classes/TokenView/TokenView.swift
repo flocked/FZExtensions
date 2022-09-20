@@ -60,7 +60,7 @@ public class TokenView: NSView {
         var size: CGFloat?
         
         public static func tinted(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small,foregorundColor: color, backgroundStyle: .color(color.color(brightness: 1.65)))
+            return Configuration(cornerStyle: .small,foregorundColor: color, backgroundStyle: .color(color.withBrightness(1.65)))
         }
         
         public static func colored(_ color: NSColor) -> Configuration {

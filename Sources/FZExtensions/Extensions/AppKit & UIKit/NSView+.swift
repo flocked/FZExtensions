@@ -87,12 +87,6 @@ extension NSView {
         layer.anchorPoint = anchorPoint
     }
     
-    public func sendToFront() {
-        if let superview = self.superview {
-            superview.addSubview(self)
-        }
-    }
-    
     public func moveSubview(_ view: NSView, to toIndex: Int) {
         if let index = self.subviews.firstIndex(of: view) {
             self.moveSubview(at: index, to: toIndex)
@@ -139,6 +133,12 @@ extension NSView {
         }
     }
     
+    public func sendToFront() {
+        if let superview = self.superview {
+            superview.addSubview(self)
+        }
+    }
+    
     public func sendToBack() {
         if let superview = self.superview, let firstView = superview.subviews.first, firstView != self {
             superview.addSubview(self, positioned: .below, relativeTo: firstView)
@@ -146,6 +146,13 @@ extension NSView {
     }
     
     public func addSubview(withAutoresizing view: NSView) {
+        view.translatesAutoresizingMaskIntoConstraints = true
+        if (self.bounds.size == .zero) {
+            self.frame.size = CGSize(width: 1, height: 1)
+        }
+        
+        view.frame.origin = .zero
+        view.frame.size = self.bounds.size
         self.addSubview(view)
         view.autoresizingMask = .all
     }

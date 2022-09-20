@@ -17,8 +17,25 @@ public class MediaView: NSView {
         case off
     }
     
-   internal let imageView = ImageView()
-    internal let videoView = NoKeyDownPlayerView()
+   public var autoAnimatesImages: Bool {
+        get { imageView.autoAnimates }
+        set { imageView.autoAnimates = newValue }
+    }
+    
+    internal  lazy var imageView: ImageView = {
+        let imageView = ImageView()
+        imageView.imageScaling = self.contentScaling
+        imageView.isHidden = true
+        return imageView
+    }()
+    
+    internal lazy var videoView: NoKeyDownPlayerView = {
+        let videoView = NoKeyDownPlayerView()
+        videoView.isHidden = true
+        videoView.videoGravity = AVLayerVideoGravity(caLayerContentsGravity: self.contentScaling) ?? .resizeAspectFill
+        return videoView
+    }()
+    
     
     public var overlayView: NSView? = nil {
         didSet {
@@ -36,23 +53,23 @@ public class MediaView: NSView {
         set { self.imageView.contentTintColor  = newValue  }
     }
 
-    public  var loopVideos: Bool = true
-    public  var isMuted: Bool = false { didSet { self.updateVideoViewConfiguration() } }
+    public var loopVideos: Bool = true
+    public var isMuted: Bool = false { didSet { self.updateVideoViewConfiguration() } }
     public var volume: Float = 0.2  { didSet { self.updateVideoViewConfiguration() } }
-    public  var videoPlaybackOption: VideoPlaybackOption = .autostart
+    public var videoPlaybackOption: VideoPlaybackOption = .autostart
     public var videoViewControlStyle:  AVPlayerViewControlsStyle = .inline {
         didSet { self.updateVideoViewConfiguration() } }
     
-    public  var contentScaling: CALayerContentsGravity = .resizeAspect {
+    public var contentScaling: CALayerContentsGravity = .resizeAspect {
         didSet {
             self.imageView.imageScaling = self.contentScaling
             self.videoView.videoGravity = AVLayerVideoGravity(caLayerContentsGravity: self.contentScaling) ?? .resizeAspectFill
         }
     }
     
-    private var mediaType: URL.FileType? = nil
+    public private(set) var mediaType: URL.FileType? = nil
     
-    public  var mediaURL: URL? = nil {
+    public var mediaURL: URL? = nil {
         didSet {
             if let mediaURL = self.mediaURL {
                 self.updatePreviousPlaybackState()
@@ -63,13 +80,13 @@ public class MediaView: NSView {
                 } else {
                     self.mediaType = nil
                     self.mediaURL = nil
-                    self.removeImageView()
-                    self.removeVideoView()
+                    self.hideImageView()
+                    self.hideVideoView()
                 }
             } else {
                 self.mediaType = nil
-                self.removeImageView()
-                self.removeVideoView()
+                self.hideImageView()
+                self.hideVideoView()
             }
         }
     }
@@ -81,7 +98,7 @@ public class MediaView: NSView {
         }
         set {
             if let asset = newValue {
-                self.addVideoView()
+                self.showVideoView()
                 self.mediaType = .video
                 self.videoSize = asset.naturalSize
                 let item = AVPlayerItem(asset: asset)
@@ -99,28 +116,43 @@ public class MediaView: NSView {
                 case .off:
                     self.videoView.player?.pause()
                 }
-                self.removeImageView()
+                self.hideImageView()
             } else if (self.mediaType == .video) {
-                self.removeVideoView()
+                self.hideVideoView()
                 self.mediaURL = nil
                 self.mediaType = nil
             }
         }
     }
 
-    public  var image: NSImage? {
+    public var image: NSImage? {
         get {
             if (self.mediaType == .image || self.mediaType == .gif) { return self.imageView.image }
             return nil
         }
         set {
             if let image = newValue {
-                self.addImageView()
+                self.showImageView()
                 self.imageView.image = image
-                self.removeVideoView()
+                self.hideVideoView()
                 self.mediaType = .image
             } else if (self.mediaType == .image) {
-                self.removeImageView()
+                self.hideImageView()
+                self.mediaURL = nil
+                self.mediaType = nil
+            }
+        }
+    }
+    
+    public var images: [NSImage] {
+        get {return imageView.images}
+        set {imageView.images = newValue
+            if newValue.isEmpty == false {
+                self.showImageView()
+                self.hideVideoView()
+                self.mediaType = .image
+            } else if self.mediaType == .image {
+                self.hideImageView()
                 self.mediaURL = nil
                 self.mediaType = nil
             }
@@ -157,7 +189,7 @@ public class MediaView: NSView {
         return .zero
     }
     
-    public  func sizeToFit() {
+    public func sizeToFit() {
         self.frame.size = self.fittingSize
     }
     
@@ -170,28 +202,25 @@ public class MediaView: NSView {
     private var previousVideoPlaybackState: AVPlayer.State = .isStopped
     private var videoSize: CGSize? = nil
     
-    private func addImageView() {
-        self.imageView.frame = self.frame
-            self.imageView.autoAnimates = true
+    private func showImageView() {
+            self.imageView.frame = self.frame
             self.imageView.imageScaling = self.contentScaling
             self.imageView.isHidden = false
     }
     
-    private func removeImageView() {
+    private func hideImageView() {
         self.imageView.stopAnimating()
         self.imageView.image = nil
         self.imageView.isHidden = true
     }
     
-    private func addVideoView() {
+    private func showVideoView() {
             self.updateVideoViewConfiguration()
             self.setupPlayerItemDidReachEnd()
-        self.videoView.isHidden = false
-           // self.videoView.frame = self.frame
-         //   self.addSubview(withAutoresizing: self.videoView)
+            self.videoView.isHidden = false
     }
         
-    private func removeVideoView() {
+    private func hideVideoView() {
         self.updatePreviousPlaybackState()
         if let player = self.videoView.player {
             NotificationCenter.default.removeObserver(self, name: .AVPlayerItemDidPlayToEndTime, object: player.currentItem)
@@ -199,8 +228,6 @@ public class MediaView: NSView {
         self.videoView.player?.pause()
         self.videoView.player?.replaceCurrentItem(with: nil)
         self.videoView.isHidden = true
-   //     self.videoView.player = nil
-    //    self.videoView.removeFromSuperview()
     }
     
     private func updateVideoViewConfiguration() {
@@ -234,7 +261,7 @@ public class MediaView: NSView {
         }
     }
     
-    public  init(mediaURL: URL) {
+    public init(mediaURL: URL) {
         super.init(frame: .zero)
         self.mediaURL = mediaURL
     }
@@ -257,8 +284,6 @@ public class MediaView: NSView {
     private func sharedInit() {
         self.wantsLayer = true
         self.contentScaling = .resizeAspectFill
-        self.imageView.isHidden = true
-        self.videoView.isHidden = true
         self.addSubview(withConstraint: self.imageView)
         self.addSubview(withConstraint: self.videoView)
 

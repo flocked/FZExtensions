@@ -62,8 +62,8 @@ public class InnershadowView: UIView {
         set { innershadowLayer.offset = newValue }}
     
     public var shadowColor: NSColor?  {
-        get { innershadowLayer.color }
-        set { innershadowLayer.color = newValue } }
+        get { innershadowLayer.withBrightness }
+        set { innershadowLayer.withBrightness = newValue } }
     
     public var shadowProperties: ContentProperties.Shadow {
         get { innershadowLayer.properties }

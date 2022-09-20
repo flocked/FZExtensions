@@ -125,6 +125,15 @@ public class MagnifyMediaView: NSView {
         }
     }
     
+    public  var images: [NSImage] {
+        get {  return self.mediaView.images }
+        set {
+            self.mediaView.images = newValue
+            self.scrollView.contentView.frame.size = self.bounds.size
+            self.setMagnification(1.0)
+        }
+    }
+    
     public  var asset: AVAsset? {
         get {  return self.mediaView.asset }
         set {
@@ -146,9 +155,24 @@ public class MagnifyMediaView: NSView {
         get { self.mediaView.videoPlaybackOption }
         set { self.mediaView.videoPlaybackOption = newValue } }
     
+    public var autoAnimatesImages: Bool {
+        get { self.mediaView.autoAnimatesImages }
+        set { self.mediaView.autoAnimatesImages = newValue } }
+    
+    public var loopVideos: Bool {
+        get { self.mediaView.loopVideos }
+        set { self.mediaView.loopVideos = newValue } }
+    
+    public var videoViewControlStyle: AVPlayerViewControlsStyle {
+        get { self.mediaView.videoViewControlStyle }
+        set { self.mediaView.videoViewControlStyle = newValue } }
+    
     public var contentScaling: CALayerContentsGravity {
         get {  mediaView.contentScaling }
         set { mediaView.contentScaling = newValue } }
+    
+    public var mediaType: URL.FileType? {
+        get { return mediaView.mediaType } }
     
     public func play() {
         self.mediaView.play()
@@ -164,6 +188,14 @@ public class MagnifyMediaView: NSView {
     
     public func togglePlayback() {
         self.mediaView.togglePlayback()
+    }
+    
+    public override var fittingSize: NSSize {
+        return mediaView.fittingSize
+    }
+    
+    public func sizeToFit() {
+        self.frame.size = self.fittingSize
     }
 
     public var hasScrollers: Bool {
