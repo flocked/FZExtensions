@@ -36,10 +36,10 @@ public extension NSColor {
         let other = color.usingColorSpace(.deviceRGB)!
         other.getRed(&rightRed, green: &rightGreen, blue: &rightBlue, alpha: &rightAlpha)
 
-        return NSColor(calibratedRed: leftRed * factor + rightRed * inverseFactor,
-                       green: leftGreen * factor + rightGreen * inverseFactor,
-                       blue: leftBlue * factor + rightBlue * inverseFactor,
-                       alpha: leftAlpha * factor + rightAlpha * inverseFactor)
+        return NSColor(calibratedRed: leftRed * amount + rightRed * inverseFactor,
+                       green: leftGreen * amount + rightGreen * inverseFactor,
+                       blue: leftBlue * amount + rightBlue * inverseFactor,
+                       alpha: leftAlpha * amount + rightAlpha * inverseFactor)
     }
 
     convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat = 1)  {

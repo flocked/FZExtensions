@@ -20,6 +20,17 @@ public class MediaView: NSView {
    internal let imageView = ImageView()
     internal let videoView = NoKeyDownPlayerView()
     
+    public var overlayView: NSView? = nil {
+        didSet {
+            if let overlayView = overlayView, oldValue != overlayView {
+                oldValue?.removeFromSuperview()
+                self.addSubview(withConstraint: overlayView)
+            } else {
+                oldValue?.removeFromSuperview()
+            }
+        }
+    }
+    
     public  var contentTintColor: NSColor? {
         get { self.imageView.contentTintColor  }
         set { self.imageView.contentTintColor  = newValue  }
