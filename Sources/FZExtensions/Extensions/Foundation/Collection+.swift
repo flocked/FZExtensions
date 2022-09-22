@@ -7,6 +7,31 @@
 
 import Foundation
 
+public extension Array {
+  subscript(safe safeIndex: Int) -> Element? {
+        if self.isEmpty == false, safeIndex < self.count-1 {
+            return self[safeIndex]
+        }
+        return nil
+    }
+    
+    subscript(indexes: IndexSet) -> [Element] {
+       return indexes.compactMap({self[safe: $0]})
+    }
+}
+
+public extension Sequence {
+    func indexes(where predicate: (Element) throws -> Bool) rethrows -> IndexSet {
+        var indexes = IndexSet()
+        for (index, element) in self.enumerated() {
+            if (try predicate(element) == true) {
+                indexes.insert(index)
+            }
+        }
+        return indexes
+    }
+}
+
 public extension Sequence where Element: Equatable {
     func unique() -> [Element] {
         var uniqueValues: [Element] = []
@@ -15,6 +40,12 @@ public extension Sequence where Element: Equatable {
             uniqueValues.append(item)
         }
         return uniqueValues
+    }
+}
+
+public extension Sequence where Element: Hashable {
+    func unique() ->  [Element] {
+        return Array(Set(self))
     }
 }
 
@@ -70,12 +101,6 @@ public extension Array {
     }
 }
 
-public extension Sequence where Iterator.Element: Hashable {
-    func unique() ->  [Iterator.Element] {
-        return Array(Set(self))
-    }
-}
-
 public extension Sequence where Element: RawRepresentable, Element.RawValue: Equatable  {
     func first(rawValue: Element.RawValue) -> Element? {
         return self.first(where: {$0.rawValue == rawValue})
@@ -95,7 +120,7 @@ public extension Sequence where Iterator.Element: AnyObject {
 }
 
 public extension Sequence where Element: Equatable  {
-    func contains(any elements: Self) -> Bool {
+    func contains<S: Sequence>(any elements: S) -> Bool where S.Element == Element {
         for element in elements {
             if (self.contains(element)) {
                 return true
@@ -104,7 +129,7 @@ public extension Sequence where Element: Equatable  {
         return false
     }
     
-    func contains(all elements: Self) -> Bool {
+    func contains<S: Sequence>(all elements: S) -> Bool where S.Element == Element {
         for checkElement in elements {
             if (self.contains(checkElement) == false) {
                 return false
@@ -114,29 +139,7 @@ public extension Sequence where Element: Equatable  {
     }
 }
 
-public extension Array {
-    var middle: Element? {
-        guard count != 0 else { return nil }
-        let middleIndex = (count > 1 ? count - 1 : count) / 2
-        return self[middleIndex]
-    }
-}
-
-public extension Array {
-  subscript(safe index: Int) -> Element? {
-    return indices ~= index ? self[index] : nil
-  }
-}
-
 public extension RangeReplaceableCollection where Self.Indices.Element == Int {
-
-    /**
-        Removes the items contained in an `IndexSet` from the collection.
-        Items outside of the collection range will be ignored.
-
-        - Parameter indexSet: The set of indices to be removed.
-        - Returns: Returns the removed items as an `Array<Self.Element>`.
-    */
     @discardableResult
     mutating func removeItems(in indexSet: IndexSet) -> [Self.Element] {
         var returnItems = [Self.Element]()
@@ -149,19 +152,6 @@ public extension RangeReplaceableCollection where Self.Indices.Element == Int {
         return returnItems
     }
 
-
-    /**
-        Moves a set of items with indices contained in an `IndexSet` to a
-        destination index within the collection.
-
-        - Parameters:
-            - indexSet: The `IndexSet` of items to move.
-            - destinationIndex: The destination index to which to move the items.
-        - Returns: `true` if the operation completes successfully else `false`.
-
-        If any items fall outside of the range of the collection this function
-        will fail with a fatal error.
-    */
     @discardableResult
     mutating func moveItems(from indexSet: IndexSet, to destinationIndex: Index) -> Bool {
 

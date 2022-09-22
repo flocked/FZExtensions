@@ -68,7 +68,7 @@ public class ImageLayer: CALayer {
         
     public  var animationDuration: TimeInterval = 0.0
     
-    public  var isAnimating: Bool {
+    public var isAnimating: Bool {
         return (displayLink != nil)
     }
     

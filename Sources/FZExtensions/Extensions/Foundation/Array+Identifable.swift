@@ -39,8 +39,6 @@ public extension Sequence where Element: Identifiable {
        first { $0.id == id }
     }
     
-    
-    
     subscript<S: Sequence>(ids ids: S) -> [Element] where S.Element == Element.ID {
         self.filter({ids.contains($0.id)})
     }
@@ -51,7 +49,7 @@ public extension Collection where Element: Identifiable {
     func index(of element: Element) -> Self.Index? {
         return self.firstIndex(where: {$0.id == element.id})
     }
-    func indexes(of elements: [Element]) -> [Self.Index] {
+    func indexes<S: Sequence>(of elements: S) -> [Self.Index]  where S.Element == Element {
         return elements.compactMap({self.index(of: $0)})
     }
 }
@@ -63,43 +61,22 @@ public extension RangeReplaceableCollection where Element: Identifiable {
         }
     }
     
-    mutating func remove(_ elements: [Element]) {
+    mutating func remove<S: Sequence>(_ elements: S)  where S.Element == Element {
         for element in elements {
             self.remove(element)
         }
     }
 }
 
-public extension Array {
-    subscript(indexes: [Int]) -> [Element] {
-        var elements = [Element]()
-        for index in indexes {
-            elements.append(self[index])
-        }
-        return elements
-    }
-    
-    func indexes(where predicate: (Element) throws -> Bool) rethrows -> [Int] {
-        var indexes = [Int]()
-        for (index, element) in self.enumerated() {
-            if (try predicate(element) == true) {
-                indexes.append(index)
-            }
-        }
-        return indexes
-    }
-    
-}
-
 public extension Array where Element: Identifiable {
-    mutating func move(_ elements: [Element], before: Element) {
+    mutating func move<S: Sequence>(_ elements: S, before: Element) where S.Element == Element  {
         if let toIndex = self.index(of: before) {
             let indexSet = IndexSet(self.indexes(of: elements))
             self.moveItems(from: indexSet, to: toIndex)
         }
     }
     
-    mutating func move(_ elements: [Element], after: Element)  {
+    mutating func move<S: Sequence>(_ elements: S, after: Element)  where S.Element == Element   {
         if let toIndex = self.index(of: after) {
             let indexSet = IndexSet(self.indexes(of: elements))
             self.moveItems(from: indexSet, to: toIndex)

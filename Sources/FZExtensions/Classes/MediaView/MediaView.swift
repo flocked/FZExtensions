@@ -22,21 +22,6 @@ public class MediaView: NSView {
         set { imageView.autoAnimates = newValue }
     }
     
-    internal  lazy var imageView: ImageView = {
-        let imageView = ImageView()
-        imageView.imageScaling = self.contentScaling
-        imageView.isHidden = true
-        return imageView
-    }()
-    
-    internal lazy var videoView: NoKeyDownPlayerView = {
-        let videoView = NoKeyDownPlayerView()
-        videoView.isHidden = true
-        videoView.videoGravity = AVLayerVideoGravity(caLayerContentsGravity: self.contentScaling) ?? .resizeAspectFill
-        return videoView
-    }()
-    
-    
     public var overlayView: NSView? = nil {
         didSet {
             if let overlayView = overlayView, oldValue != overlayView {
@@ -180,6 +165,15 @@ public class MediaView: NSView {
         self.videoView.player?.togglePlayback()
     }
     
+    public var isPlaying: Bool {
+        if (self.mediaType == .image || self.mediaType == .gif) {
+            return imageView.isAnimating
+        } else if (self.mediaType == .video) {
+            return videoView.player?.state == .isPlaying
+        }
+        return false
+    }
+    
     public override var fittingSize: NSSize {
         if (self.mediaURL?.fileType == .image || self.mediaURL?.fileType == .gif) {
             return imageView.fittingSize
@@ -198,10 +192,7 @@ public class MediaView: NSView {
         case paused
         case stopped
     }
-    
-    private var previousVideoPlaybackState: AVPlayer.State = .isStopped
-    private var videoSize: CGSize? = nil
-    
+        
     private func showImageView() {
             self.imageView.frame = self.frame
             self.imageView.imageScaling = self.contentScaling
@@ -209,7 +200,6 @@ public class MediaView: NSView {
     }
     
     private func hideImageView() {
-        self.imageView.stopAnimating()
         self.imageView.image = nil
         self.imageView.isHidden = true
     }
@@ -229,6 +219,9 @@ public class MediaView: NSView {
         self.videoView.player?.replaceCurrentItem(with: nil)
         self.videoView.isHidden = true
     }
+    
+    private var previousVideoPlaybackState: AVPlayer.State = .isStopped
+    private var videoSize: CGSize? = nil
     
     private func updateVideoViewConfiguration() {
         self.videoView.player?.volume = self.volume
@@ -260,6 +253,20 @@ public class MediaView: NSView {
             }
         }
     }
+    
+    internal  lazy var imageView: ImageView = {
+        let imageView = ImageView()
+        imageView.imageScaling = self.contentScaling
+        imageView.isHidden = true
+        return imageView
+    }()
+    
+    internal lazy var videoView: NoKeyDownPlayerView = {
+        let videoView = NoKeyDownPlayerView()
+        videoView.isHidden = true
+        videoView.videoGravity = AVLayerVideoGravity(caLayerContentsGravity: self.contentScaling) ?? .resizeAspectFill
+        return videoView
+    }()
     
     public init(mediaURL: URL) {
         super.init(frame: .zero)

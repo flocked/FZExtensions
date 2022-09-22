@@ -190,6 +190,10 @@ public class MagnifyMediaView: NSView {
         self.mediaView.togglePlayback()
     }
     
+    public var isPlaying: Bool {
+        return mediaView.isPlaying
+    }
+    
     public override var fittingSize: NSSize {
         return mediaView.fittingSize
     }
