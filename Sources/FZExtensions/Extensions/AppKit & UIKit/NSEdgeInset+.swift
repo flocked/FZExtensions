@@ -19,22 +19,22 @@ public extension NSEdgeInsets {
 }
 #endif
     
-public extension NSUIEdgeInsets {
+ extension NSUIEdgeInsets {
     var directional: NSDirectionalEdgeInsets {
         return .init(top: self.top, leading: self.left, bottom: self.bottom, trailing: self.right)
     }
 
-    init(_ value: CGFloat) {
+    public   init(_ value: CGFloat) {
         self.init(top: value, left: value, bottom: value, right: value)
     }
     
-    init(width: CGFloat = 0.0, height: CGFloat = 0.0) {
+    public  init(width: CGFloat = 0.0, height: CGFloat = 0.0) {
         let wValue = width / 2.0
         let hValue = height / 2.0
         self.init(top: hValue, left: wValue, bottom: hValue, right: wValue)
     }
     
-    var width: CGFloat {
+    public var width: CGFloat {
         get { return self.left + self.right }
         set {
             let value = newValue / 2.0
@@ -43,7 +43,7 @@ public extension NSUIEdgeInsets {
         }
     }
     
-    var height: CGFloat {
+    public  var height: CGFloat {
         get { return self.top + self.bottom }
         set {
             let value = newValue / 2.0
@@ -54,20 +54,20 @@ public extension NSUIEdgeInsets {
 }
 
 
-public extension NSDirectionalEdgeInsets {
-    static var zero = NSDirectionalEdgeInsets(0)
+ extension NSDirectionalEdgeInsets {
+     public  static var zero = NSDirectionalEdgeInsets(0)
 
-    init(_ value: CGFloat) {
+    public  init(_ value: CGFloat) {
         self.init(top: value, leading: value, bottom: value, trailing: value)
     }
     
-    init(width: CGFloat = 0.0, height: CGFloat = 0.0) {
+     public init(width: CGFloat = 0.0, height: CGFloat = 0.0) {
         self.init()
         self.width = width
         self.height = height
     }
     
-    var width: CGFloat {
+     public  var width: CGFloat {
         get { return self.leading + self.trailing }
         set {
             let value = newValue / 2.0
@@ -76,7 +76,7 @@ public extension NSDirectionalEdgeInsets {
         }
     }
     
-    var height: CGFloat {
+     public  var height: CGFloat {
         get { return self.top + self.bottom }
         set {
             let value = newValue / 2.0
@@ -85,16 +85,16 @@ public extension NSDirectionalEdgeInsets {
         }
     }
     
-    var edgeInsets: EdgeInsets {
+     public  var edgeInsets: EdgeInsets {
         return EdgeInsets(top: self.top, leading: self.leading, bottom: self.bottom, trailing: self.trailing)
     }
     
 #if os(macOS)
-    var nsEdgeInsets: NSEdgeInsets {
+     public var nsEdgeInsets: NSEdgeInsets {
         return .init(top: self.top, left: self.leading, bottom: self.bottom, right: self.trailing)
     }
 #elseif canImport(UIKit)
-    var uiEdgeInsets: NSUIEdgeInsets {
+     public  var uiEdgeInsets: NSUIEdgeInsets {
         return .init(top: self.top, left: self.leading, bottom: self.bottom, right: self.trailing)
     }
 #endif
@@ -118,17 +118,17 @@ public extension NSDirectionalEdgeInsets {
 extension EdgeInsets: Hashable {
     public static var zero: EdgeInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
     
-    init(_ value: CGFloat) {
+    public init(_ value: CGFloat) {
         self.init(top: value, leading: value, bottom: value, trailing: value)
     }
     
-    init(width: CGFloat, height: CGFloat) {
+    public init(width: CGFloat, height: CGFloat) {
         self.init()
         self.width = width
         self.height = height
     }
     
-    var width: CGFloat {
+    public var width: CGFloat {
         get { return self.leading + self.trailing }
         set {
             let value = newValue / 2.0
@@ -137,7 +137,7 @@ extension EdgeInsets: Hashable {
         }
     }
     
-    var height: CGFloat {
+    public var height: CGFloat {
         get { return self.top + self.bottom }
         set {
             let value = newValue / 2.0
