@@ -14,7 +14,7 @@ public extension NSView {
         case full
         case insets(NSEdgeInsets)
         public static func insets(_ directionalEdgeInsets: NSDirectionalEdgeInsets) -> ConstraintValueMode {
-            return .insets(directionalEdgeInsets.edgeInsets)
+            return .insets(directionalEdgeInsets.nsEdgeInsets)
         }
         
         internal var autoresizingMask: NSView.AutoresizingMask {

@@ -11,6 +11,8 @@ import AppKit
 import UIKit
 #endif
 
+import SwiftUI
+
 #if os(macOS)
 public extension NSEdgeInsets {
     static var zero = NSEdgeInsets(0)
@@ -60,9 +62,9 @@ public extension NSDirectionalEdgeInsets {
     }
     
     init(width: CGFloat = 0.0, height: CGFloat = 0.0) {
-        let wValue = width / 2.0
-        let hValue = height / 2.0
-        self.init(top: hValue, leading: wValue, bottom: hValue, trailing: wValue)
+        self.init()
+        self.width = width
+        self.height = height
     }
     
     var width: CGFloat {
@@ -83,9 +85,19 @@ public extension NSDirectionalEdgeInsets {
         }
     }
     
-    var edgeInsets: NSUIEdgeInsets {
+    var edgeInsets: EdgeInsets {
+        return EdgeInsets(top: self.top, leading: self.leading, bottom: self.bottom, trailing: self.trailing)
+    }
+    
+#if os(macOS)
+    var nsEdgeInsets: NSEdgeInsets {
         return .init(top: self.top, left: self.leading, bottom: self.bottom, right: self.trailing)
     }
+#elseif canImport(UIKit)
+    var uiEdgeInsets: NSUIEdgeInsets {
+        return .init(top: self.top, left: self.leading, bottom: self.bottom, right: self.trailing)
+    }
+#endif
 }
 
 
@@ -100,5 +112,44 @@ public extension NSDirectionalEdgeInsets {
         hasher.combine(self.trailing)
         hasher.combine(self.leading)
 
+    }
+}
+
+extension EdgeInsets: Hashable {
+    public static var zero: EdgeInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+    
+    init(_ value: CGFloat) {
+        self.init(top: value, leading: value, bottom: value, trailing: value)
+    }
+    
+    init(width: CGFloat, height: CGFloat) {
+        self.init()
+        self.width = width
+        self.height = height
+    }
+    
+    var width: CGFloat {
+        get { return self.leading + self.trailing }
+        set {
+            let value = newValue / 2.0
+            self.leading = value
+            self.trailing = value
+        }
+    }
+    
+    var height: CGFloat {
+        get { return self.top + self.bottom }
+        set {
+            let value = newValue / 2.0
+            self.top = value
+            self.bottom = value
+        }
+    }
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.top)
+        hasher.combine(self.bottom)
+        hasher.combine(self.leading)
+        hasher.combine(self.trailing)
     }
 }
