@@ -25,6 +25,8 @@ public class VelocityMagnificationGestureRecognizer: NSMagnificationGestureRecog
             switch state {
             case .began:
                 velocity = 1.0
+            case .ended:
+                break
             default:
                 velocity = calculateVelocity()
             }

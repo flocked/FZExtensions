@@ -16,15 +16,15 @@ public extension NSFont {
     }
         
     static func systemFont(ofTableRowSize tableRowSize: NSTableView.RowSizeStyle) -> NSFont {
-        return .systemFont(ofSize: self.systemFontSize(for: tableRowSize))
+        return .systemFont(ofSize: self.systemFontSize(forTableRowSize: tableRowSize))
     }
     
     static func systemFont(ofTableRowSize tableRowSize: NSTableView.RowSizeStyle, weight: NSFont.Weight) -> NSFont {
-        return .systemFont(ofSize: self.systemFontSize(for: tableRowSize), weight: weight)
+        return .systemFont(ofSize: self.systemFontSize(forTableRowSize: tableRowSize), weight: weight)
     }
     
     
-    static func systemFontSize(for tableRowSize: NSTableView.RowSizeStyle) -> CGFloat {
+    static func systemFontSize(forTableRowSize tableRowSize: NSTableView.RowSizeStyle) -> CGFloat {
         switch tableRowSize {
         case .small:
             return 11.0

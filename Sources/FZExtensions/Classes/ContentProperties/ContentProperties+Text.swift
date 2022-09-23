@@ -131,7 +131,7 @@ public extension ContentProperties.Text {
             case .controlSize(let value):
                 return NSFont.systemFontSize(for: value)
             case .tableRowSize(let value):
-                return NSFont.systemFontSize(for: value)
+                return NSFont.systemFontSize(forTableRowSize: value)
             }
         }
     }
