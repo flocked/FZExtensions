@@ -10,11 +10,31 @@ import AppKit
 #elseif canImport(UIKit)
 import UIKit
 #endif
-
 import UniformTypeIdentifiers
 
+public extension NSUIImage {
+     convenience init(color: NSUIColor) {
+        let size = CGSize(width: 1, height: 1)
+
+        #if canImport(UIKit)
+        let image = UIGraphicsImageRenderer(size: size).image { context in
+            color.setFill()
+            context.fill(context.format.bounds)
+        }.resizableImage(withCapInsets: .zero)
+        self.init(cgImage: image.cgImage!)
+        #else
+        self.init(size: size, flipped: false) { rect in
+            color.setFill()
+            rect.fill()
+            return true
+        }
+        resizingMode = .stretch
+        capInsets = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        #endif
+    }
+}
+
 public extension CGImage {
-    
 #if os(macOS)
     var nsImage: NSImage {
         return NSImage(cgImage: self)
@@ -67,6 +87,30 @@ public extension NSImage {
 
         return image
       }
+    
+    func roundedCorners(radius: CGFloat) -> NSImage {
+        let rect = NSRect(origin: NSPoint.zero, size: size)
+        if
+            let cgImage = self.cgImage,
+            let context = CGContext(data: nil,
+                                width: Int(size.width),
+                                height: Int(size.height),
+                                bitsPerComponent: 8,
+                                bytesPerRow: 4 * Int(size.width),
+                                space: CGColorSpaceCreateDeviceRGB(),
+                                bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue) {
+            context.beginPath()
+            context.addPath(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil))
+            context.closePath()
+            context.clip()
+            context.draw(cgImage, in: rect)
+
+            if let composedImage = context.makeImage() {
+                return NSImage(cgImage: composedImage, size: size)
+            }
+        }
+        return self
+    }
 
       func rounded() -> NSImage {
         let image = NSImage(size: size)
@@ -91,7 +135,7 @@ public extension NSImage {
         return image
       }
 
-      func rotate(_ degree: Int) -> NSImage {
+      func rotated(degree: Int) -> NSImage {
         var degree = ((degree % 360) + 360) % 360
         guard degree % 90 == 0 && degree != 0 else { return self }
         // mpv's rotation is clockwise, NSAffineTransform's rotation is counterclockwise

@@ -9,7 +9,8 @@
 import AppKit
 
 public protocol NSContentView {
-       var configuration: NSContentConfiguration { get set }
-       func supports(_ configuration: NSContentConfiguration) -> Bool
+    var configuration: NSContentConfiguration { get set }
+    func supports(_ configuration: NSContentConfiguration) -> Bool
 }
+
 #endif
