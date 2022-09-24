@@ -9,10 +9,6 @@
 import AppKit
 
 extension NSView {
-    // for NSView subclasses
-    public func sizeThatFits(_ size: CGSize) -> CGSize {
-            return self.frame.size
-    }
     
     public var frameInWindow: CGRect {
         convert(bounds, to: nil)
