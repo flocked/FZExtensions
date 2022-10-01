@@ -85,6 +85,11 @@ public extension String {
         return []
     }}
     
+    func substrings(between fromString: String, and toString: String) -> [String] {
+        let pattern = fromString + "(.*?)" + toString
+       return self.matches(regex: pattern)
+    }
+    
     func matches(regex pattern: String) -> [String] {
         let string = self
         var matches = [String]()

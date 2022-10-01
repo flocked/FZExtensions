@@ -18,6 +18,11 @@ public extension NSContentView where Self: NSView {
      func sizeThatFits(_ size: CGSize) -> CGSize {
         return self.frame.size
     }
+    
+    func sizeThatFits(width: CGFloat?, height: CGFloat?) -> CGSize {
+        if (width == nil && height == nil) { return self.fittingSize }
+        return self.sizeThatFits(CGSize(width: width ?? .infinity, height: height ?? .infinity))
+    }
 }
 
 #endif

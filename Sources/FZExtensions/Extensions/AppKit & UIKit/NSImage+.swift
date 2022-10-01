@@ -34,6 +34,26 @@ public extension NSUIImage {
     }
 }
 
+public extension NSUIImage {
+#if os(macOS)
+    var sfSymbolName: String? {
+        let description = String(describing: self)
+       return description.substrings(between: "symbol = ", and: ">").first
+    }
+    
+    var isSymbolImage: Bool {
+        return (self.sfSymbolName != nil)
+    }
+#elseif canImport(UIKit)
+    var sfSymbolName: String? {
+        guard self.isSymbolImage, let strSeq = "\(String(describing: self))".split(separator: ")").first else { return nil }
+           let str = String(strSeq)
+           guard let name = str.split(separator: ":").last else { return nil }
+           return String(name)
+       }
+#endif
+}
+
 public extension CGImage {
 #if os(macOS)
     var nsImage: NSImage {
