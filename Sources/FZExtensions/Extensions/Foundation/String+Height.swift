@@ -10,7 +10,6 @@ import AppKit
 
 public extension String {
      func height(using width: CGFloat, font: NSFont, maxLines: Int? = nil) -> CGFloat {
-        
          let textField = NSTextField()
          textField.preferredMaxLayoutWidth = width
          textField.font = font
@@ -25,34 +24,8 @@ public extension String {
                  textField.textLayout = .wraps
              }
          }
-         
          textField.invalidateIntrinsicContentSize()
          return textField.intrinsicContentSize.height
-         
-         /*
-        let maxSize = CGSize(width: width,
-                             height: CGFloat.greatestFiniteMagnitude)
-        
-        let actualSize = self.boundingRect(with: maxSize,
-                                           options: [.usesLineFragmentOrigin],
-                                           attributes: [.font : font],
-                                           context: nil)
-        
-        let height = ceil(actualSize.height)
-         if let maxLines = maxLines {
-             if (maxLines == 0) {
-                 return 0.0
-             } else if maxLines > 0 {
-                      let lines = height / font.lineHeight
-                      if lines >= maxLines {
-                          return (actualSize.height / lines) * maxLines
-                      }
-             }
-         }
-
-
-         return height
-*/
     }
 }
 
@@ -75,29 +48,6 @@ public extension NSAttributedString {
         
         textField.invalidateIntrinsicContentSize()
         return textField.intrinsicContentSize.height
-        
-        /*
-        let maxSize = CGSize(width: width,
-                             height: CGFloat.greatestFiniteMagnitude)
-        
-        let actualSize = self.boundingRect(with: maxSize,
-                                           options: [.usesLineFragmentOrigin],
-                                           context: nil)
-        
-        let height = ceil(actualSize.height)
-         if let maxLines = maxLines {
-             if (maxLines == 0) {
-                 return 0.0
-             } else if maxLines > 0 {
-                      let lines = height / font.lineHeight
-                      if lines >= maxLines {
-                          return (actualSize.height / lines) * maxLines
-                      }
-             }
-         }
-        
-        return height
-        */
     }
 }
 

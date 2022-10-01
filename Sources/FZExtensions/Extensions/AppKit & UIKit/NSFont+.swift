@@ -6,13 +6,31 @@
 //
 
 #if os(macOS)
-
-import Foundation
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
+#if os(macOS)
+import AppKit
 public extension NSFont {
     var lineHeight: CGFloat {
-        return self.boundingRectForFont.size.height
+        var attributes = self.fontDescriptor.fontAttributes
+        var font = self
+        if ( attributes[.sizeCategory] != nil) {
+        attributes[.sizeCategory] = nil
+        if let usageValue = attributes[.uiUsage] as? String {
+                if usageValue == "UICTFontTextStyleHeadline" {
+                    attributes[.uiUsage] = "CTFontDemiUsage"
+                } else if usageValue.contains("UICTFontTextStyle") {
+                    attributes[.uiUsage] = "CTFontRegularUsage"
+                }
+            }
+            font = NSFont(descriptor: NSUIFontDescriptor(fontAttributes: attributes), size: self.pointSize)!
+        }
+        let ctFont = font as CTFont
+        return CTFontGetAscent(ctFont) + CTFontGetDescent(ctFont) + CTFontGetLeading(ctFont)
+        // return self.boundingRectForFont.size.height
     }
         
     static func systemFont(ofTableRowSize tableRowSize: NSTableView.RowSizeStyle) -> NSFont {
@@ -67,3 +85,12 @@ public extension NSFont {
 }
 
 #endif
+
+extension NSUIFontDescriptor.AttributeName {
+    internal static var sizeCategory: Self {
+        return .init(rawValue: "NSCTFontSizeCategoryAttribute")
+    }
+    internal static var uiUsage: Self {
+        return .init(rawValue: "NSCTFontUIUsageAttribute")
+    }
+}

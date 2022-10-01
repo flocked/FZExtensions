@@ -10,6 +10,16 @@
 import AppKit
 
 public extension NSTextField {
+    convenience init(layout: TextLayout) {
+        self.init(frame: .zero)
+        self.textLayout = layout
+    }
+    
+    convenience init(frame: CGRect, layout: TextLayout) {
+        self.init(frame: frame)
+        self.textLayout = layout
+    }
+    
     var textLayout: TextLayout? {
         get {
             switch (self.lineBreakMode, cell?.wraps, cell?.isScrollable) {
