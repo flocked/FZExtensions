@@ -86,18 +86,6 @@ public extension NSFont {
 
 #endif
 
-extension NSUIFontDescriptor.TraitKey {
-    internal enum Design: String {
-        case default: "NSCTFontUIFontDesignDefault"
-        case rounded: "NSCTFontUIFontDesignRounded"
-        case monospaced: "NSCTFontUIFontDesignMonospaced"
-        case serif: "NSCTFontUIFontDesignSerif"
-    }
-    
-    internal static var design: Self {
-        return .init(rawValue: "NSCTFontUIFontDesignTrait")
-    }
-}
 
 public extension NSUIFont {
     static var caption2: NSUIFont {
@@ -316,6 +304,18 @@ public extension NSUIFont {
     }
 }
 
+extension NSUIFontDescriptor.TraitKey {
+    internal enum Design: String {
+        case rounded = "NSCTFontUIFontDesignRounded"
+        case monospaced = "NSCTFontUIFontDesignMonospaced"
+        case serif = "NSCTFontUIFontDesignSerif"
+    }
+    
+    internal static var design: Self {
+        return .init(rawValue: "NSCTFontUIFontDesignTrait")
+    }
+}
+
 extension NSUIFontDescriptor.AttributeName {
     internal static var sizeCategory: Self {
         return .init(rawValue: "NSCTFontSizeCategoryAttribute")
@@ -326,25 +326,25 @@ extension NSUIFontDescriptor.AttributeName {
     }
     
     internal enum UIUsage: String {
-        case systemUltraLight: "CTFontUltraLightUsage"
-        case systemThin: "CTFontThinUsage"
-        case systemLight: "CTFontLightUsage"
-        case systemRegular: "CTFontRegularUsage"
-        case systemMedium: "CTFontMediumUsage"
-        case systemSemiBold: "CTFontDemiUsage"
-        case systemBold: "CTFontBoldUsage"
-        case systemHeavy: "CTFontHeavyUsage"
-        case systemBlack: "CTFontBlackUsage"
+        case systemUltraLight = "CTFontUltraLightUsage"
+        case systemThin = "CTFontThinUsage"
+        case systemLight = "CTFontLightUsage"
+        case systemRegular = "CTFontRegularUsage"
+        case systemMedium = "CTFontMediumUsage"
+        case systemSemiBold = "CTFontDemiUsage"
+        case systemBold = "CTFontBoldUsage"
+        case systemHeavy = "CTFontHeavyUsage"
+        case systemBlack = "CTFontBlackUsage"
 
-        case body: "UICTFontTextStyleBody"
-        case callout: "UICTFontTextStyleCallout"
-        case caption1: "UICTFontTextStyleCaption1"
-        case caption2: "UICTFontTextStyleCaption2"
-        case headline: "UICTFontTextStyleHeadline"
-        case subheadline: "UICTFontTextStyleSubhead"
-        case largeTitle: "UICTFontTextStyleTitle0"
-        case title1: "UICTFontTextStyleTitle1"
-        case title2: "UICTFontTextStyleTitle2"
-        case title3: "UICTFontTextStyleTitle3"
+        case body = "UICTFontTextStyleBody"
+        case callout = "UICTFontTextStyleCallout"
+        case caption1 = "UICTFontTextStyleCaption1"
+        case caption2 = "UICTFontTextStyleCaption2"
+        case headline = "UICTFontTextStyleHeadline"
+        case subheadline = "UICTFontTextStyleSubhead"
+        case largeTitle = "UICTFontTextStyleTitle0"
+        case title1 = "UICTFontTextStyleTitle1"
+        case title2 = "UICTFontTextStyleTitle2"
+        case title3 = "UICTFontTextStyleTitle3"
     }
 }

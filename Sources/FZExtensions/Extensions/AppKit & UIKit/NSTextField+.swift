@@ -43,10 +43,15 @@ public extension NSTextField {
         }
     }
     
-    enum TextLayout {
-        case wraps
-        case truncates
-        case scrolls
+    enum TextLayout: Int, CaseIterable {
+        case truncates = 0
+        case wraps = 1
+        case scrolls = 2
+        
+         init?(lineBreakMode: NSLineBreakMode) {
+             guard let found = Self.allCases.first(where: {$0.lineBreakMode == lineBreakMode}) else { return nil  }
+             self = found
+        }
         
        internal var isScrollable: Bool {
             return (self == .scrolls)
