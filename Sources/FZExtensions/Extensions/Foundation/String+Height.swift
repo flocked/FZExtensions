@@ -55,7 +55,7 @@ public extension NSAttributedString {
 import UIKit
 
 public extension String {
-     func height(using width: CGFloat, font: NSFont, maxLines: Int? = nil) -> CGFloat {
+     func height(using width: CGFloat, font: UIFont, maxLines: Int? = nil) -> CGFloat {
         
          let textField = UILabel()
          textField.font = font
@@ -67,7 +67,7 @@ public extension String {
          }
          
          let rect = CGRect(x: 0, y: 0, width: width, height: .greatestFiniteMagnitude)
-         let textRect = textField.textRect(forBounds: rect, limitedToNumberOfLines: rect)
+         let textRect = textField.textRect(forBounds: rect, limitedToNumberOfLines: numberOfLines)
          return textRect.height
     }
 }
@@ -76,7 +76,6 @@ public extension NSAttributedString {
      func height(using width: CGFloat, maxLines: Int? = nil) -> CGFloat {
         
          let textField = UILabel()
-         textField.font = font
          textField.attributedText = self
          
          var numberOfLines = 1
@@ -85,7 +84,7 @@ public extension NSAttributedString {
          }
          
          let rect = CGRect(x: 0, y: 0, width: width, height: .greatestFiniteMagnitude)
-         let textRect = textField.textRect(forBounds: rect, limitedToNumberOfLines: rect)
+         let textRect = textField.textRect(forBounds: rect, limitedToNumberOfLines: numberOfLines)
          return textRect.height
     }
 }

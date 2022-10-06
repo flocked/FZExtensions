@@ -19,7 +19,7 @@ public extension Font {
     }
 }
 
-@available(macOS 11.0, iOS 12.2, tvOS 12.2, watchOS 5.2, *)
+@available(macOS 11.0, iOS 14.0, tvOS 12.2, watchOS 5.2, *)
 extension NSUIFont.TextStyle {
     internal var swiftUI: Font.TextStyle {
         switch self {

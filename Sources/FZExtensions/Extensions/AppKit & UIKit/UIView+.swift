@@ -32,7 +32,7 @@ public extension UIView.ContentMode {
     }
     
     init(contentsGravity: CALayerContentsGravity) {
-        let rawValue = NSImageScaling.allCases.first(where: {$0.layerContentsGravity == contentsGravity})?.rawValue ?? UIView.ContentType.scaleToFill.rawValue
+        let rawValue = UIView.ContentMode.allCases.first(where: {$0.layerContentsGravity == contentsGravity})?.rawValue ?? UIView.ContentMode.scaleToFilt.rawValue
         self.init(rawValue: rawValue)!
     }
 }

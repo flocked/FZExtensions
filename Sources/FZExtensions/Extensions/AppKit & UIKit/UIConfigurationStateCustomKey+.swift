@@ -7,10 +7,11 @@
 
 #if canImport(UIKit)
 import UIKit
+@available(iOS 14.0, *)
 extension UIConfigurationStateCustomKey: ExpressibleByStringLiteral {
    public typealias StringLiteralType = String
    public init(stringLiteral value: String) {
-        self.init(rawValue: value)!
+        self.init(rawValue: value)
     }
 }
 #endif

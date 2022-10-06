@@ -182,10 +182,11 @@ public extension NSUIFont {
     
     @available(macOS 11.0, iOS 12.2, tvOS 12.2, watchOS 5.2, *)
     static func system(_ style: NSUIFont.TextStyle, design: NSUIFontDescriptor.SystemDesign = .default) -> NSUIFont {
-        let descriptor = NSUIFontDescriptor.preferredFontDescriptor(forTextStyle: style).withDesign(design)!
 #if os(macOS)
+        let descriptor = NSUIFontDescriptor.preferredFontDescriptor(forTextStyle: style).withDesign(design)!
         return NSUIFont(descriptor: descriptor, size: 0)!
 #else
+        let descriptor = NSUIFontDescriptor.preferredFontDescriptor(withTextStyle: style).withDesign(design)!
         return NSUIFont(descriptor: descriptor, size: 0)
 #endif
     }
@@ -227,7 +228,7 @@ public extension NSUIFont {
 #if os(macOS)
         return NSUIFont(descriptor: descriptor, size: 0)!
 #else
-        return NSUIFont(descriptor: descriptor, size: 0)
+        return NSUIFont(descriptor: descriptor!, size: 0)
 #endif
     }
     

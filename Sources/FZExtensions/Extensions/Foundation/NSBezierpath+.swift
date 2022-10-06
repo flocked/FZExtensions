@@ -160,7 +160,7 @@ public extension NSBezierPath {
 import UIKit
 public extension UIBezierPath {
     convenience init(rect: CGRect, cornerRadius: CGFloat, roundedCorners: CACornerMask = .all) {
-        self.init(roundedRect: self.rect,
+        self.init(roundedRect: rect,
                   byRoundingCorners: roundedCorners,
                   cornerRadii: CGSize(width: cornerRadius/2.0, height: cornerRadius/2.0))
     }
