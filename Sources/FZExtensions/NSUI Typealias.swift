@@ -9,6 +9,7 @@
 
 #if os(macOS)
 import AppKit
+import SwiftUI
 public typealias NSUIBezierPath = NSBezierPath
 public typealias NSUICollectionView = NSCollectionView
 public typealias NSUICollectionViewCompositionalLayout = NSCollectionViewCompositionalLayout
@@ -25,6 +26,7 @@ public typealias NSUIFontDescriptor = NSFontDescriptor
 public typealias NSUIFontTextStyle = NSFont.TextStyle
 public typealias NSUIImage = NSImage
 public typealias NSUIView = NSView
+public typealias NSUIHostingController = NSHostingController
 #elseif canImport(UIKit)
 import UIKit
 public typealias NSUIBezierPath = UIBezierPath
@@ -43,4 +45,5 @@ public typealias NSUIFontDescriptor = UIFontDescriptor
 public typealias NSUIFontTextStyle = UIFont.TextStyle
 public typealias NSUIImage = UIImage
 public typealias NSUIView = UIView
+public typealias NSUIHostingController = UIHostingController
 #endif

@@ -18,7 +18,20 @@ public extension NSEdgeInsets {
     static var zero = NSEdgeInsets(0)
 }
 #endif
+
+extension NSUIEdgeInsets: Hashable, Equatable {
+    public static func == (lhs: NSEdgeInsets, rhs: NSEdgeInsets) -> Bool {
+        lhs.hashValue == rhs.hashValue
+    }
     
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(top)
+        hasher.combine(bottom)
+        hasher.combine(self.left)
+        hasher.combine(self.right)
+    }
+}
+
  extension NSUIEdgeInsets {
     var directional: NSDirectionalEdgeInsets {
         return .init(top: self.top, leading: self.left, bottom: self.bottom, trailing: self.right)
