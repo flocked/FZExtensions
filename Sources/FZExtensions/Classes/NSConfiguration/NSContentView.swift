@@ -16,13 +16,13 @@ public protocol NSContentView {
 
 public extension NSContentView where Self: NSView {
      func sizeThatFits(_ size: CGSize) -> CGSize {
-        return self.frame.size
+        return self.fittingSize
     }
     
-    func sizeThatFits(width: CGFloat? = nil, height: CGFloat? = nil) -> CGSize {
-        if (width == nil && height == nil) { return self.fittingSize }
+    func sizeThatFits(width: CGFloat?, height: CGFloat?) -> CGSize {
         return self.sizeThatFits(CGSize(width: width ?? .infinity, height: height ?? .infinity))
     }
 }
+
 
 #endif
