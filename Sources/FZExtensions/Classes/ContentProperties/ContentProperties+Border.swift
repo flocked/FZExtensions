@@ -12,6 +12,7 @@ import AppKit
 import UIKit
 #endif
 
+@available(macOS 10.15.1, iOS 14.0, *)
 extension ContentProperties {
     public struct Border {
         public var color: NSUIColor? = nil
@@ -43,6 +44,7 @@ extension ContentProperties {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 extension ContentProperties.Border: Hashable {
     public static func == (lhs: ContentProperties.Border, rhs: ContentProperties.Border) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -56,6 +58,7 @@ extension ContentProperties.Border: Hashable {
 
 
 #if os(macOS)
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension NSView {
     func configurate(using borderProperties: ContentProperties.Border) {
         self.wantsLayer = true
@@ -63,6 +66,7 @@ public extension NSView {
     }
 }
 #elseif canImport(UIKit)
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension UIView {
     func configurate(using borderProperties: ContentProperties.Border) {
         self.layer.configurate(using: borderProperties)
@@ -70,6 +74,7 @@ public extension UIView {
 }
 #endif
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension CALayer {
     func configurate(using borderProperties: ContentProperties.Border) {
         self.borderColor = borderProperties.color?.cgColor

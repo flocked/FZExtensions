@@ -12,6 +12,7 @@ import AppKit
 import UIKit
 #endif
 
+@available(macOS 10.15.1, iOS 14.0, *)
 extension ContentProperties {
     public struct Image {
         public var tintColor: NSUIColor? = nil
@@ -52,6 +53,7 @@ extension ContentProperties {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 extension ContentProperties.Image: Hashable {
     public static func == (lhs: ContentProperties.Image, rhs: ContentProperties.Image) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -67,6 +69,7 @@ extension ContentProperties.Image: Hashable {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension ContentProperties {
     enum ImagePlaceholder: Hashable {
         case color(NSUIColor)
@@ -75,6 +78,7 @@ public extension ContentProperties {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension ImageLayer {
     func configurate(using imageProperties: ContentProperties.Image) {
         self.contentTintColor = imageProperties.tintColor
@@ -100,6 +104,7 @@ public extension ImageLayer {
 
 
 #if os(macOS)
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension ImageView {
     func configurate(using imageProperties: ContentProperties.Image) {
         self.contentTintColor = imageProperties.tintColor
@@ -123,6 +128,7 @@ public extension ImageView {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension NSImageView {
     func configurate(using imageProperties: ContentProperties.Image) {
         self.contentTintColor = imageProperties.tintColor
@@ -147,6 +153,7 @@ public extension NSImageView {
 }
 
 #elseif canImport(UIKit)
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension UIImageView {
     func configurate(using imageProperties: ContentProperties.Image) {
         self.tintColor = imageProperties.tintColor

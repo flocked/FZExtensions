@@ -14,6 +14,7 @@ import UIKit
 public typealias VisualEffect = UIVisualEffect
 #endif
 
+@available(macOS 10.15.1, iOS 14.0, *)
 extension ContentProperties {
     public struct View {
         public var cornerRadius: CGFloat = 0.0
@@ -63,6 +64,7 @@ extension ContentProperties {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 extension ContentProperties.View: Hashable {
     public static func == (lhs: ContentProperties.View, rhs: ContentProperties.View) -> Bool {
         lhs.hashValue == rhs.hashValue

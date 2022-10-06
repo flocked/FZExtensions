@@ -12,6 +12,7 @@ import AppKit
 import UIKit
 #endif
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension ContentProperties {
     struct Text {
         public enum TextTransform {
@@ -98,6 +99,7 @@ public extension ContentProperties {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 extension ContentProperties.Text: Hashable {
     public static func == (lhs: ContentProperties.Text, rhs: ContentProperties.Text) -> Bool {
         lhs.hashValue == rhs.hashValue
@@ -119,6 +121,7 @@ extension ContentProperties.Text: Hashable {
 }
 
 #if os(macOS)
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension ContentProperties.Text {
      enum FontSize: Hashable {
         case absolute(CGFloat)
@@ -139,6 +142,7 @@ public extension ContentProperties.Text {
 #endif
 
 #if os(macOS)
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension NSTextField {
     func configurate(using textProperties: ContentProperties.Text) {
         self.font = textProperties.font
@@ -151,6 +155,7 @@ public extension NSTextField {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension NSTextView {
     func configurate(using textProperties: ContentProperties.Text) {
         self.font = textProperties.font
@@ -162,6 +167,7 @@ public extension NSTextView {
     }
 }
 #elseif canImport(UIKit)
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension UILabel {
     func configurate(using textProperties: ContentProperties.Text) {
         self.font = textProperties.font
@@ -174,6 +180,7 @@ public extension UILabel {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension UITextField {
     func configurate(using textProperties: ContentProperties.Text) {
         self.font = textProperties.font
@@ -185,6 +192,7 @@ public extension UITextField {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension UITextView {
     func configurate(using textProperties: ContentProperties.Text) {
         self.font = textProperties.font
@@ -199,6 +207,7 @@ public extension UITextView {
 // maximumNumberOfLines
 #endif
 
+@available(macOS 10.15.1, iOS 14.0, *)
 public extension String {
     func transform(using transform: ContentProperties.Text.TextTransform) -> String {
         switch transform {
@@ -214,6 +223,7 @@ public extension String {
     }
 }
 
+@available(macOS 10.15.1, iOS 14.0, *)
 extension NSAttributedString {
     func transform(using transform: ContentProperties.Text.TextTransform) -> NSAttributedString {
         switch transform {

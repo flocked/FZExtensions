@@ -170,7 +170,7 @@ public class DateTextField: UILabel {
         }
     }
     
-    public override var text: String {
+    public override var text: String? {
         didSet {
             if (text != dateString) {
                 self.date = nil
@@ -178,7 +178,7 @@ public class DateTextField: UILabel {
         }
     }
     
-    public override var attributedText: String {
+    public override var attributedText: NSAttributedString? {
         didSet {
             self.date = nil
         }
