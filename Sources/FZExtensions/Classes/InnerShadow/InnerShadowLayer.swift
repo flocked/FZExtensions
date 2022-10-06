@@ -27,9 +27,9 @@ public class InnerShadowLayer: CALayer {
         set { self.shadowOffset = newValue
             self.update()  } }
     
-    public var color: NSColor?  {
+    public var color: NSUIColor?  {
         get { if let cgColor = self.shadowColor {
-            return NSColor(cgColor: cgColor) }
+            return NSUIColor(cgColor: cgColor) }
             return nil }
         set { self.shadowColor = newValue?.cgColor } }
     
@@ -48,11 +48,11 @@ public class InnerShadowLayer: CALayer {
     
     private func update() {
         if self.superlayer != nil {
-            var path = NSBezierPath(rect: self.bounds.insetBy(dx: -20, dy: -20))
-            var   innerPart = NSBezierPath(rect: self.bounds).reversed
+            var path = NSUIBezierPath(rect: self.bounds.insetBy(dx: -20, dy: -20))
+            var   innerPart = NSUIBezierPath(rect: self.bounds).reversed
             if (self.cornerRadius != 0.0) {
-                path = NSBezierPath(roundedRect:  self.bounds.insetBy(dx: -20, dy: -20), xRadius: self.cornerRadius, yRadius: self.cornerRadius)
-                innerPart = NSBezierPath(roundedRect: self.bounds, xRadius: cornerRadius, yRadius: cornerRadius).reversed
+                path = NSUIBezierPath(roundedRect:  self.bounds.insetBy(dx: -20, dy: -20), cornerRadius: cornerRadius)
+                innerPart = NSUIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius).reversed
             }
             path.append(innerPart)
             self.shadowPath = path.cgPath

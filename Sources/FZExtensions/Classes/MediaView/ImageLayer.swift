@@ -15,7 +15,7 @@ import UIKit
 import Combine
 
 public class ImageLayer: CALayer {
-    public  var contentTintColor: NSColor? = nil {
+    public  var contentTintColor: NSUIColor? = nil {
         didSet {
         }
     }
@@ -26,11 +26,16 @@ public class ImageLayer: CALayer {
         }
         set {
             if let newImage = newValue {
+#if os(macOS)
                 if (newImage.isGif) {
                     self.setGif(image: newImage)
                 } else {
                     self.images = [newImage]
                 }
+#else
+                self.images = [newImage]
+#endif
+                
             } else {
                 self.images = []
             }
@@ -146,7 +151,7 @@ public class ImageLayer: CALayer {
         }
     }
     
-    
+#if os(macOS)
     public func setGif(image: NSImage) {
         if let frames = image.gifFrames() {
             var duration = 0.0
@@ -157,8 +162,7 @@ public class ImageLayer: CALayer {
             self.images = frames.compactMap({$0.image})
         }
     }
-
-    
+#endif
             
    private var currentIndex = 0 {
         didSet {

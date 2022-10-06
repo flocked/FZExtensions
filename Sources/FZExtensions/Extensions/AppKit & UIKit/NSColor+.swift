@@ -62,4 +62,9 @@ public extension UIColor {
         return UIColor.black
     }
 }
+public extension CGColor {
+    static var clear: CGColor {
+        return UIColor.clear.cgColor
+    }
+}
 #endif

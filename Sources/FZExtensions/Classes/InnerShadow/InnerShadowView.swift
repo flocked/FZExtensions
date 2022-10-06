@@ -61,19 +61,19 @@ public class InnershadowView: UIView {
         get { innershadowLayer.offset }
         set { innershadowLayer.offset = newValue }}
     
-    public var shadowColor: NSColor?  {
-        get { innershadowLayer.withBrightness }
-        set { innershadowLayer.withBrightness = newValue } }
+    public var shadowColor: NSUIColor?  {
+        get { innershadowLayer.color }
+        set { innershadowLayer.color = newValue } }
     
     public var shadowProperties: ContentProperties.Shadow {
         get { innershadowLayer.properties }
         set {  innershadowLayer.properties = newValue } }
     
     internal var innershadowLayer: InnerShadowLayer {
-        return self.layer as! shadowLayer
+        return self.layer as! InnerShadowLayer
     }
-    
-    override class var layerClass: AnyClass {
+        
+    public override class var layerClass: AnyClass {
         get { return InnerShadowLayer.self }
     }
 }

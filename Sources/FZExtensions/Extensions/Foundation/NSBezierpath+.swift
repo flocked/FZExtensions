@@ -9,6 +9,13 @@
 import AppKit
 
 public extension NSBezierPath {
+    convenience init(
+        roundedRect rect: CGRect,
+        cornerRadius: CGFloat
+    ) {
+        self.init(roundedRect: rect, xRadius: cornerRadius/2.0, yRadius: cornerRadius/2.0)
+    }
+    
     convenience init(rect: CGRect, cornerRadius: CGFloat, roundedCorners: CACornerMask = .all) {
         if (roundedCorners == .all || cornerRadius == 0.0) {
             let radius = cornerRadius / 2.0
