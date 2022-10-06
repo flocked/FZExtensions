@@ -62,7 +62,7 @@ public extension ContentProperties {
             self.showsExpansionTextWhenTruncated = showsExpansionTextWhenTruncated
         }
         
-        public static func system(size: CGFloat, weight: NSUIFont.Weight? = nil, color: NSUIColor = .labelColor, numberOfLines: Int = 1) -> Self {
+        public static func system(size: CGFloat, weight: NSUIFont.Weight? = nil, color: NSUIColor = NSUIColor.label, numberOfLines: Int = 1) -> Self {
             let font: NSUIFont
             if let weight = weight {
                 font = NSUIFont.systemFont(ofSize: size, weight: weight)
@@ -169,8 +169,8 @@ public extension UILabel {
         self.numberOfLines = textProperties.numberOfLines
         self.textAlignment = textProperties.alignment
         self.lineBreakMode = textProperties.lineBreakMode
-        self.attributedText = self.attributedText.transform(using: textProperties.transform)
-        self.text = self.text.transform(using: textProperties.transform)
+        self.attributedText = self.attributedText?.transform(using: textProperties.transform)
+        self.text = self.text?.transform(using: textProperties.transform)
     }
 }
 
@@ -179,9 +179,9 @@ public extension UITextField {
         self.font = textProperties.font
         self.textColor = textProperties.resolvedColor()
         self.textAlignment = textProperties.alignment
-        self.lineBreakMode = textProperties.lineBreakMode
-        self.attributedText = self.attributedText.transform(using: textProperties.transform)
-        self.text = self.text.transform(using: textProperties.transform)
+    //    self.lineBreakMode = textProperties.lineBreakMode
+        self.attributedText = self.attributedText?.transform(using: textProperties.transform)
+        self.text = self.text?.transform(using: textProperties.transform)
     }
 }
 
@@ -192,8 +192,8 @@ public extension UITextView {
         self.textAlignment = textProperties.alignment
         self.attributedText = self.attributedText.transform(using: textProperties.transform)
         self.text = self.text.transform(using: textProperties.transform)
-        self.textView.textContainer.maximumNumberOfLines = textProperties.numberOfLines
-        self.textView.textContainer.lineBreakMode = textProperties.lineBreakMode
+        self.textContainer.maximumNumberOfLines = textProperties.numberOfLines
+        self.textContainer.lineBreakMode = textProperties.lineBreakMode
     }
 }
 // maximumNumberOfLines

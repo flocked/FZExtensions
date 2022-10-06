@@ -51,6 +51,11 @@ public extension NSColor {
         let saturation = range == 0 ? 0 : range / (lightness < 0.5 ? lightness * 2 : 2 - lightness * 2)
         return (hue, saturation, lightness, alpha)
     }
+    
+    static var label: NSColor {
+        return NSColor.labelColor
+    }
+    
 }
 
 #endif

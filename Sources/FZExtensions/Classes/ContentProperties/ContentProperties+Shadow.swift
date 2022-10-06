@@ -34,7 +34,11 @@ extension ContentProperties {
         
         public static func none() -> Self { return Self(color: nil, opacity: 0.0)}
         public static func `default`() -> Self { return Self() }
+        #if os(macOS)
         public static func defaultAccent() -> Self { return Self(color: .controlAccentColor) }
+        #elseif canImport(UIKit)
+        public static func defaultAccent() -> Self { return Self(color: .accentColor) }
+        #endif
         public static func color(_ color: NSUIColor) -> Self {
             var value = Self()
             value.color = color
