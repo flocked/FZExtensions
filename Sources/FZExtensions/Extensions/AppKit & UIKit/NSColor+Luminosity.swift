@@ -158,3 +158,80 @@ internal extension CGFloat {
        }
    }
 }
+
+public extension NSUIColor {
+    func lighter(by amount: CGFloat) -> NSUIColor {
+         var r: CGFloat = 0
+         var g: CGFloat = 0
+         var b: CGFloat = 0
+         var a: CGFloat = 0
+#if os(macOS)
+        if let color = self.usingColorSpace(.deviceRGB) {
+            color.getRed(&r, green: &g, blue: &b, alpha: &a)
+                return NSUIColor.init(red: min(r+amount, 1.0), green: min(g+amount, 1.0), blue: min(b+amount, 1.0), alpha: a)
+        }
+#else
+        if self.getRed(&r, green: &g, blue: &b, alpha: &a) {
+            return NSUIColor.init(red: min(r+amount, 1.0), green: min(g+amount, 1.0), blue: min(b+amount, 1.0), alpha: a)
+        }
+#endif
+         return self
+     }
+    
+    func darker(by amount: CGFloat) -> NSUIColor {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+#if os(macOS)
+        if let color = self.usingColorSpace(.deviceRGB) {
+            color.getRed(&r, green: &g, blue: &b, alpha: &a)
+            return NSUIColor.init(red: max(r-amount, 0.0), green: max(g-amount, 0.0), blue: max(b-amount, 0.0), alpha: a)
+        }
+#else
+        if self.getRed(&r, green: &g, blue: &b, alpha: &a) {
+            return NSUIColor.init(red: max(r-amount, 0.0), green: max(g-amount, 0.0), blue: max(b-amount, 0.0), alpha: a)
+        }
+#endif
+        return self
+    }
+    
+    /*
+    func withLuminosity(_ newLuminosity: CGFloat) -> NSUIColor {
+        var newLuminosity = newLuminosity
+        if (newLuminosity > 1.0) {
+            newLuminosity = (newLuminosity-1.0).clamped(0.0...1.0)
+            return lighter(newLuminosity)
+        } else if (newLuminosity < 1.0) {
+            newLuminosity = newLuminosity.clamped(0.0...1.0)
+            return darker(1.0-newLuminosity)
+        } else {
+            return self
+        }
+    }
+    
+    func luminosity() -> CGFloat {
+        var r: CGFloat = 0
+        var g: CGFloat = 0
+        var b: CGFloat = 0
+        var a: CGFloat = 0
+#if os(macOS)
+     if let color = self.usingColorSpace(.deviceRGB) {
+        color.getRed(&r, green: &g, blue: &b, alpha: &a)
+        let color: NSUIColor? = self.usingColorSpace(.deviceRGB)
+        return 0.2126 * pow(r, 2.2) + 0.7152 * pow(g, 2.2) + 0.0722 * pow(b, 2.2)
+     }
+#else
+     if self.getRed(&r, green: &g, blue: &b, alpha: &a) {
+         return 0.2126 * pow(r, 2.2) + 0.7152 * pow(g, 2.2) + 0.0722 * pow(b, 2.2)
+     }
+     
+     var white: CGFloat = 0
+     if self.getWhite(&white, alpha: &a) {
+         return pow(white, 2.2)
+     }
+#endif
+        return -1
+    }
+    */
+}
