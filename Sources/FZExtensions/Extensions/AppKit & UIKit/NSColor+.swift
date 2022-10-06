@@ -10,6 +10,8 @@
 import Foundation
 import AppKit
 
+
+
 public extension NSColor {
     func tinted(amount: CGFloat = 0.2)-> NSColor? {
         return self.blended(withFraction: amount, of: .white)

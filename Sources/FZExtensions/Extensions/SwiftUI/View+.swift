@@ -17,3 +17,9 @@ public extension View {
         }
     }
 }
+
+public extension View {
+    func asAnyView() -> AnyView {
+        return AnyView(self)
+    }
+}

@@ -4,22 +4,33 @@
 //
 //  Created by Rehatbir Singh on 15/03/2022.
 //
-
 import SwiftUI
 
+#if os(macOS)
+import AppKit
+
+@available(macOS 11, *)
 public struct EffectView: NSViewRepresentable {
-    private let material: NSVisualEffectView.Material
-    private let blendingMode: NSVisualEffectView.BlendingMode
-    private let emphasized: Bool
+    private var material: NSVisualEffectView.Material
+    private var blendingMode: NSVisualEffectView.BlendingMode
+    private var emphasized: Bool
+    private var state: NSVisualEffectView.State
 
     public init(
-        _ material: NSVisualEffectView.Material = .headerView,
+        _ blendingMode: NSVisualEffectView.BlendingMode = .withinWindow,
+        emphasized: Bool = false
+    ) {
+        self.init(material: NSVisualEffectView.Material(rawValue: 0)!, blendingMode: blendingMode, emphasized: emphasized)
+    }
+    
+    public init(material: NSVisualEffectView.Material,
         blendingMode: NSVisualEffectView.BlendingMode = .withinWindow,
         emphasized: Bool = false
     ) {
         self.material = material
         self.blendingMode = blendingMode
         self.emphasized = emphasized
+        self.state = .followsWindowActiveState
     }
 
     public func makeNSView(context: Context) -> NSVisualEffectView {
@@ -27,21 +38,58 @@ public struct EffectView: NSViewRepresentable {
         view.material = material
         view.blendingMode = blendingMode
         view.isEmphasized = emphasized
-        view.state = .followsWindowActiveState
+        view.state = state
         return view
     }
 
     public func updateNSView(_ nsView: NSVisualEffectView, context: Context) {
         nsView.material = material
         nsView.blendingMode = blendingMode
+        nsView.isEmphasized = emphasized
     }
-
-    @ViewBuilder
-    public static func selectionBackground(_ condition: Bool = true) -> some View {
-        if condition {
-            EffectView(.selection, blendingMode: .withinWindow, emphasized: true)
-        } else {
-            Color.clear
-        }
+    
+    public func material(_ material: NSVisualEffectView.Material) -> EffectView {
+        var view = self
+        view.material = material
+        return view
+    }
+    
+    public func blendingMode(_ blendingMode: NSVisualEffectView.BlendingMode) -> EffectView {
+        var view = self
+        view.blendingMode = blendingMode
+        return view
+    }
+    
+    public func emphasized(_ isEmphasized: Bool) -> EffectView {
+        var view = self
+        view.emphasized = isEmphasized
+        return view
+    }
+    
+    public func state(_ state: NSVisualEffectView.State) -> EffectView {
+        var view = self
+        view.state = state
+        return view
     }
 }
+#elseif canImport(UIKit)
+import UIKit
+
+@available(iOS 13, *)
+public struct EffectView: UIViewRepresentable {
+    public typealias UIViewType = UIVisualEffectView
+    private var effect: UIVisualEffect?
+    
+    public init(effect: UIVisualEffect?) {
+        self.effect = effect
+    }
+    
+    public func makeUIView(context: Context) -> UIVisualEffectView {
+        return UIVisualEffectView(effect: effect)
+    }
+    
+    public func updateUIView(_ uiView: UIVisualEffectView, context: Context) {
+        uiView.effect = effect
+    }
+}
+#endif

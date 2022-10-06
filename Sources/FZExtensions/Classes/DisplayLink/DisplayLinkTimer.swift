@@ -4,30 +4,33 @@
 //
 //  Created by Florian Zand on 02.06.22.
 //
-
 import Foundation
 import Combine
 import CoreGraphics
 
-class DisplayLinkTimer {
-    typealias Action = () -> Void
-    var timeInterval: TimeInterval = 0.0
-    var repeating = true
-    private let action: Action
-    private var displayLink: AnyCancellable? = nil
-    private var count: TimeInterval = 0.0
+public class DisplayLinkTimer {
+    public typealias Action = (DisplayLinkTimer) -> Void
+    
+    public var timeInterval: TimeInterval = 0.0
+    public var repeating = true
+    public let action: Action
+    
+    internal var displayLink: AnyCancellable? = nil
+    internal var timeIntervalSinceLastFire: TimeInterval = 0.0
+    internal var previousTimestamp: TimeInterval = 0.0
+    internal var lastFireDate: Date? = nil
     
     convenience init(repeating: TimeInterval, shouldFire: Bool = true, action: @escaping Action) {
         self.init(timeInterval: repeating, repeating: true, shouldFire: shouldFire, action: action)
     }
     
     convenience init(repeating: TimeInterval, shouldFire: Bool = true, target: AnyObject, selector: Selector) {
-        let action =  { _ = target.perform(selector)}
+        let action: Action =  { timer in _ = target.perform(selector)}
         self.init(timeInterval: repeating, repeating: true, shouldFire: shouldFire, action: action)
     }
     
     convenience init(timeInterval: TimeInterval, repeating: Bool, shouldFire: Bool = true, target: AnyObject, selector: Selector) {
-        let action =  { _ = target.perform(selector)}
+        let action: Action =  { timer in _ = target.perform(selector)}
         self.init(timeInterval: timeInterval, repeating: true, shouldFire: shouldFire, action: action)
     }
     
@@ -40,31 +43,42 @@ class DisplayLinkTimer {
         }
     }
     
-    private var previousTimestamp: TimeInterval = 0.0
-    func fire() {
-        if displayLink == nil {
+    public var nextFireDate: Date? {
+      //  (self.isRunning) ? Date().addingTimeInterval(-self.timeIntervalSinceLastFire+self.timeInterval) : nil
+        self.lastFireDate?.addingTimeInterval(self.timeInterval)
+    }
+    
+    public var isRunning: Bool {
+        return (displayLink != nil)
+    }
+    
+    public func fire() {
+        if isRunning == false {
             self.previousTimestamp = 0.0
-            self.count = 0.0
+            self.timeIntervalSinceLastFire = 0.0
+            self.lastFireDate = Date()
             self.displayLink = DisplayLink.shared.sink{ [weak self] frame in
-            if let self = self {
-                let timeIntervalCount = frame.timestamp - self.previousTimestamp
-                self.count = self.count + timeIntervalCount
-                self.previousTimestamp = frame.timestamp
-                if (self.count > self.timeInterval) {
-                    self.count = 0.0
-                    self.action()
-                    if (self.repeating == false) {
-                        self.stop()
+                if let self = self {
+                    let timeIntervalCount = frame.timestamp - self.previousTimestamp
+                    self.timeIntervalSinceLastFire = self.timeIntervalSinceLastFire + timeIntervalCount
+                    self.previousTimestamp = frame.timestamp
+                    if (self.timeIntervalSinceLastFire > self.timeInterval) {
+                        self.timeIntervalSinceLastFire = 0.0
+                        self.lastFireDate = Date()
+                        self.action(self)
+                        if (self.repeating == false) {
+                            self.stop()
+                        }
                     }
                 }
             }
         }
     }
-    }
     
-    func stop() {
+    public func stop() {
         displayLink?.cancel()
-        self.count = 0.0
+        self.lastFireDate = nil
+        self.timeIntervalSinceLastFire = 0.0
         self.previousTimestamp = 0.0
     }
     
