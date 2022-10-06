@@ -8,11 +8,11 @@
 #if canImport(UIKit)
 import UIKit
 
-extension UIView.ContentType : CaseIterable {
-    public static var allCases: [UIView.ContentType] = [.scaleToFill, .scaleAspectFit, .scaleAspectFill, .redraw, .center, .top, .bottom, .left, .right, .topLeft, .topRight, .bottomLeft, .bottomRight]
+extension UIView.ContentMode : CaseIterable {
+    public static var allCases: [UIView.ContentMode] = [.scaleToFill, .scaleAspectFit, .scaleAspectFill, .redraw, .center, .top, .bottom, .left, .right, .topLeft, .topRight, .bottomLeft, .bottomRight]
 }
 
-public extension UIView.ContentType {
+public extension UIView.ContentMode {
     var layerContentsGravity : CALayerContentsGravity {
         switch self {
         case .scaleToFill: return .resizeAspectFill

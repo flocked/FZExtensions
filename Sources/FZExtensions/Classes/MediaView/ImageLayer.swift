@@ -8,7 +8,10 @@
 
 #if os(macOS)
 import AppKit
-import Foundation
+#elseif canImport(UIKit)
+import UIKit
+#endif
+
 import Combine
 
 public class ImageLayer: CALayer {
@@ -282,4 +285,3 @@ public class ImageLayer: CALayer {
     }
     
 }
-#endif

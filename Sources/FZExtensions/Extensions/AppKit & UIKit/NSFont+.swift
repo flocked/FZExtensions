@@ -207,7 +207,11 @@ public extension NSUIFont {
     }
     
     func monospaced() -> NSUIFont {
+#if os(macOS)
         self.includingSymbolicTraits(.monoSpace)
+#else
+        self.includingSymbolicTraits(.traitMonoSpace)
+#endif
     }
     
     func bold() -> NSUIFont {

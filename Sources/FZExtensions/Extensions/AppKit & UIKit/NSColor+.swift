@@ -54,3 +54,12 @@ public extension NSColor {
 }
 
 #endif
+
+#if canImport(UIKit)
+import UIKit
+public extension UIColor {
+    static var shadowColor: UIColor {
+        return UIColor.black
+    }
+}
+#endif

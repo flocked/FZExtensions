@@ -62,7 +62,7 @@ public extension ContentProperties {
             self.showsExpansionTextWhenTruncated = showsExpansionTextWhenTruncated
         }
         
-        public static func system(size: CGFloat, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
+        public static func system(size: CGFloat, weight: NSUIFont.Weight? = nil, color: NSUIColor = .labelColor, numberOfLines: Int = 1) -> Self {
             let font: NSUIFont
             if let weight = weight {
                 font = NSUIFont.systemFont(ofSize: size, weight: weight)
@@ -82,15 +82,15 @@ public extension ContentProperties {
         }
         
 #if os(macOS)
-        public static func system(_ fontSize: FontSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
+        public static func system(_ fontSize: FontSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .labelColor, numberOfLines: Int = 1) -> Self {
             return self.system(size: fontSize.value, weight: weight, color: color, numberOfLines: numberOfLines)
         }
         
-        public static func system(controlSize: NSControl.ControlSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
+        public static func system(controlSize: NSControl.ControlSize, weight: NSUIFont.Weight? = nil, color: NSUIColor = .labelColor, numberOfLines: Int = 1) -> Self {
             return self.system(.controlSize(controlSize), weight: weight, color: color, numberOfLines: numberOfLines)
         }
         
-        public static func system(tableRowSize: NSTableView.RowSizeStyle, weight: NSUIFont.Weight? = nil, color: NSUIColor = .textColor, numberOfLines: Int = 1) -> Self {
+        public static func system(tableRowSize: NSTableView.RowSizeStyle, weight: NSUIFont.Weight? = nil, color: NSUIColor = .labelColor, numberOfLines: Int = 1) -> Self {
             return self.system(.tableRowSize(tableRowSize), weight: weight, color: color, numberOfLines: numberOfLines)
         }
 #endif

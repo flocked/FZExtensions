@@ -149,9 +149,9 @@ public extension NSImageView {
 #elseif canImport(UIKit)
 public extension UIImageView {
     func configurate(using imageProperties: ContentProperties.Image) {
-        self.contentTintColor = imageProperties.tintColor
+        self.tintColor = imageProperties.tintColor
         self.cornerRadius = imageProperties.cornerRadius
-        self.contentMode = UIView.ContentType(contentsGravity: imageProperties.scaling)
+        self.contentMode = UIView.ContentMode(contentsGravity: imageProperties.scaling)
     }
     
     func configurate(using placeholderProperty: ContentProperties.ImagePlaceholder) {
