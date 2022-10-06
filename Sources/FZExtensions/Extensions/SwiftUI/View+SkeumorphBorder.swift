@@ -20,9 +20,10 @@ public extension View {
 }
 
 internal struct SkeuomorphBorder: ViewModifier {
+    private let cornerRadius: CGFloat
     private let color: Color
     private let width: CGFloat
-    private let cornerRadius: CGFloat
+    
     internal init(cornerRadius: CGFloat = 4.0, color: Color = .black, width: CGFloat = 1.0) {
         self.color = color
         self.width = width
@@ -49,6 +50,7 @@ internal struct SkeuomorphShapeBorder<S: Shape>: ViewModifier {
     private let color: Color
     private let width: CGFloat
     private let shape: S
+    
     internal init(_ shape: S, color: Color = .black, width: CGFloat = 1.0) {
         self.color = color
         self.width = width

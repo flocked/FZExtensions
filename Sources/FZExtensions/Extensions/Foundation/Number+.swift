@@ -12,6 +12,26 @@ import AppKit
 import UIKit
 #endif
 
+public extension FloatingPoint {
+ internal func interpolated(
+    fromLowerBound: Self,
+    fromUpperBound: Self,
+    toLowerBound: Self,
+    toUpperBound: Self) -> Self
+  {
+    let positionInRange = (self - fromLowerBound) / (fromUpperBound - fromLowerBound)
+    return (positionInRange * (toUpperBound - toLowerBound)) + toLowerBound
+  }
+
+func map(from: ClosedRange<Self>, to: ClosedRange<Self>) -> Self {
+    interpolated(
+      fromLowerBound: from.lowerBound,
+      fromUpperBound: from.upperBound,
+      toLowerBound: to.lowerBound,
+      toUpperBound: to.upperBound)
+  }
+}
+
 public extension CGFloat {
     var scaledIntegral: Self {
 #if os(macOS)

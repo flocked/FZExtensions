@@ -20,11 +20,20 @@ public extension View {
 
 public extension View {
     @ViewBuilder
-    func border(_ color: Color, cornerRadius: CGFloat, width: CGFloat = 1.0) -> some View {
+    func border<S: ShapeStyle>(_ content: S, width: CGFloat = 1.0, cornerRadius: CGFloat) -> some View {
         self.cornerRadius(cornerRadius)
             .overlay(
             RoundedRectangle(cornerRadius: cornerRadius)
-                .stroke(color, lineWidth: width)
+                .stroke(content, lineWidth: width)
+        )
+    }
+    
+    @ViewBuilder
+    func border<C: ShapeStyle, S: Shape>(_ content: C, width: CGFloat = 1.0, shape: S) -> some View {
+        self.clipShape(shape)
+            .overlay(
+                shape
+                .stroke(content, lineWidth: width)
         )
     }
     

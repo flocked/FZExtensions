@@ -1,6 +1,6 @@
 //
 //  Fitting.swift
-//  TokenView
+//  
 //
 //  Created by Florian Zand on 18.05.22.
 //
