@@ -20,12 +20,20 @@ public extension UIColor {
 #endif
 
 public extension NSUIColor {
-    func tinted(amount: CGFloat = 0.2)-> NSUIColor? {
+    func tinted(amount: CGFloat = 0.2)-> NSUIColor {
+        #if os(macOS)
+        return self.blended(withFraction: amount, of: .white) ?? self
+        #else
         return self.blended(withFraction: amount, of: .white)
+        #endif
     }
     
     func shaded(amount: CGFloat = 0.2)-> NSUIColor? {
+#if os(macOS)
+        return self.blended(withFraction: amount, of: .black) ?? self
+#else
         return self.blended(withFraction: amount, of: .black)
+#endif
     }
     
     func lighter() -> NSUIColor {
