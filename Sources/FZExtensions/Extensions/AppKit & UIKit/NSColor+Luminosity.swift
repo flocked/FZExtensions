@@ -13,7 +13,12 @@ import UIKit
 
 public extension NSUIColor {
     var brightness: CGFloat {
-        if let components = self.usingColorSpace(.deviceRGB)?.cgColor.components {
+#if os(macOS)
+        let color: NSUIColor? = self.usingColorSpace(.deviceRGB)
+#else
+        let color: NSUIColor? = self
+#endif
+        if let components = color?.cgColor.components {
             return ((components[0] * 299) + (components[1] * 587) + (components[2] * 114)) / 1000
         }
 #if os(macOS)

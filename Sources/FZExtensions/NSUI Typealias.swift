@@ -35,6 +35,7 @@ public typealias NSUICollectionViewDelegate = UICollectionViewDelegate
 public typealias NSUICollectionViewLayout = UICollectionViewLayout
 public typealias NSUICollectionViewLayoutAttributes = UICollectionViewLayoutAttributes
 public typealias NSUIColor = UIColor
+@available(iOS 14.0, *)
 public typealias NSUIConfigurationColorTransformer = UIConfigurationColorTransformer
 public typealias NSUIEdgeInsets = UIEdgeInsets
 public typealias NSUIFont = UIFont

@@ -49,10 +49,18 @@ public class InnerShadowLayer: CALayer {
     private func update() {
         if self.superlayer != nil {
             var path = NSUIBezierPath(rect: self.bounds.insetBy(dx: -20, dy: -20))
+#if os(macOS)
             var   innerPart = NSUIBezierPath(rect: self.bounds).reversed
+#else
+            var   innerPart = NSUIBezierPath(rect: self.bounds).reversing()
+#endif
             if (self.cornerRadius != 0.0) {
                 path = NSUIBezierPath(roundedRect:  self.bounds.insetBy(dx: -20, dy: -20), cornerRadius: cornerRadius)
+#if os(macOS)
                 innerPart = NSUIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius).reversed
+#else
+                innerPart = NSUIBezierPath(roundedRect: self.bounds, cornerRadius: cornerRadius).reversing()
+#endif
             }
             path.append(innerPart)
             self.shadowPath = path.cgPath

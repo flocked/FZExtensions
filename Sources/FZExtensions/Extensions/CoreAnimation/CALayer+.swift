@@ -36,6 +36,7 @@ public extension CALayer {
         superlayer.insertSublayer(self, at: 0)
     }
     
+    #if os(macOS)
     func addSublayer(withAutoresizing layer: CALayer) {
         layer.frame = self.bounds
         layer.cornerRadius = self.cornerRadius
@@ -44,6 +45,7 @@ public extension CALayer {
         layer.autoresizingMask = .all
         self.addSublayer(layer)
     }
+    #endif
     
     @discardableResult
     func addSublayer(withConstraint layer: CALayer) -> [NSLayoutConstraint]  {
@@ -79,6 +81,8 @@ public extension CALayer {
     }
 }
 
+#if os(macOS)
 public extension CAAutoresizingMask {
     static let all: CAAutoresizingMask = [.layerHeightSizable, .layerWidthSizable, .layerMinXMargin, .layerMinYMargin, .layerMaxXMargin, .layerMaxYMargin]
 }
+#endif

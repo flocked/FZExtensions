@@ -197,7 +197,7 @@ public class ImageLayer: CALayer {
         return (images.count > 1)
     }
     
-    public var fittingSize: NSSize {
+    public var fittingSize: CGSize {
         if let imageSize = self.images.first?.size {
             return imageSize
         }
@@ -208,22 +208,22 @@ public class ImageLayer: CALayer {
         self.frame.size = self.fittingSize
     }
     
-    public  init(image: NSImage) {
+    public  init(image: NSUIImage) {
         super.init()
         self.image = image
     }
     
-    public init(layer: CALayer, image: NSImage) {
+    public init(layer: CALayer, image: NSUIImage) {
         super.init(layer: layer)
         self.image = image
     }
     
-    public init(images: [NSImage]) {
+    public init(images: [NSUIImage]) {
         super.init()
         self.images = images
     }
     
-    public init(layer: CALayer, images: [NSImage]) {
+    public init(layer: CALayer, images: [NSUIImage]) {
         super.init(layer: layer)
         self.images = images
     }

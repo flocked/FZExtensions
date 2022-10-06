@@ -25,7 +25,7 @@ extension ContentProperties {
         public var visualEffect: VisualEffect? = nil
 
         public var customView: NSUIView? = nil
-        public var image: NSImage? = nil
+        public var image: NSUIImage? = nil
         public var imageProperties: Image = .scaled(.resizeAspect)
         
         public var backgroundColor: NSUIColor? = nil
@@ -42,8 +42,8 @@ extension ContentProperties {
                     innerShadow: Shadow? = nil,
                     outerShadow: Shadow? = nil,
                     visualEffect: VisualEffect? = nil,
-                    customView: NSView? = nil,
-                    image: NSImage? = nil,
+                    customView: NSUIView? = nil,
+                    image: NSUIImage? = nil,
                     imageProperties: Image = .scaled(.resizeAspect),
                     backgroundColor: NSUIColor? = nil,
                     backgroundColorTransformer: NSUIConfigurationColorTransformer? = nil) {

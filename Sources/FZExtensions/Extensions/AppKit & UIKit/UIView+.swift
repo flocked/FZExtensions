@@ -32,7 +32,7 @@ public extension UIView.ContentMode {
     }
     
     init(contentsGravity: CALayerContentsGravity) {
-        let rawValue = UIView.ContentMode.allCases.first(where: {$0.layerContentsGravity == contentsGravity})?.rawValue ?? UIView.ContentMode.scaleToFilt.rawValue
+        let rawValue = UIView.ContentMode.allCases.first(where: {$0.layerContentsGravity == contentsGravity})?.rawValue ?? UIView.ContentMode.scaleAspectFit.rawValue
         self.init(rawValue: rawValue)!
     }
 }
