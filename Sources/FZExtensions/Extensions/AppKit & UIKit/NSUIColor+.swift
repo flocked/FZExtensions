@@ -15,7 +15,6 @@ extension NSUIColor {
     public static func interpolate(from fromColor: NSUIColor, to toColor: NSUIColor, with progress: CGFloat) -> NSUIColor {
         let progress = min(1.0, max(progress, 0.0))
 
-
         let fromComponents = fromColor.components
         let toComponents = toColor.components
 
