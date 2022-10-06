@@ -48,7 +48,7 @@ public extension NSTextField {
         case wraps = 1
         case scrolls = 2
         
-         init?(lineBreakMode: NSLineBreakMode) {
+        public init?(lineBreakMode: NSLineBreakMode) {
              guard let found = Self.allCases.first(where: {$0.lineBreakMode == lineBreakMode}) else { return nil  }
              self = found
         }
