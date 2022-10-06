@@ -36,9 +36,6 @@ extension ContentProperties {
         public static func `default`() -> Self { return Self() }
         #if os(macOS)
         public static func defaultAccent() -> Self { return Self(color: .controlAccentColor) }
-        #elseif canImport(UIKit)
-        @available(iOS 13.0, *)
-        public static func defaultAccent() -> Self { return Self(color: .accentColor) }
         #endif
         public static func color(_ color: NSUIColor) -> Self {
             var value = Self()
