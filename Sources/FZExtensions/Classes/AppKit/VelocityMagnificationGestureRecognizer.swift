@@ -5,8 +5,8 @@
 //  Created by Florian Zand on 22.09.22.
 //
 
-import Cocoa
-
+#if os(macOS)
+import AppKit
 public class VelocityMagnificationGestureRecognizer: NSMagnificationGestureRecognizer {
     
     public var velocity: CGFloat = 1.0
@@ -35,3 +35,4 @@ public class VelocityMagnificationGestureRecognizer: NSMagnificationGestureRecog
         }
     }
 }
+#endif
