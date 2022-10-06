@@ -161,25 +161,25 @@ import UIKit
 public extension UIBezierPath {
     convenience init(rect: CGRect, cornerRadius: CGFloat, roundedCorners: CACornerMask = .all) {
         self.init(roundedRect: rect,
-                  byRoundingCorners: UIRectCorner(cornerMask: roundedCorners),
+                  byRoundingCorners: UIRectCorner(roundedCorners),
                   cornerRadii: CGSize(width: cornerRadius/2.0, height: cornerRadius/2.0))
     }
 }
 
 public extension UIRectCorner {
-    init(cornerMask: CACornerMask) {
+    init(_ cornerMask: CACornerMask) {
         var corner = UIRectCorner()
         if (cornerMask.contains(.bottomLeft)) {
-            corner.inseert(.bottomLeft)
+            corner.insert(.bottomLeft)
         }
         if (cornerMask.contains(.bottomRight)) {
-            corner.inseert(.bottomRight)
+            corner.insert(.bottomRight)
         }
         if (cornerMask.contains(.topLeft)) {
-            corner.inseert(.topLeft)
+            corner.insert(.topLeft)
         }
         if (cornerMask.contains(.topRight)) {
-            corner.inseert(.topRight)
+            corner.insert(.topRight)
         }
         self.init(rawValue: corner.rawValue)
     }
