@@ -83,6 +83,7 @@ extension ContentProperties.View: Hashable {
     }
 }
 
+
 /*
  extension NSView {
  func configurate(using viewProperties: ContentProperties.View) {

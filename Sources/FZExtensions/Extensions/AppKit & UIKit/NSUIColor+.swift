@@ -11,8 +11,12 @@ import AppKit
 import UIKit
 #endif
 
-extension NSUIColor {
-    public static func interpolate(from fromColor: NSUIColor, to toColor: NSUIColor, with progress: CGFloat) -> NSUIColor {
+public extension NSUIColor {
+    func mixed(with color: NSUIColor, by amount: CGFloat = 0.5) -> NSUIColor {
+        return NSUIColor.interpolate(from: self, to: color, with: amount)
+    }
+    
+    static func interpolate(from fromColor: NSUIColor, to toColor: NSUIColor, with progress: CGFloat) -> NSUIColor {
         let progress = min(1.0, max(progress, 0.0))
 
         let fromComponents = fromColor.components
@@ -27,7 +31,7 @@ extension NSUIColor {
     }
 
     /// The RGBA components associated with a `UIColor` instance.
-    var components: (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
+   internal var components: (r: CGFloat, g: CGFloat, b: CGFloat, a: CGFloat) {
         let components = self.cgColor.components!
         if components.count == 2 {
             return (r: components[0], g: components[0], b: components[0], a: components[1])

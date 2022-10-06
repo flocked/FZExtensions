@@ -13,14 +13,10 @@ public extension Color {
         self.opacity(0.15)
     }
     
-    func blended(with color: Color, by amount: CGFloat = 0.5) -> Color {
+    func mixed(with color: Color, by amount: CGFloat = 0.5) -> Color {
         let amount = amount.clamped(0.0...1.0)
         let nsUIColor = NSUIColor(self)
-#if os(macOS)
-            return Color(nsUIColor.blended(withFraction: amount, of: NSUIColor(color)) ?? nsUIColor)
-#else
-           return Color(nsColor.blended(withFraction: fraction, of: NSUIColor(color)))
-#endif
+        return Color(nsUIColor.mixed(with: NSUIColor(color) , by: amount))
     }
     
     func lighter(by amount: CGFloat = 0.2) -> Color {
@@ -37,11 +33,11 @@ public extension Color {
         var amount = amount
         if (amount > 1.0) {
             amount = amount - 1.0
-            return self.blended(with: .white, by: amount)
+            return self.mixed(with: .white, by: amount)
         } else if (amount < 1.0) {
             amount = amount.clamped(0.0...1.0)
             amount = 1.0 - amount
-            return self.blended(with: .black, by: amount)
+            return self.mixed(with: .black, by: amount)
         }
         return self
     }

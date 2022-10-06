@@ -13,16 +13,15 @@ import UIKit
 import UniformTypeIdentifiers
 
 public extension NSUIImage {
-     convenience init(color: NSUIColor) {
+    convenience init(color: NSUIColor) {
         let size = CGSize(width: 1, height: 1)
-
-        #if canImport(UIKit)
+#if canImport(UIKit)
         let image = UIGraphicsImageRenderer(size: size).image { context in
             color.setFill()
             context.fill(context.format.bounds)
         }.resizableImage(withCapInsets: .zero)
         self.init(cgImage: image.cgImage!)
-        #else
+#else
         self.init(size: size, flipped: false) { rect in
             color.setFill()
             rect.fill()
@@ -30,28 +29,26 @@ public extension NSUIImage {
         }
         resizingMode = .stretch
         capInsets = NSEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        #endif
+#endif
     }
 }
 
 public extension NSUIImage {
-#if os(macOS)
-    var sfSymbolName: String? {
-        let description = String(describing: self)
-       return description.substrings(between: "symbol = ", and: ">").first
-    }
-    
     var isSymbolImage: Bool {
         return (self.sfSymbolName != nil)
     }
-#elseif canImport(UIKit)
+    
     var sfSymbolName: String? {
+#if os(macOS)
+        let description = String(describing: self)
+        return description.substrings(between: "symbol = ", and: ">").first
+#else
         guard self.isSymbolImage, let strSeq = "\(String(describing: self))".split(separator: ")").first else { return nil }
-           let str = String(strSeq)
-           guard let name = str.split(separator: ":").last else { return nil }
-           return String(name)
-       }
+        let str = String(strSeq)
+        guard let name = str.split(separator: ":").last else { return nil }
+        return String(name)
 #endif
+    }
 }
 
 public extension CGImage {
@@ -78,10 +75,10 @@ public extension NSImage {
     
     var cgImage: CGImage? {
         guard let imageData = self.tiffRepresentation else { return nil }
-            guard let sourceData = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
-            return CGImageSourceCreateImageAtIndex(sourceData, 0, nil)
+        guard let sourceData = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
+        return CGImageSourceCreateImageAtIndex(sourceData, 0, nil)
         
-   //     return self.cgImage(forProposedRect: nil, context: nil, hints: nil)
+        //     return self.cgImage(forProposedRect: nil, context: nil, hints: nil)
     }
     
     var cgImageSource: CGImageSource? {
@@ -95,67 +92,67 @@ public extension NSImage {
 public extension NSImage {
     func tinted(_ tintColor: NSColor) -> NSImage {
         guard self.isTemplate else { return self }
-
+        
         let image = self.copy() as! NSImage
         image.lockFocus()
-
+        
         tintColor.set()
         NSRect(origin: .zero, size: image.size).fill(using: .sourceAtop)
-
+        
         image.unlockFocus()
         image.isTemplate = false
-
+        
         return image
-      }
+    }
     
     func roundedCorners(radius: CGFloat) -> NSImage {
         let rect = NSRect(origin: NSPoint.zero, size: size)
         if
             let cgImage = self.cgImage,
             let context = CGContext(data: nil,
-                                width: Int(size.width),
-                                height: Int(size.height),
-                                bitsPerComponent: 8,
-                                bytesPerRow: 4 * Int(size.width),
-                                space: CGColorSpaceCreateDeviceRGB(),
-                                bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue) {
+                                    width: Int(size.width),
+                                    height: Int(size.height),
+                                    bitsPerComponent: 8,
+                                    bytesPerRow: 4 * Int(size.width),
+                                    space: CGColorSpaceCreateDeviceRGB(),
+                                    bitmapInfo: CGImageAlphaInfo.premultipliedFirst.rawValue) {
             context.beginPath()
             context.addPath(CGPath(roundedRect: rect, cornerWidth: radius, cornerHeight: radius, transform: nil))
             context.closePath()
             context.clip()
             context.draw(cgImage, in: rect)
-
+            
             if let composedImage = context.makeImage() {
                 return NSImage(cgImage: composedImage, size: size)
             }
         }
         return self
     }
-
-      func rounded() -> NSImage {
+    
+    func rounded() -> NSImage {
         let image = NSImage(size: size)
         image.lockFocus()
-
+        
         let frame = NSRect(origin: .zero, size: size)
         NSBezierPath(ovalIn: frame).addClip()
         draw(at: .zero, from: frame, operation: .sourceOver, fraction: 1)
-
+        
         image.unlockFocus()
         return image
-      }
-
-      static func maskImage(cornerRadius: CGFloat) -> NSImage {
+    }
+    
+    static func maskImage(cornerRadius: CGFloat) -> NSImage {
         let image = NSImage(size: NSSize(width: cornerRadius * 2, height: cornerRadius * 2), flipped: false) { rectangle in
-          let bezierPath = NSBezierPath(roundedRect: rectangle, xRadius: cornerRadius, yRadius: cornerRadius)
-          NSColor.black.setFill()
-          bezierPath.fill()
-          return true
+            let bezierPath = NSBezierPath(roundedRect: rectangle, xRadius: cornerRadius, yRadius: cornerRadius)
+            NSColor.black.setFill()
+            bezierPath.fill()
+            return true
         }
         image.capInsets = NSEdgeInsets(top: cornerRadius, left: cornerRadius, bottom: cornerRadius, right: cornerRadius)
         return image
-      }
-
-      func rotated(degree: Int) -> NSImage {
+    }
+    
+    func rotated(degree: Int) -> NSImage {
         var degree = ((degree % 360) + 360) % 360
         guard degree % 90 == 0 && degree != 0 else { return self }
         // mpv's rotation is clockwise, NSAffineTransform's rotation is counterclockwise
@@ -164,7 +161,7 @@ public extension NSImage {
         let rotation = NSAffineTransform.init()
         rotation.rotate(byDegrees: CGFloat(degree))
         rotation.append(.init(translationByX: newSize.width / 2, byY: newSize.height / 2))
-
+        
         let newImage = NSImage(size: newSize)
         newImage.lockFocus()
         rotation.concat()
@@ -173,8 +170,8 @@ public extension NSImage {
         self.draw(at: corner, from: rect, operation: .copy, fraction: 1)
         newImage.unlockFocus()
         return newImage
-      }
-
+    }
+    
 }
 
 extension NSBitmapImageRep {
@@ -203,16 +200,16 @@ public extension Data {
 }
 
 public extension NSImage {
-     func scaled(toFit size: CGSize) -> NSImage {
+    func scaled(toFit size: CGSize) -> NSImage {
         let size = self.size.scaled(toFit: size)
         return self.resized(to: size)
     }
-     func scaled(toFill size: CGSize) -> NSImage {
+    func scaled(toFill size: CGSize) -> NSImage {
         let size = self.size.scaled(toFill: size)
         return self.resized(to: size)
     }
     
-     func resized(to size: CGSize) -> NSImage {
+    func resized(to size: CGSize) -> NSImage {
         let scaledImage = NSImage(size: size)
         scaledImage.cacheMode = .never
         scaledImage.lockFocus()

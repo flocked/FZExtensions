@@ -115,8 +115,21 @@ public extension NSEdgeInsets {
     }
 }
 
+public extension Edge.Set {
+   static var width: Self {
+        return [.trailing, .trailing]
+    }
+   static var height: Self {
+        return [.top, .bottom]
+    }
+}
+
 extension EdgeInsets: Hashable {
     public static var zero: EdgeInsets = EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
+    
+   public init(_ edges: Edge.Set, _ value: CGFloat) {
+        self.init(top: edges.contains(.top) ? value : 0, leading: edges.contains(.leading) ? value : 0, bottom: edges.contains(.bottom) ? value : 0, trailing: edges.contains(.trailing) ? value : 0)
+    }
     
     public init(_ value: CGFloat) {
         self.init(top: value, leading: value, bottom: value, trailing: value)

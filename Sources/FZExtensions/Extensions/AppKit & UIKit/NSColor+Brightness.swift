@@ -11,13 +11,6 @@ import AppKit
 import UIKit
 #endif
 
-#if canImport(UIKit)
-public extension UIColor {
-    func blended(withFraction: CGFloat, of color: UIColor) -> UIColor {
-        return NSUIColor.interpolate(from: self, to: color, with: withFraction)
-    }
-}
-#endif
 
 public extension NSUIColor {
     func tinted(by amount: CGFloat = 0.2)-> NSUIColor {

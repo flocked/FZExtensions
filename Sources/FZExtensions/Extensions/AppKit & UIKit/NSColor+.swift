@@ -6,19 +6,20 @@
 //
 
 #if os(macOS)
-import Foundation
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
+#if os(macOS)
 public extension NSColor {
     static var label: NSColor {
         return NSColor.labelColor
     }
 }
-
 #endif
 
 #if canImport(UIKit)
-import UIKit
 public extension UIColor {
     static var shadowColor: UIColor {
         return UIColor.black
@@ -27,6 +28,12 @@ public extension UIColor {
 public extension CGColor {
     static var clear: CGColor {
         return UIColor.clear.cgColor
+    }
+}
+
+public extension UIColor {
+    func blended(withFraction: CGFloat, of color: UIColor) -> UIColor {
+        return NSUIColor.interpolate(from: self, to: color, with: withFraction)
     }
 }
 #endif

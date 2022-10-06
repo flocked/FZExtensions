@@ -15,7 +15,7 @@ import UIKit
 @available(macOS 10.15.1, iOS 14.0, *)
 public extension ContentProperties {
     struct Text {
-        public enum TextTransform {
+        public enum TextTransform: Hashable {
             case none
             case capitalized
             case lowercase
@@ -28,6 +28,7 @@ public extension ContentProperties {
         public func resolvedColor() -> NSUIColor {
             return colorTransform?(color) ?? color
         }
+        
         public var alignment: NSTextAlignment = .left
         public var lineBreakMode: NSLineBreakMode = .byTruncatingTail
         public var numberOfLines: Int = 1
@@ -119,6 +120,7 @@ extension ContentProperties.Text: Hashable {
         hasher.combine(self.showsExpansionTextWhenTruncated)
     }
 }
+
 
 #if os(macOS)
 @available(macOS 10.15.1, iOS 14.0, *)
