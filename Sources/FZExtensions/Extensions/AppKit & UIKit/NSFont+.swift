@@ -323,7 +323,7 @@ extension NSUIFontDescriptor.TraitKey {
 
 extension NSUIFontDescriptor.AttributeName {
     internal static var sizeCategory: Self {
-        return .init(rawValue: "NSCTFontSizeCategoryAttribute")
+        return .init(rawValueg: "NSCTFontSizeCategoryAttribute")
     }
     
     internal static var uiUsage: Self {
@@ -351,5 +351,73 @@ extension NSUIFontDescriptor.AttributeName {
         case title1 = "UICTFontTextStyleTitle1"
         case title2 = "UICTFontTextStyleTitle2"
         case title3 = "UICTFontTextStyleTitle3"
+    }
+}
+
+import SwiftUI
+public extension Font {
+    var lineHeight: CGFloat {
+        NSUIFont.preferredFont(from: self).lineHeight
+    }
+    var pointSize: CGFloat {
+        NSUIFont.preferredFont(from: self).pointSize
+    }
+}
+
+public extension NSUIFont {
+     class func preferredFont(from font: Font) -> NSUIFont {
+        let font = font.weight(.regular)
+        let nsUIFont: NSUIFont
+        if #available(macOS 11.0, iOS 12.2, tvOS 12.2, watchOS 5.2, *) {
+            switch font {
+            case .largeTitle.weight(.regular):
+                nsUIFont = .largeTitle
+            case .title.weight(.regular):
+                nsUIFont = .title
+            case .title2.weight(.regular):
+                nsUIFont = .title2
+            case .title3.weight(.regular):
+                nsUIFont = .title3
+            case .caption2.weight(.regular):
+                nsUIFont = .caption2
+            case .headline.weight(.regular):
+                nsUIFont = .headline
+            case .subheadline.weight(.regular):
+                nsUIFont = .subheadline
+            case .callout.weight(.regular):
+                nsUIFont = .callout
+            case .caption.weight(.regular):
+                nsUIFont = .caption
+                
+            case .footnote.weight(.regular):
+                nsUIFont = .footnote
+            case .body.weight(.regular):
+                nsUIFont = .body
+            default:
+                nsUIFont = .body
+            }
+        } else {
+            switch font {
+            case .largeTitle.weight(.regular):
+                nsUIFont = .largeTitle
+            case .title.weight(.regular):
+                nsUIFont = .title
+            case .headline.weight(.regular):
+                nsUIFont = .headline
+            case .subheadline.weight(.regular):
+                nsUIFont = .subheadline
+            case .callout.weight(.regular):
+                nsUIFont = .callout
+            case .caption.weight(.regular):
+                nsUIFont = .caption
+            case .footnote.weight(.regular):
+                nsUIFont = .footnote
+            case .body.weight(.regular):
+                nsUIFont = .body
+            default:
+                nsUIFont = .body
+            }
+        }
+        return nsUIFont
     }
 }
