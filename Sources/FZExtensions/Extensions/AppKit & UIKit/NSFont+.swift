@@ -323,7 +323,7 @@ extension NSUIFontDescriptor.TraitKey {
 
 extension NSUIFontDescriptor.AttributeName {
     internal static var sizeCategory: Self {
-        return .init(rawValueg: "NSCTFontSizeCategoryAttribute")
+        return .init(rawValue: "NSCTFontSizeCategoryAttribute")
     }
     
     internal static var uiUsage: Self {
