@@ -9,16 +9,18 @@ import SwiftUI
 
 public extension View {
     @ViewBuilder
-    func textAlignment(_ textAlignment: TextAlignment) -> some View {
-        self.modifier(TextAlignmentModifier(textAlignment: textAlignment))
+    func textAlignment(_ textAlignment: TextAlignment, autoWidth: Bool = true) -> some View {
+        self.modifier(TextAlignmentModifier(textAlignment: textAlignment, autoWidth: autoWidth))
     }
 }
 
 internal struct TextAlignmentModifier: ViewModifier {
     private let textAlignment: TextAlignment
+    private let autoWidth: Bool
     
-    internal init(textAlignment: TextAlignment) {
+    internal init(textAlignment: TextAlignment, autoWidth: Bool = true) {
         self.textAlignment = textAlignment
+        self.autoWidth = autoWidth
     }
     
     @ViewBuilder
@@ -27,15 +29,15 @@ internal struct TextAlignmentModifier: ViewModifier {
         case .leading:
             content
                 .multilineTextAlignment(textAlignment)
-                .frame(maxWidth: CGFloat.infinity, alignment: .leading)
+                .frame(maxWidth: autoWidth ? CGFloat.infinity : nil, alignment: .leading)
         case .center:
             content
                 .multilineTextAlignment(textAlignment)
-                .frame(maxWidth: CGFloat.infinity, alignment: .center)
+                .frame(maxWidth: autoWidth ? CGFloat.infinity : nil, alignment: .center)
         case .trailing:
             content
                 .multilineTextAlignment(textAlignment)
-                .frame(maxWidth: CGFloat.infinity, alignment: .trailing)
+                .frame(maxWidth: autoWidth ? CGFloat.infinity : nil, alignment: .trailing)
         }
     }
 }
