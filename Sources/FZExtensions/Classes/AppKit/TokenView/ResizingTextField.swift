@@ -57,6 +57,17 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
     }
    
    private(set) var isEditing = false
+    internal var textCell = VerticallyCenteredTextFieldCell()
+    
+    public var shouldDrawFocusRing: Bool {
+        get { textCell.shouldDrawFocusRing }
+        set { textCell.shouldDrawFocusRing = newValue }
+    }
+    
+    public var focusRingCornerRadius: CGFloat {
+        get { textCell.focusRingCornerRadius }
+        set { textCell.focusRingCornerRadius = newValue }
+    }
 
    internal var placeholderSize: NSSize? { didSet {
        if let placeholderSize_ = placeholderSize {
@@ -83,9 +94,9 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
    internal func _init() {
        self.drawsBackground = false
        self.isBordered = false
-       
+       self.cell = textCell
        // Receive text change notifications during Japanese input conversion (while `marked text` is present).
-       (self.cell as? NSTextFieldCell)?.setWantsNotificationForMarkedText(true)
+       textCell.setWantsNotificationForMarkedText(true)
        self.translatesAutoresizingMaskIntoConstraints = false
        self.delegate = self
 
@@ -152,7 +163,7 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
 
    public override func textDidBeginEditing(_ notification: Notification) {
        super.textDidBeginEditing(notification)
-       if (stopEditingOnOutsideMouseDown) {
+       if (stopsEditingOnOutsideMouseDown) {
            self.addMouseDownMonitor()
        }
        self.isEditing = true
@@ -267,7 +278,7 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
        return newSize
    }
     
-    public var stopEditingOnOutsideMouseDown = false
+    public var stopsEditingOnOutsideMouseDown = false
     internal var mouseDownMonitor: Any? = nil
     internal func addMouseDownMonitor() {
         if (mouseDownMonitor == nil) {
