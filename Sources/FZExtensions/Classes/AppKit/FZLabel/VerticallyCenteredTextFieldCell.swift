@@ -7,23 +7,19 @@
 
 #if os(macOS)
 import AppKit
-class VerticallyCenteredTextFieldCell: NSTextFieldCell {
-    var focusRingCornerRadius: CGFloat = 0
-    var shouldDrawFocusRing: Bool = true
-    private var isEditingOrSelecting = false
-
-    
-    enum FocusRingType: Equatable {
+public class VerticallyCenteredTextFieldCell: NSTextFieldCell {
+    public enum FocusType: Equatable {
         case none
         case capsule
         case roundedCorners(CGFloat)
         case `default`
     }
     
-    var focusRing: FocusRingType = .capsule
+    internal var isEditingOrSelecting = false
+    public var focusType: FocusType = FocusType.default
     
 
-    override func titleRect(forBounds rect: NSRect) -> NSRect {
+    public override func titleRect(forBounds rect: NSRect) -> NSRect {
         var titleRect = super.titleRect(forBounds: rect)
         let minimumHeight = self.cellSize(forBounds: rect).height
         titleRect.origin.y += (titleRect.size.height - minimumHeight) / 2
@@ -31,29 +27,29 @@ class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         return titleRect
     }
     
-    override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
+    public override func drawInterior(withFrame cellFrame: NSRect, in controlView: NSView) {
         super.drawInterior(withFrame: titleRect(forBounds: cellFrame), in: controlView)
     }
     
-    override func edit(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, event: NSEvent?) {
+    public override func edit(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, event: NSEvent?) {
         isEditingOrSelecting = true
         super.edit(withFrame: titleRect(forBounds: rect), in: controlView, editor: textObj, delegate: delegate, event: event)
         isEditingOrSelecting = false
     }
 
-    override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
+    public override func select(withFrame rect: NSRect, in controlView: NSView, editor textObj: NSText, delegate: Any?, start selStart: Int, length selLength: Int) {
         isEditingOrSelecting = true
         super.select(withFrame: titleRect(forBounds: rect), in: controlView, editor: textObj, delegate: delegate, start: selStart, length: selLength)
         isEditingOrSelecting = false
     }
     
-    override func drawFocusRingMask(withFrame cellFrame: NSRect, in controlView: NSView) {
-        guard focusRing != FocusRingType.none else {
+    public override func drawFocusRingMask(withFrame cellFrame: NSRect, in controlView: NSView) {
+        guard focusType != FocusType.none else {
             return
         }
 
         var cornerRadius: CGFloat = 0
-        switch focusRing {
+        switch focusType {
         case .capsule:
             cornerRadius = cellFrame.size.height/2.0
         case .roundedCorners(let radius):
@@ -65,7 +61,7 @@ class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         Swift.print(cellFrame.size.height)
 
         // Draw default
-        guard self.focusRing != FocusRingType.default && cornerRadius != 0 else {
+        guard self.focusType != FocusType.default && cornerRadius != 0 else {
             super.drawFocusRingMask(withFrame: cellFrame, in: controlView)
             return
         }

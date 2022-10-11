@@ -59,14 +59,9 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
    private(set) var isEditing = false
     internal var textCell = VerticallyCenteredTextFieldCell()
     
-    public var shouldDrawFocusRing: Bool {
-        get { textCell.shouldDrawFocusRing }
-        set { textCell.shouldDrawFocusRing = newValue }
-    }
-    
-    public var focusRingCornerRadius: CGFloat {
-        get { textCell.focusRingCornerRadius }
-        set { textCell.focusRingCornerRadius = newValue }
+    public var focusType: VerticallyCenteredTextFieldCell.FocusType {
+        get { textCell.focusType }
+        set { textCell.focusType = newValue }
     }
 
    internal var placeholderSize: NSSize? { didSet {
