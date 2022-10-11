@@ -12,6 +12,7 @@ public class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         case none
         case capsule
         case roundedCorners(CGFloat)
+        case roundedCornersRelative(CGFloat)
         case `default`
     }
     
@@ -54,6 +55,9 @@ public class VerticallyCenteredTextFieldCell: NSTextFieldCell {
             cornerRadius = cellFrame.size.height/2.0
         case .roundedCorners(let radius):
             cornerRadius = radius
+        case .roundedCornersRelative(let relative):
+            cornerRadius = cellFrame.size.height/2.0
+            cornerRadius = cornerRadius * relative.clamped(0.0...1.0)
         default:
             break
         }
