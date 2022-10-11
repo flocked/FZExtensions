@@ -28,9 +28,6 @@ class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         let minimumHeight = self.cellSize(forBounds: rect).height
         titleRect.origin.y += (titleRect.size.height - minimumHeight) / 2
         titleRect.size.height = minimumHeight
-        if (isEditingOrSelecting) {
-            titleRect.size.width =  titleRect.size.width + 4
-        }
         return titleRect
     }
     
@@ -75,7 +72,9 @@ class VerticallyCenteredTextFieldCell: NSTextFieldCell {
 
         // Custome
         // Make forcus ring frame fit with cell size
-        let newFrame = cellFrame.insetBy(dx: 2, dy: 1)
+       // let newFrame = cellFrame.insetBy(dx: 2, dy: 1)
+        let newFrame = cellFrame
+        
         let path = NSBezierPath(roundedRect: newFrame, xRadius: cornerRadius, yRadius: cornerRadius)
         path.fill()
     }
