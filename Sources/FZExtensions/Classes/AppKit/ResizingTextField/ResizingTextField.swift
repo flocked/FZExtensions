@@ -76,10 +76,7 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
    override init(frame frameRect: NSRect) {
        super.init(frame: frameRect)
        _init()
-       Swift.print("initframe")
    }
-    
-    
    
    required init?(coder: NSCoder) {
        super.init(coder: coder)
@@ -90,6 +87,7 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
        self.drawsBackground = false
        self.isBordered = false
        self.cell = textCell
+       textCell.focusType = .roundedCornersRelative(0.5)
        // Receive text change notifications during Japanese input conversion (while `marked text` is present).
        textCell.setWantsNotificationForMarkedText(true)
        self.translatesAutoresizingMaskIntoConstraints = false
@@ -196,6 +194,15 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
             }
         }
     }
+    
+    func textViewDidChangeSelection(_ notification: Notification) {
+        Swift.print("textViewDidChangeSelection")
+    }
+    
+    public func controlTextDidBeginEditing(_ obj: Notification) {
+        Swift.print("controlTextDidBeginEditing")
+    }
+    
    
    public override func textDidChange(_ notification: Notification) {
        super.textDidChange(notification)
