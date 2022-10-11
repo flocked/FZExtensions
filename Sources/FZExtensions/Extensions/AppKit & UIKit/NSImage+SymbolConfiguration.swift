@@ -61,12 +61,9 @@ public extension NSUIImage.SymbolConfiguration {
         return conf
     }
     
-    func multicolor() -> NSUIImage.SymbolConfiguration {
-        let conf: NSUIImage.SymbolConfiguration = .multicolor()
-        if conf.colors?.count == 1 {
-            conf.colors = nil
-        }
-        return conf.applying(self)
+    func multicolor(_ color: NSUIColor) -> NSUIImage.SymbolConfiguration {
+        let conf: NSUIImage.SymbolConfiguration = .multicolor(color)
+        return self.applying(conf)
     }
     
     func hierarchical(_ primary: NSUIColor) -> NSUIImage.SymbolConfiguration {
@@ -115,8 +112,8 @@ public extension NSUIImage.SymbolConfiguration {
         return NSUIImage.SymbolConfiguration.unspecified
     }
     
-    static func multicolor() -> NSUIImage.SymbolConfiguration {
-        let conf = NSUIImage.SymbolConfiguration.preferringMulticolor()
+    static func multicolor(_ color: NSUIColor) -> NSUIImage.SymbolConfiguration {
+        let conf = NSUIImage.SymbolConfiguration.preferringMulticolor().applying(NSUIImage.SymbolConfiguration.palette(color))
         return conf
     }
     
@@ -124,7 +121,7 @@ public extension NSUIImage.SymbolConfiguration {
         return NSUIImage.SymbolConfiguration(hierarchicalColor: primary)
     }
     
-    static func palette(_ primary: NSUIColor, _ secondary: NSUIColor, _ tertiary: NSUIColor? = nil) -> NSUIImage.SymbolConfiguration {
+    static func palette(_ primary: NSUIColor, _ secondary: NSUIColor? = nil, _ tertiary: NSUIColor? = nil) -> NSUIImage.SymbolConfiguration {
         return NSUIImage.SymbolConfiguration(paletteColors: [primary, secondary, tertiary].compactMap({$0}))
     }
     
