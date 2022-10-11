@@ -7,7 +7,7 @@
 
 #if os(macOS)
 import AppKit
-public class AAVerticallyCenteredTextFieldCell: NSTextFieldCell {
+public class VerticallyCenteredTextFieldCell: NSTextFieldCell {
     public enum FocusType: Equatable {
         case none
         case capsule
@@ -79,7 +79,7 @@ public class AAVerticallyCenteredTextFieldCell: NSTextFieldCell {
     
 }
 
-public class VerticallyCenteredTextFieldCell: NSTextFieldCell {
+public class AAVerticallyCenteredTextFieldCell: NSTextFieldCell {
     public enum FocusType: Equatable {
         case none
         case capsule
