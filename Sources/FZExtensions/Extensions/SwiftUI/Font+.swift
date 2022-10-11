@@ -52,6 +52,36 @@ extension NSUIFontDescriptor.SystemDesign {
     }
 }
 
+@available(macOS 11.0, iOS 13.0, *)
+extension NSUIImage.SymbolScale {
+    public var swiftUI: Image.Scale {
+        switch self {
+        case .medium: return .medium
+        case .large: return .large
+        case .small: return .small
+        default: return .medium
+        }
+    }
+}
+
+@available(macOS 11.0, iOS 13.0, *)
+extension NSUIImage.SymbolWeight {
+    public var swiftUI: Font.Weight {
+        switch self {
+        case .ultraLight: return .ultraLight
+        case .thin: return .thin
+        case .light: return .light
+        case .regular: return .regular
+        case .medium: return .medium
+        case .heavy: return .heavy
+        case .semibold: return .semibold
+        case .bold: return .bold
+        case .black: return .black
+        default: return .regular
+        }
+    }
+}
+
 
 extension NSUIFont.Weight {
     public var swiftUI: Font.Weight {

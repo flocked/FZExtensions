@@ -18,3 +18,4 @@ public extension Image {
         modifier.body(image: self)
     }
 }
+

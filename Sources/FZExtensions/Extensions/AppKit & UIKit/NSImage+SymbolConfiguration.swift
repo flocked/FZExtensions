@@ -354,16 +354,3 @@ extension NSImage.SymbolConfiguration {
     }
 }
 #endif
-
-
-@available(macOS 11.0, iOS 13.0, *)
-extension NSUIImage.SymbolScale {
-    internal var swiftUI: Image.Scale {
-        switch self {
-        case .small: return .small
-        case .medium: return .medium
-        case .large: return .large
-        default: return .medium
-        }
-    }
-}
