@@ -10,6 +10,17 @@ import AppKit
 class VerticallyCenteredTextFieldCell: NSTextFieldCell {
     var focusRingCornerRadius: CGFloat = 0
     var shouldDrawFocusRing: Bool = true
+    
+    enum FocusRingType: Equatable {
+        case none
+        case capsule
+        case roundedCorners(CGFloat)
+        case `default`
+    }
+    
+    var focusRing: FocusRingType = .capsule
+    
+    
 
     override func titleRect(forBounds rect: NSRect) -> NSRect {
         var titleRect = super.titleRect(forBounds: rect)
@@ -32,12 +43,22 @@ class VerticallyCenteredTextFieldCell: NSTextFieldCell {
     }
     
     override func drawFocusRingMask(withFrame cellFrame: NSRect, in controlView: NSView) {
-        guard shouldDrawFocusRing else {
+        guard focusRing != FocusRingType.none else {
             return
         }
 
+        var cornerRadius: CGFloat = 0
+        switch focusRing {
+        case .capsule:
+            cornerRadius = cellFrame.size.height/2.0
+        case .roundedCorners(let radius):
+            cornerRadius = radius
+        default:
+            break
+        }
+
         // Draw default
-        guard focusRingCornerRadius > 0.0 else {
+        guard self.focusRing != FocusRingType.default && cornerRadius != 0 else {
             super.drawFocusRingMask(withFrame: cellFrame, in: controlView)
             return
         }
