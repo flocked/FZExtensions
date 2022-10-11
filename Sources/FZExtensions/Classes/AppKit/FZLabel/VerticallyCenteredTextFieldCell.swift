@@ -67,7 +67,7 @@ class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         // Custome
         // Make forcus ring frame fit with cell size
         let newFrame = cellFrame.insetBy(dx: 2, dy: 1)
-        let path = NSBezierPath(roundedRect: newFrame, xRadius: focusRingCornerRadius, yRadius: focusRingCornerRadius)
+        let path = NSBezierPath(roundedRect: newFrame, xRadius: cornerRadius, yRadius: cornerRadius)
         path.fill()
     }
     
