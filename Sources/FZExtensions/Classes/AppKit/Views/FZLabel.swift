@@ -8,10 +8,16 @@
 #if os(macOS)
 import AppKit
 
+internal class NonFirstResponderResizingTextField: ResizingTextField {
+    override func becomeFirstResponder() -> Bool {
+        return false
+    }
+}
+
 @available(macOS 12, *)
 public class FZLabel: NSView {
     internal var imageView = NSImageView()
-    internal var textField = ResizingTextField(wrappingLabelWithString: "")
+    internal var textField = NonFirstResponderResizingTextField(wrappingLabelWithString: "")
         
     public var style: Style = .body {
          didSet { updateConfiguration() } }
