@@ -195,6 +195,25 @@ public extension NSImage {
     }
 }
 
+@available(macOS 11.0, iOS 13.0, *)
+public extension NSUIFont.Weight {
+    func symbolWeight() -> NSUIImage.SymbolWeight {
+        switch self {
+        case .ultraLight: return .ultraLight
+        case .thin: return .thin
+        case .light: return .light
+        case .regular: return .regular
+        case .medium: return .medium
+        case .semibold: return .semibold
+        case .bold: return .bold
+        case .heavy: return .heavy
+        case .black: return .black
+        default: return .unspecified
+        }
+    }
+    
+}
+
 @available(macOS 11.0, *)
 public extension NSImage {
     enum SymbolWeight: Int, CaseIterable {

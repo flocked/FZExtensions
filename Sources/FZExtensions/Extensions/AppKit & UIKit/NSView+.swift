@@ -30,6 +30,8 @@ extension NSView {
         set {  self.frame.center = newValue } }
     
     
+    
+    
     public var backgroundColor: NSColor? {
         get {
             if let cgColor = self.layer?.backgroundColor {
