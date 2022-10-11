@@ -31,6 +31,16 @@ public class FZLabel: NSView {
     public var iconColor: IconColor = .monochrome(.black) {
         didSet { self.updateSymbolConfiguration() }  }
     
+    public var shouldDrawFocusRing: Bool {
+        get { textField.shouldDrawFocusRing }
+        set { textField.shouldDrawFocusRing = newValue }
+    }
+    
+    public var focusRingCornerRadius: CGFloat {
+        get { textField.focusRingCornerRadius }
+        set { textField.focusRingCornerRadius = newValue }
+    }
+    
     public var isEditable: Bool {
         get { self.textField.isEditable }
         set { self.textField.isEditable = newValue }
