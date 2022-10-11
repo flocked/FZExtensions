@@ -20,7 +20,6 @@ class VerticallyCenteredTextFieldCell: NSTextFieldCell {
     
     var focusRing: FocusRingType = .capsule
     
-    
 
     override func titleRect(forBounds rect: NSRect) -> NSRect {
         var titleRect = super.titleRect(forBounds: rect)
@@ -56,6 +55,8 @@ class VerticallyCenteredTextFieldCell: NSTextFieldCell {
         default:
             break
         }
+        
+        Swift.print(cellFrame.size.height)
 
         // Draw default
         guard self.focusRing != FocusRingType.default && cornerRadius != 0 else {
