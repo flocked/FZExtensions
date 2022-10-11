@@ -14,7 +14,7 @@ public extension View {
     }
     
     @ViewBuilder
-    func skeuomorphBorder<S: Shape>(_ shape: S, color: Color = .black, width: CGFloat = 1.0) -> some View {
+    func skeuomorphBorder<S: InsettableShape>(_ shape: S, color: Color = .black, width: CGFloat = 1.0) -> some View {
         self.modifier(SkeuomorphShapeBorder(shape, color: color, width: width))
     }
 }
@@ -33,10 +33,10 @@ internal struct SkeuomorphBorder: ViewModifier {
     @ViewBuilder
     internal var overlay: some View {
         RoundedRectangle(cornerRadius: cornerRadius)
-            .stroke(color.opacity(0.5), lineWidth: width)
+            .strokeBorder(color.opacity(0.5), lineWidth: width)
         RoundedRectangle(cornerRadius: cornerRadius)
-            .stroke(.white.opacity(0.5), lineWidth: width)
-            .padding(EdgeInsets(top: width, leading: width, bottom: width, trailing: width))
+            .inset(by: width)
+            .strokeBorder(.white.opacity(0.5), lineWidth: width)
     }
     
     internal func body(content: Content) -> some View {
@@ -46,7 +46,7 @@ internal struct SkeuomorphBorder: ViewModifier {
     }
 }
 
-internal struct SkeuomorphShapeBorder<S: Shape>: ViewModifier {
+internal struct SkeuomorphShapeBorder<S: InsettableShape>: ViewModifier {
     private let color: Color
     private let width: CGFloat
     private let shape: S
@@ -59,9 +59,11 @@ internal struct SkeuomorphShapeBorder<S: Shape>: ViewModifier {
     
     @ViewBuilder
     internal var overlay: some View {
-        shape.stroke(color.opacity(0.5), lineWidth: width)
-        shape.stroke(.white.opacity(0.5), lineWidth: width)
-            .padding(EdgeInsets(top: width, leading: width, bottom: width, trailing: width))
+        shape.strokeBorder(color.opacity(0.5), lineWidth: width)
+        shape
+            .inset(by: width)
+            .strokeBorder(.white.opacity(0.5), lineWidth: width)
+          //  .padding(EdgeInsets(top: width, leading: width, bottom: width, trailing: width))
     }
     
     internal func body(content: Content) -> some View {

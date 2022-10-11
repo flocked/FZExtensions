@@ -37,6 +37,34 @@ public extension View {
         )
     }
     
+    @available(macOS 11.0, iOS 13.0, *)
+    @ViewBuilder
+    func imageScaleOptional(_ scale: Image.Scale?) -> some View {
+        if let scale = scale {
+            self.imageScale(scale)
+        } else {
+            self
+        }
+    }
+    
+    @available(macOS 12.0, iOS 15.0, *)
+    @ViewBuilder
+    func foregroundStyleOptional(_ primary: Color?, _ secondary: Color? , _ tertiary: Color?) -> some View {
+        if let primary = primary {
+            if let secondary = secondary {
+                if let tertiary = tertiary {
+                    self.foregroundStyle(primary, secondary, tertiary)
+                } else {
+                    self.foregroundStyle(primary, secondary)
+                }
+            } else {
+                self.foregroundStyle(primary)
+            }
+        } else {
+            self
+        }
+    }
+    
     func asAnyView() -> AnyView {
         return AnyView(self)
     }

@@ -19,8 +19,8 @@ public extension NSEdgeInsets {
 }
 #endif
 
-extension NSUIEdgeInsets: Hashable, Equatable {
-    public static func == (lhs: NSEdgeInsets, rhs: NSEdgeInsets) -> Bool {
+extension NSUIEdgeInsets: Hashable {
+    public static func == (lhs: NSUIEdgeInsets, rhs: NSUIEdgeInsets) -> Bool {
         lhs.hashValue == rhs.hashValue
     }
     

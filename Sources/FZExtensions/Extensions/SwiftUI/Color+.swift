@@ -7,6 +7,17 @@
 
 import SwiftUI
 
+#if os(macOS)
+import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
+public extension NSUIColor {
+    var uiColor: Color {
+        return Color(self)
+    }
+}
+
 @available(macOS 11.0, iOS 14.0, *)
 public extension Color {
     var secondary: Color {

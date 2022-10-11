@@ -13,6 +13,13 @@ import UIKit
 
 #if os(macOS)
 import AppKit
+@available(macOS 11.0, *)
+extension NSFont.TextStyle: CaseIterable {
+    public static var allCases: [Self] {
+        [.body, .subheadline, .headline, .caption1, .caption2, .callout, .footnote, .title1, .title2, .title3, .largeTitle]
+    }
+}
+
 public extension NSFont {
     var lineHeight: CGFloat {
         var attributes = self.fontDescriptor.fontAttributes
@@ -368,7 +375,7 @@ public extension NSUIFont {
      class func preferredFont(from font: Font) -> NSUIFont {
         let font = font.weight(.regular)
         let nsUIFont: NSUIFont
-        if #available(macOS 11.0, iOS 12.2, tvOS 12.2, watchOS 5.2, *) {
+         if #available(macOS 11.0, iOS 14.0, *) {
             switch font {
             case .largeTitle.weight(.regular):
                 nsUIFont = .largeTitle

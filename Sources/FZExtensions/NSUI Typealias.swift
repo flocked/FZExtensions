@@ -6,10 +6,10 @@
 //
 
 // @available(macOS 11.0, *)
+import SwiftUI
 
 #if os(macOS)
 import AppKit
-import SwiftUI
 public typealias NSUIBezierPath = NSBezierPath
 public typealias NSUICollectionView = NSCollectionView
 public typealias NSUICollectionViewCompositionalLayout = NSCollectionViewCompositionalLayout

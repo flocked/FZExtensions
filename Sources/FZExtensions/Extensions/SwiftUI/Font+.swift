@@ -21,7 +21,7 @@ public extension Font {
 
 @available(macOS 11.0, iOS 14.0, tvOS 12.2, watchOS 5.2, *)
 extension NSUIFont.TextStyle {
-    internal var swiftUI: Font.TextStyle {
+    public var swiftUI: Font.TextStyle {
         switch self {
         case .largeTitle: return .largeTitle
         case .title1: return .title
@@ -39,6 +39,37 @@ extension NSUIFont.TextStyle {
         }
     }
 }
+
+@available(macOS 11.0, iOS 13.0, *)
+extension NSUIFontDescriptor.SystemDesign {
+    public var swiftUI: Font.Design {
+        switch self {
+        case .monospaced: return .monospaced
+        case .rounded: return .rounded
+        case .serif: return .serif
+        default: return Font.Design.default
+        }
+    }
+}
+
+
+extension NSUIFont.Weight {
+    public var swiftUI: Font.Weight {
+        switch self {
+        case .ultraLight: return .ultraLight
+        case .thin: return .thin
+        case .light: return .light
+        case .regular: return .regular
+        case .medium: return .medium
+        case .heavy: return .heavy
+        case .semibold: return .semibold
+        case .bold: return .bold
+        case .black: return .black
+        default: return .regular
+        }
+    }
+}
+
 
 /*
  public extension Font {

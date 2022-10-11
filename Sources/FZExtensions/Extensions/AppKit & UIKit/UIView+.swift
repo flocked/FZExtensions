@@ -28,6 +28,7 @@ public extension UIView.ContentMode {
         case .topRight: return .right
         case .bottomLeft: return .left
         case .bottomRight: return .right
+        @unknown default: return .center
         }
     }
     

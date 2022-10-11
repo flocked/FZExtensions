@@ -234,6 +234,17 @@ extension NSView {
     public  func setNeedsUpdateConstraints() {
         self.needsUpdateConstraints = true
     }
+    
+    public var parentController: NSViewController? {
+        if let responder = self.nextResponder as? NSViewController {
+            return responder
+        } else if let responder = self.nextResponder as? NSView {
+            return responder.parentController
+        } else {
+            return nil
+        }
+    }
+    
 }
 
 public extension NSView.AutoresizingMask {
@@ -249,12 +260,23 @@ import UIKit
 extension UIView {
    public var cornerRadius: CGFloat {
         get {
-            return self.layer.cornerRadius ?? 0.0
+            return self.layer.cornerRadius
         }
         set {
             self.layer.cornerRadius = newValue
         }
     }
+    
+  public  var parentController: UIViewController? {
+        if let responder = self.next as? UIViewController {
+            return responder
+        } else if let responder = self.next as? UIView {
+            return responder.parentController
+        } else {
+            return nil
+        }
+    }
+
     
 }
 #endif
