@@ -7,13 +7,6 @@
 
 #if os(macOS)
 import AppKit
-
-internal class NonFirstResponderResizingTextField: ResizingTextField {
-    override func becomeFirstResponder() -> Bool {
-        return false
-    }
-}
-
 @available(macOS 12, *)
 public class FZLabel: NSView {
     internal var imageView = NSImageView()
@@ -26,7 +19,7 @@ public class FZLabel: NSView {
     
     public var displayMode: DisplayMode = .titleAndIcon {
          didSet { updatePositions() } }
-    public var iconSize: IconSize = .regular {
+    public var iconScale: IconScale = .regular {
          didSet { updateConfiguration() } }
     public var iconPosition: IconPosition = .leading {
         didSet { //self.textField.alignment = iconPosition == .leading ? .left : .right
@@ -123,7 +116,7 @@ public class FZLabel: NSView {
             return imageView.fittingSize
         }
         let height: CGFloat
-        switch iconSize {
+        switch self.iconScale {
             case .large: height = font.lineHeight * 1.2
             case .small:  height = font.lineHeight * 0.8
             default: height = font.lineHeight * 1.0
@@ -220,9 +213,9 @@ public class FZLabel: NSView {
         
     internal var symbolConfiguration: NSImage.SymbolConfiguration {
         if let textStyle = style.textStyle {
-            return  _symbolConfiguration.font(textStyle).weight(weight.symbolWeight()).scale(.init(rawValue: iconSize.rawValue))
+            return  _symbolConfiguration.font(textStyle).weight(weight.symbolWeight()).scale(.init(rawValue: iconScale.rawValue))
         } else {
-            return  _symbolConfiguration.font(size: style.pointSize!).weight(weight.symbolWeight()).scale(.init(rawValue: iconSize.rawValue))
+            return  _symbolConfiguration.font(size: style.pointSize!).weight(weight.symbolWeight()).scale(.init(rawValue: iconScale.rawValue))
         }
     }
     
@@ -336,7 +329,7 @@ extension FZLabel {
     }
     
     internal func fittingImageViewSize(for fontSize: CGFloat, weight: NSFont.Weight) -> CGSize {
-        let symbolConfiguration: NSImage.SymbolConfiguration = .init(pointSize: fontSize, weight: weight, scale: NSImage.SymbolScale(rawValue: self.iconSize.rawValue)!)
+        let symbolConfiguration: NSImage.SymbolConfiguration = .init(pointSize: fontSize, weight: weight, scale: NSImage.SymbolScale(rawValue: self.iconScale.rawValue)!)
         self.imageView.symbolConfiguration = symbolConfiguration
         let fittingSize = self.imageView.fittingSize
         self.imageView.symbolConfiguration = self.symbolConfiguration
@@ -353,7 +346,7 @@ extension FZLabel {
         case titleAndIcon
     }
     
-    public enum IconSize: Int {
+    public enum IconScale: Int {
         case small = 1
         case regular = 2
         case large = 3
@@ -419,6 +412,12 @@ extension FZLabel {
                 return nil
             }
         }
+    }
+}
+
+internal class NonFirstResponderResizingTextField: ResizingTextField {
+    override func becomeFirstResponder() -> Bool {
+        return false
     }
 }
 #endif
