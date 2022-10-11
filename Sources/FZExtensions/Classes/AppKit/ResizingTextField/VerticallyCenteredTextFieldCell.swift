@@ -18,7 +18,7 @@ public class VerticallyCenteredTextFieldCell: NSTextFieldCell {
     
     internal var isEditingOrSelecting = false
     public var focusType: FocusType = FocusType.default
-    
+  //  internal var isEditingHandler: ((Bool)->())? = nil
 
     public override func titleRect(forBounds rect: NSRect) -> NSRect {
         var titleRect = super.titleRect(forBounds: rect)
@@ -62,8 +62,6 @@ public class VerticallyCenteredTextFieldCell: NSTextFieldCell {
             break
         }
         
-        Swift.print(cellFrame.size.height)
-
         // Draw default
         guard self.focusType != FocusType.default && cornerRadius != 0 else {
             super.drawFocusRingMask(withFrame: cellFrame, in: controlView)

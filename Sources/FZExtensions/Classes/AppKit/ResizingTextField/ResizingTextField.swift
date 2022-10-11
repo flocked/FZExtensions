@@ -195,20 +195,6 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
         }
     }
     
-    func textViewDidChangeSelection(_ notification: Notification) {
-        Swift.print("textViewDidChangeSelection")
-    }
-    
-    public func controlTextDidBeginEditing(_ obj: Notification) {
-        Swift.print("controlTextDidBeginEditing")
-    }
-    
-    public func textField(_ textField: NSTextField, textView: NSTextView, shouldSelectCandidateAt index: Int) -> Bool {
-        Swift.print("shouldSelectCandidateAt")
-        return true
-    }
-    
-   
    public override func textDidChange(_ notification: Notification) {
        super.textDidChange(notification)
        if let minAmountChars = minAmountChars, self.stringValue.count < minAmountChars {
