@@ -42,9 +42,9 @@ public extension NSObject {
         }
         return attributeKeys
     }
-    
-    func toDictionary(from classType: NSObject.Type? = nil) -> [String: Any?] {
-        let classType = classType ??  type(of: self)
+
+    func dictRepresentation() -> [String: Any?] {
+        let classType = type(of: self)
        var propertiesCount : CUnsignedInt = 0
        let propertiesInAClass = class_copyPropertyList(classType, &propertiesCount)
        var propertiesDictionary = [String:Any?]()
