@@ -152,6 +152,9 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
 
    public override func textDidBeginEditing(_ notification: Notification) {
        super.textDidBeginEditing(notification)
+       if (stopEditingOnOutsideMouseDown) {
+           self.addMouseDownMonitor()
+       }
        self.isEditing = true
        self.previousStringValue = self.stringValue
        self.previousCharStringValue = self.stringValue
@@ -165,6 +168,7 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
    
    public override func textDidEndEditing(_ notification: Notification) {
        super.textDidEndEditing(notification)
+       self.removeMouseDownMonitor()
        self.isEditing = false
        self.editingStateHandler?(.didEnd)
    }
@@ -209,6 +213,8 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
    
     public var shouldAutoSize: Bool = true
     
+    
+    
     public override var intrinsicContentSize: NSSize {
        let intrinsicContentSize = super.intrinsicContentSize
        if (shouldAutoSize == false) {
@@ -247,7 +253,7 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
            self.lastContentSize = minSize
            return minSize
        }
-       
+    
        // This is a tweak to fix the problem of insertion points being drawn at the wrong position.
        let newWidth = ceil(size(self.stringValue).width)
        var newSize = NSSize(width: newWidth, height: intrinsicContentSize.height)
@@ -260,6 +266,33 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
        self.lastContentSize = newSize
        return newSize
    }
+    
+    public var stopEditingOnOutsideMouseDown = false
+    internal var mouseDownMonitor: Any? = nil
+    internal func addMouseDownMonitor() {
+        if (mouseDownMonitor == nil) {
+            mouseDownMonitor = NSEvent.addLocalMonitorForEvents(matching: .leftMouseDown, handler: { event in
+                let point = event.location(in: self)
+                if (self.bounds.contains(point) == false) {
+                    if (self.isConforming(self.stringValue)) {
+                        self.window?.makeFirstResponder(nil)
+                    } else {
+                        self.stringValue = self.previousStringValue
+                        self.window?.makeFirstResponder(nil)
+                    }
+                }
+                return event
+            })
+        }
+    }
+    
+    internal func removeMouseDownMonitor() {
+        if let mouseDownMonitor = mouseDownMonitor {
+            NSEvent.removeMonitor(mouseDownMonitor)
+            self.mouseDownMonitor = nil
+        }
+    }
+    
 }
 
 #endif
