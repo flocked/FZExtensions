@@ -203,6 +203,11 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
         Swift.print("controlTextDidBeginEditing")
     }
     
+    public func textField(_ textField: NSTextField, textView: NSTextView, shouldSelectCandidateAt index: Int) -> Bool {
+        Swift.print("shouldSelectCandidateAt")
+        return true
+    }
+    
    
    public override func textDidChange(_ notification: Notification) {
        super.textDidChange(notification)
