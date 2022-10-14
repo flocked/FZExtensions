@@ -38,6 +38,7 @@ public extension DisplayLinkTimer {
             self.isConnected = true
             self.setupDisplayLink()
             let subscription =  Subscription(onCancel: {  [weak self] in
+                self?.isConnected = false
                 self?.stopDisplayLink()
             })
             
@@ -84,11 +85,12 @@ public extension DisplayLinkTimer {
         }
         
         private func stopDisplayLink() {
-            self.isConnected = false
             displayLink?.cancel()
         }
         
-        private func setupDisplayLink() {
+        private func setupDisplayLink() {s
+            self.previousTimestamp = Date().timeIntervalSince1970
+            self.timeIntervalSinceLastFire = 0.0
             self.displayLink = DisplayLink.shared.sink(receiveValue: {frame in
                 let timeIntervalCount = frame.timestamp - self.previousTimestamp
                 self.timeIntervalSinceLastFire = self.timeIntervalSinceLastFire + timeIntervalCount
