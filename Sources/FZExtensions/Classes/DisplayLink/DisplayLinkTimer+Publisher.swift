@@ -16,27 +16,21 @@ public extension DisplayLinkTimer {
     }
 }
 
-public extension DisplayLinkTimer.TimerPublisher {
-    fileprivate final class Subscription: Combine.Subscription {
-        var onCancel: () -> Void
-        init(onCancel: @escaping () -> Void) {
-            self.onCancel = onCancel
-        }
-        func request(_ demand: Subscribers.Demand) {
-            // Do nothing – subscribers can't impact how often the system draws frames.
-        }
-        func cancel() {
-            onCancel()
-        }
-    }
-}
-
 public extension DisplayLinkTimer {
     class TimerPublisher: ConnectablePublisher {
+        public typealias Output = Date
+        public typealias Failure = Never
+        
+        public var interval: TimeInterval
+        
+        public init(interval: TimeInterval) {
+            self.interval = interval
+        }
+        
         internal var isConnected = false
         public func connect() -> Cancellable {
             self.isConnected = true
-            self.setupDisplayLink()
+            self.startDisplayLink()
             let subscription =  Subscription(onCancel: {  [weak self] in
                 self?.isConnected = false
                 self?.stopDisplayLink()
@@ -75,11 +69,9 @@ public extension DisplayLinkTimer {
             didSet {
                 dispatchPrecondition(condition: .onQueue(.main))
                 if (subscribers.isEmpty) {
-                    displayLink?.cancel()
+                    self.stopDisplayLink()
                 } else {
-                    if (displayLink == nil && isConnected) {
-                        self.setupDisplayLink()
-                    }
+                    self.startDisplayLink()
                 }
             }
         }
@@ -88,37 +80,47 @@ public extension DisplayLinkTimer {
             displayLink?.cancel()
         }
         
-        internal var isStarted = false
-        private func setupDisplayLink() {
-            self.previousTimestamp = Date().timeIntervalSinceNow
-            self.timeIntervalSinceLastFire = 0.0
-            self.isStarted = false
-            self.displayLink = DisplayLink.shared.sink(receiveValue: {frame in
-                if (self.isStarted == false) {
-                    self.isStarted = true
+        internal var isRunning = false
+        private func startDisplayLink() {
+            if (displayLink == nil && isConnected) {
+                self.previousTimestamp = 0.0
+                self.timeIntervalSinceLastFire = 0.0
+                self.isRunning = false
+                self.displayLink = DisplayLink.shared.sink(receiveValue: { [weak self] frame in
+                    guard let self = self else { return }
+                    if (self.isRunning == false) {
+                        self.isRunning = true
+                        self.previousTimestamp = frame.timestamp
+                    }
+                    let timeIntervalCount = frame.timestamp - self.previousTimestamp
+                    self.timeIntervalSinceLastFire = self.timeIntervalSinceLastFire + timeIntervalCount
                     self.previousTimestamp = frame.timestamp
-                }
-                let timeIntervalCount = frame.timestamp - self.previousTimestamp
-                self.timeIntervalSinceLastFire = self.timeIntervalSinceLastFire + timeIntervalCount
-                self.previousTimestamp = frame.timestamp
-                if (self.timeIntervalSinceLastFire > self.interval) {
-                    self.timeIntervalSinceLastFire = 0.0
-                    self.send(date: Date())
-                }
-            })
+                    if (self.timeIntervalSinceLastFire > self.interval) {
+                        self.timeIntervalSinceLastFire = 0.0
+                        self.send(date: Date())
+                    }
+                })
+            }
         }
-     
-        var interval: TimeInterval
-        internal var displayLink: AnyCancellable? = nil
         
+        internal var displayLink: AnyCancellable? = nil
         internal var previousTimestamp: TimeInterval = 0.0
         internal var timeIntervalSinceLastFire: TimeInterval = 0.0
-
-        public init(interval: TimeInterval) {
-            self.interval = interval
-        }
         
-        public typealias Output = Date
-        public typealias Failure = Never
+    }
+}
+
+public extension DisplayLinkTimer.TimerPublisher {
+    fileprivate final class Subscription: Combine.Subscription {
+        var onCancel: () -> Void
+        init(onCancel: @escaping () -> Void) {
+            self.onCancel = onCancel
+        }
+        func request(_ demand: Subscribers.Demand) {
+            // Do nothing – subscribers can't impact how often the system draws frames.
+        }
+        func cancel() {
+            onCancel()
+        }
     }
 }

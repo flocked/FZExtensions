@@ -53,13 +53,19 @@ public class DisplayLinkTimer {
         return (displayLink != nil)
     }
     
+    internal var _isRunning: Bool = false
     public func fire() {
         if isRunning == false {
             self.previousTimestamp = 0.0
             self.timeIntervalSinceLastFire = 0.0
             self.lastFireDate = Date()
-            self.displayLink = DisplayLink.shared.sink{ [weak self] frame in
+            self._isRunning = false
+            self.displayLink = DisplayLink.shared.sink{  [weak self] frame in
                 if let self = self {
+                    if (self._isRunning == false) {
+                        self._isRunning = true
+                        self.previousTimestamp = frame.timestamp
+                    }
                     let timeIntervalCount = frame.timestamp - self.previousTimestamp
                     self.timeIntervalSinceLastFire = self.timeIntervalSinceLastFire + timeIntervalCount
                     self.previousTimestamp = frame.timestamp

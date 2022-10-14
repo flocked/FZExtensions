@@ -15,6 +15,11 @@ public extension NSTextField {
         self.textLayout = layout
     }
     
+    var truncatesLastVisibleLine: Bool {
+        get { self.cell?.truncatesLastVisibleLine ?? false }
+        set { self.cell?.truncatesLastVisibleLine = newValue }
+    }
+    
     convenience init(frame: CGRect, layout: TextLayout) {
         self.init(frame: frame)
         self.textLayout = layout

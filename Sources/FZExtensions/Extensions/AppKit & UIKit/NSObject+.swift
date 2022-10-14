@@ -12,6 +12,11 @@ import UIKit
 #endif
 
 public extension NSObject {
+    func copyObject() throws -> Self? {
+        let data = try NSKeyedArchiver.archivedData(withRootObject:self, requiringSecureCoding:false)
+        return try NSKeyedUnarchiver.unarchiveTopLevelObjectWithData(data) as? Self
+    }
+    
     func containsValue(named: String) -> Bool {
         self.variableNames().contains(named)
     }
