@@ -84,7 +84,7 @@ public extension DisplayLinkTimer {
         internal var previousTimestamp: TimeInterval = 0.0
         internal var timeIntervalSinceLastFire: TimeInterval = 0.0
 
-        init(interval: TimeInterval) {
+        public init(interval: TimeInterval) {
             self.interval = interval
         }
         
