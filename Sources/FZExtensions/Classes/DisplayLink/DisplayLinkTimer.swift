@@ -27,7 +27,7 @@ public extension DisplayLinkTimer.TimerPublisher {
 
 
 public extension DisplayLinkTimer {
-    final class TimerPublisher: Publisher {
+     class TimerPublisher: Publisher {
         public func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, Date == S.Input {
             dispatchPrecondition(condition: .onQueue(.main))
             
