@@ -88,7 +88,7 @@ public extension DisplayLinkTimer {
             displayLink?.cancel()
         }
         
-        private func setupDisplayLink() {s
+        private func setupDisplayLink() {
             self.previousTimestamp = Date().timeIntervalSince1970
             self.timeIntervalSinceLastFire = 0.0
             self.displayLink = DisplayLink.shared.sink(receiveValue: {frame in
