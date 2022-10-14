@@ -43,6 +43,7 @@ public extension NSTextField {
                 self.lineBreakMode = newValue.lineBreakMode
                 self.usesSingleLineMode = false
                 self.cell?.wraps = newValue.wraps
+                self.truncatesLastVisibleLine = true
                 self.cell?.isScrollable = newValue.isScrollable
             }
         }
@@ -74,6 +75,28 @@ public extension NSTextField {
                 return .byClipping
             }
         }
+    }
+    
+    func textRect(forBounds bounds: CGRect, limitedToNumberOfLines numberOfLines: Int
+    ) -> CGRect {
+        let _maximumNumberOfLines = self.maximumNumberOfLines
+        self.maximumNumberOfLines = numberOfLines
+        if let cell = self.cell {
+            let rect = cell.drawingRect(forBounds: bounds)
+            let cellSize = cell.cellSize(forBounds: rect)
+            self.maximumNumberOfLines = _maximumNumberOfLines
+            return CGRect(origin: .zero, size: cellSize)
+        }
+        self.maximumNumberOfLines = _maximumNumberOfLines
+        return .zero
+    }
+    
+    var isTruncatingText: Bool {
+        var bounds = self.bounds
+        let textSize = textRect(forBounds: bounds, limitedToNumberOfLines: self.maximumNumberOfLines).size
+        bounds.size = CGSize(width: bounds.size.width, height: CGFloat.infinity)
+        let fullSize = textRect(forBounds: bounds, limitedToNumberOfLines: 0).size
+        return textSize != fullSize
     }
 }
 
