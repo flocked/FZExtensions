@@ -32,7 +32,13 @@ public extension DisplayLinkTimer.TimerPublisher {
 }
 
 public extension DisplayLinkTimer {
-     class TimerPublisher: Publisher {
+    class TimerPublisher: ConnectablePublisher {
+        public func connect() -> Cancellable {
+            Subscription(onCancel: {
+                
+            })
+        }
+        
         public func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, Date == S.Input {
             dispatchPrecondition(condition: .onQueue(.main))
             
