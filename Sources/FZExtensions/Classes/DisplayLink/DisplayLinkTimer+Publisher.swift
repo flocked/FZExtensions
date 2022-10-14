@@ -34,15 +34,16 @@ public extension DisplayLinkTimer.TimerPublisher {
 public extension DisplayLinkTimer {
     class TimerPublisher: ConnectablePublisher {
         public func connect() -> Cancellable {
-            Subscription(onCancel: {
+            let subscription =  Subscription(onCancel: {
                 
             })
+            
+            return subscription
         }
         
         public func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, Date == S.Input {
             dispatchPrecondition(condition: .onQueue(.main))
             
-            Swift.print("ffff")
             let typeErased = AnySubscriber(subscriber)
             let identifier = typeErased.combineIdentifier
             let subscription = Subscription(onCancel: { [weak self] in
