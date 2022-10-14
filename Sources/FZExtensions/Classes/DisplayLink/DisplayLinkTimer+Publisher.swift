@@ -42,6 +42,7 @@ public extension DisplayLinkTimer {
         public func receive<S>(subscriber: S) where S : Subscriber, Never == S.Failure, Date == S.Input {
             dispatchPrecondition(condition: .onQueue(.main))
             
+            Swift.print("ffff")
             let typeErased = AnySubscriber(subscriber)
             let identifier = typeErased.combineIdentifier
             let subscription = Subscription(onCancel: { [weak self] in
