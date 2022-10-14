@@ -4,6 +4,7 @@
 //
 //  Created by Rehatbir Singh on 15/03/2022.
 //
+
 import SwiftUI
 
 #if os(macOS)
@@ -11,10 +12,17 @@ import AppKit
 
 @available(macOS 11, *)
 public struct EffectView: NSViewRepresentable {
+    public typealias NSViewType = NSVisualEffectView
+
     private var material: NSVisualEffectView.Material
     private var blendingMode: NSVisualEffectView.BlendingMode
     private var emphasized: Bool
     private var state: NSVisualEffectView.State
+    
+    public init(
+        _ blendingMode: NSVisualEffectView.BlendingMode = .withinWindow) {
+        self.init(material: NSVisualEffectView.Material(rawValue: 0)!, blendingMode: blendingMode, emphasized: false)
+    }
 
     public init(
         _ blendingMode: NSVisualEffectView.BlendingMode = .withinWindow,
@@ -24,13 +32,21 @@ public struct EffectView: NSViewRepresentable {
     }
     
     public init(material: NSVisualEffectView.Material,
-        blendingMode: NSVisualEffectView.BlendingMode = .withinWindow,
-        emphasized: Bool = false
+                blendingMode: NSVisualEffectView.BlendingMode = .withinWindow,
+                emphasized: Bool = false
+    ) {
+        self.init(material: material, blendingMode: blendingMode, emphasized: emphasized, state: .followsWindowActiveState)
+    }
+    
+    public init(material: NSVisualEffectView.Material,
+                blendingMode: NSVisualEffectView.BlendingMode = .withinWindow,
+                emphasized: Bool = false,
+                state: NSVisualEffectView.State = .followsWindowActiveState
     ) {
         self.material = material
         self.blendingMode = blendingMode
         self.emphasized = emphasized
-        self.state = .followsWindowActiveState
+        self.state = state
     }
 
     public func makeNSView(context: Context) -> NSVisualEffectView {

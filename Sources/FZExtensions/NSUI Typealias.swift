@@ -27,6 +27,7 @@ public typealias NSUIFontTextStyle = NSFont.TextStyle
 public typealias NSUIImage = NSImage
 public typealias NSUIView = NSView
 public typealias NSUIHostingController = NSHostingController
+public typealias NSUIRectCorner = NSRectCorner
 #elseif canImport(UIKit)
 import UIKit
 public typealias NSUIBezierPath = UIBezierPath
@@ -46,4 +47,5 @@ public typealias NSUIFontTextStyle = UIFont.TextStyle
 public typealias NSUIImage = UIImage
 public typealias NSUIView = UIView
 public typealias NSUIHostingController = UIHostingController
+public typealias NSUIRectCorner = UIRectCorner
 #endif

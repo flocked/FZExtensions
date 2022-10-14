@@ -90,13 +90,19 @@ public extension NSImage {
 }
 
 public extension NSImage {
-    func tinted(_ tintColor: NSColor) -> NSImage {
-        guard self.isTemplate else { return self }
+    
+    func withTintColor(_ color: NSColor) -> NSImage {
+      //  var image = self
+   //     image.isTemplate = true
+    //    guard self.isTemplate else { return self }
         
         let image = self.copy() as! NSImage
+        image.isTemplate = true
         image.lockFocus()
+    
+   // CompositeSourceIn
         
-        tintColor.set()
+        color.set()
         NSRect(origin: .zero, size: image.size).fill(using: .sourceAtop)
         
         image.unlockFocus()

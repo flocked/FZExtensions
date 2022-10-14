@@ -14,6 +14,12 @@ public protocol NSContentView {
     func sizeThatFits(_ size: CGSize) -> CGSize
 }
 
+public extension NSContentView {
+    func supports(_ configuration: NSContentConfiguration) -> Bool {
+       return type(of: configuration) == type(of: self.configuration)
+    }
+}
+
 public extension NSContentView where Self: NSView {
      func sizeThatFits(_ size: CGSize) -> CGSize {
         return self.fittingSize

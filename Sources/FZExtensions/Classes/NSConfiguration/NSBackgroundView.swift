@@ -12,4 +12,10 @@ public protocol NSBackgroundView {
     var configuration: NSBackgroundConfiguration { get set }
     func supports(_ configuration: NSBackgroundConfiguration) -> Bool
 }
+
+public extension NSBackgroundView {
+    func supports(_ configuration: NSBackgroundConfiguration) -> Bool {
+       return type(of: configuration) == type(of: self.configuration)
+    }
+}
 #endif

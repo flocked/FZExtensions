@@ -7,115 +7,203 @@
 
 #if os(macOS)
 import AppKit
+#elseif canImport(UIKit)
+import UIKit
+#endif
 
-public extension NSBezierPath {
-    convenience init(
-        roundedRect rect: CGRect,
-        cornerRadius: CGFloat
-    ) {
-        self.init(roundedRect: rect, xRadius: cornerRadius/2.0, yRadius: cornerRadius/2.0)
-    }
-    
-    convenience init(rect: CGRect, cornerRadius: CGFloat, roundedCorners: CACornerMask = .all) {
-        if (roundedCorners == .all || cornerRadius == 0.0) {
-            let radius = cornerRadius / 2.0
-            self.init(roundedRect: rect, xRadius: radius, yRadius: radius)
-        } else {
-        self.init()
-                
-        let maxX: CGFloat = rect.size.width
-        let minX: CGFloat = 0
-        let maxY: CGFloat = rect.size.height
-        let minY: CGFloat =  0
-
-        let bottomRightCorner = CGPoint(x: maxX, y: minY)
-
-        move(to: bottomRightCorner)
-
-        if roundedCorners.contains(.bottomRight) {
-            line(to: CGPoint(x: maxX - cornerRadius, y: minY))
-            curve(to: CGPoint(x: maxX, y: minY + cornerRadius), controlPoint1: bottomRightCorner, controlPoint2: bottomRightCorner)
-        } else {
-            line(to: bottomRightCorner)
-        }
-
-        let topRightCorner = CGPoint(x: maxX, y: maxY)
-
-        if roundedCorners.contains(.topRight) {
-            line(to: CGPoint(x: maxX, y: maxY - cornerRadius))
-            curve(to: CGPoint(x: maxX - cornerRadius, y: maxY), controlPoint1: topRightCorner, controlPoint2: topRightCorner)
-        } else {
-            line(to: topRightCorner)
-        }
-
-        let topLeftCorner = CGPoint(x: minX, y: maxY)
-
-        if roundedCorners.contains(.topLeft) {
-            line(to: CGPoint(x: minX + cornerRadius, y: maxY))
-            curve(to: CGPoint(x: minX, y: maxY - cornerRadius), controlPoint1: topLeftCorner, controlPoint2: topLeftCorner)
-        } else {
-            line(to: topLeftCorner)
-        }
-
-        let bottomLeftCorner = CGPoint(x: minX, y: minY)
-
-        if roundedCorners.contains(.bottomLeft) {
-            line(to: CGPoint(x: minX, y: minY + cornerRadius))
-            curve(to: CGPoint(x: minX + cornerRadius, y: minY), controlPoint1: bottomLeftCorner, controlPoint2: bottomLeftCorner)
-        } else {
-            line(to: bottomLeftCorner)
-        }
-        }
-    }
+#if os(macOS)
+public struct NSRectCorner: OptionSet {
+  public let rawValue: UInt
+   
+    public static let none = NSRectCorner([])
+    public static let topLeft = NSRectCorner(rawValue: 1 << 0)
+    public static let topRight = NSRectCorner(rawValue: 1 << 1)
+    public  static let bottomLeft = NSRectCorner(rawValue: 1 << 2)
+    public static let bottomRight = NSRectCorner(rawValue: 1 << 3)
+    public static var all: NSRectCorner {
+       return [.topLeft, .topRight, .bottomLeft, .bottomRight]
+   }
+   
+    public init(rawValue: UInt) {
+       self.rawValue = rawValue
+   }
 }
 
 public extension NSBezierPath {
-    var cgPath: CGPath {
-        return self.transformToCGPath()
-    }
-
-    private func transformToCGPath() -> CGPath {
-
-        // Create path
-        let path = CGMutablePath()
-        let points = UnsafeMutablePointer<NSPoint>.allocate(capacity: 3)
-        let numElements = self.elementCount
-
-        if numElements > 0 {
-
-            var didClosePath = true
-
-            for index in 0..<numElements {
-
-                let pathType = self.element(at: index, associatedPoints: points)
-
-                switch pathType {
-                case .moveTo:
-                    path.move(to: CGPoint(x: points[0].x, y: points[0].y))
-                case .lineTo:
-                    path.addLine(to: CGPoint(x: points[0].x, y: points[0].y))
-                    didClosePath = false
-                case .curveTo:
-                    path.addCurve(to: CGPoint(x: points[0].x, y: points[0].y),
-                                  control1: CGPoint(x: points[1].x, y: points[1].y),
-                                  control2: CGPoint(x: points[2].x, y: points[2].y))
-                    didClosePath = false
-                case .closePath:
-                    path.closeSubpath()
-                    didClosePath = true
-                default:
-                    break
-                }
-            }
-
-            if !didClosePath { path.closeSubpath() }
+    convenience init(roundedRect rect: CGRect, byRoundingCorners corners: NSRectCorner, cornerRadii: CGSize) {
+        self.init()
+        defer { close() }
+        
+        let topLeft = rect.origin
+        let topRight = NSPoint(x: rect.maxX, y: rect.minY)
+        let bottomRight = NSPoint(x: rect.maxX, y: rect.maxY)
+        let bottomLeft = NSPoint(x: rect.minX, y: rect.maxY)
+        
+        if corners.contains(.topLeft) {
+            move(to: CGPoint(x: topLeft.x + cornerRadii.width,
+                             y: topLeft.y))
+        } else {
+            move(to: topLeft)
         }
+        
+        if corners.contains(.topRight) {
+            line(to: CGPoint(x: topRight.x - cornerRadii.width,
+                             y: topRight.y))
+            curve(to: topRight,
+                  controlPoint1: CGPoint(x: topRight.x,
+                                         y: topRight.y + cornerRadii.height),
+                  controlPoint2: CGPoint(x: topRight.x,
+                                         y: topRight.y + cornerRadii.height))
+        } else {
+            line(to: topRight)
+        }
+        
+        if corners.contains(.bottomRight) {
+            line(to: CGPoint(x: bottomRight.x,
+                             y: bottomRight.y - cornerRadii.height))
+            curve(to: bottomRight,
+                  controlPoint1: CGPoint(x: bottomRight.x - cornerRadii.width,
+                                         y: bottomRight.y),
+                  controlPoint2: CGPoint(x: bottomRight.x - cornerRadii.width,
+                                         y: bottomRight.y))
+        } else {
+            line(to: bottomRight)
+        }
+        
+        if corners.contains(.bottomLeft) {
+            line(to: CGPoint(x: bottomLeft.x + cornerRadii.width,
+                             y: bottomLeft.y))
+            curve(to: bottomLeft,
+                  controlPoint1: CGPoint(x: bottomLeft.x,
+                                         y: bottomLeft.y - cornerRadii.height),
+                  controlPoint2: CGPoint(x: bottomLeft.x,
+                                         y: bottomLeft.y - cornerRadii.height))
+        } else {
+            line(to: bottomLeft)
+        }
+        
+        if corners.contains(.topLeft) {
+            line(to: CGPoint(x: topLeft.x,
+                             y: topLeft.y + cornerRadii.height))
+            curve(to: topLeft,
+                  controlPoint1: CGPoint(x: topLeft.x + cornerRadii.width,
+                                         y: topLeft.y),
+                  controlPoint2: CGPoint(x: topLeft.x + cornerRadii.width,
+                                         y: topLeft.y))
+        } else {
+            line(to: topLeft)
+        }
+    }
+        
+    convenience init(roundedRect rect: CGRect, cornerRadius: CGFloat) {
+        self.init(roundedRect: rect, byRoundingCorners: .all, cornerRadius: cornerRadius)
+    }
+    
+    convenience init(cgPath: CGPath) {
+           self.init()
+           
+           cgPath.applyWithBlock { elementPointer in
+               let element: CGPathElement = elementPointer.pointee
+               let point: CGPoint = element.points.pointee
+               switch element.type {
+               case .moveToPoint:
+                   move(to: point)
+               case .addLineToPoint:
+                   line(to: point)
+               case .addQuadCurveToPoint:
+                   let currentPoint: CGPoint = cgPath.currentPoint
+                   // TODO: - Double check `/ 3`
+                   let x: CGFloat = (currentPoint.x + 2 * point.x) / 3
+                   let y: CGFloat = (currentPoint.y + 2 * point.y) / 3
+                   let interpolatedPoint = CGPoint(x: x, y: y)
+                   let endPoint: CGPoint = element.points.successor().pointee
+                   curve(to: endPoint,
+                         controlPoint1: interpolatedPoint,
+                         controlPoint2: interpolatedPoint)
+               case .addCurveToPoint:
+                   let midPoint: CGPoint = element.points.successor().pointee
+                   let endPoint: CGPoint = element.points.successor().successor().pointee
+                   curve(to: endPoint,
+                         controlPoint1: point,
+                         controlPoint2: midPoint)
+               case .closeSubpath:
+                   close()
+               @unknown default:
+                   break
+               }
+           }
+           
+       }
 
-        points.deallocate()
+    var cgPath: CGPath {
+        let path = CGMutablePath()
+        var points = [CGPoint](repeating: .zero, count: 3)
+        for i in 0 ..< self.elementCount {
+            let type = self.element(at: i, associatedPoints: &points)
+            switch type {
+            case .moveTo:
+                path.move(to: CGPoint(x: points[0].x, y: points[0].y))
+            case .lineTo:
+                path.addLine(to: CGPoint(x: points[0].x, y: points[0].y))
+            case .curveTo:
+                path.addCurve(
+                    to: CGPoint(x: points[2].x, y: points[2].y),
+                    control1: CGPoint(x: points[0].x, y: points[0].y),
+                    control2: CGPoint(x: points[1].x, y: points[1].y))
+            case .closePath:
+                path.closeSubpath()
+            @unknown default:
+                break
+            }
+        }
         return path
     }
 }
+#endif
 
+public extension NSUIBezierPath {
+    convenience init(roundedRect rect: CGRect, byRoundingCorners corners: NSUIRectCorner, cornerRadius: CGFloat) {
+        self.init(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: cornerRadius, height: cornerRadius))
+    }
+}
+
+public extension NSUIRectCorner {
+    init(_ cornerMask: CACornerMask) {
+        var corner = NSUIRectCorner()
+        if (cornerMask.contains(.bottomLeft)) {
+            corner.insert(.bottomLeft)
+        }
+        if (cornerMask.contains(.bottomRight)) {
+            corner.insert(.bottomRight)
+        }
+        if (cornerMask.contains(.topLeft)) {
+            corner.insert(.topLeft)
+        }
+        if (cornerMask.contains(.topRight)) {
+            corner.insert(.topRight)
+        }
+        self.init(rawValue: corner.rawValue)
+    }
+    
+    var caCornerMask: CACornerMask {
+        var cornerMask = CACornerMask()
+        if (self.contains(.bottomLeft)) {
+            cornerMask.insert(.bottomLeft)
+        }
+        if (self.contains(.bottomRight)) {
+            cornerMask.insert(.bottomRight)
+        }
+        if (self.contains(.topLeft)) {
+            cornerMask.insert(.topLeft)
+        }
+        if (self.contains(.topRight)) {
+            cornerMask.insert(.topRight)
+        }
+        return cornerMask
+    }
+}
+
+#if os(macOS)
 public extension NSBezierPath {
    static func contactShadow(rect: CGRect, shadowSize: CGFloat = 20, shadowDistance: CGFloat = 0) -> NSBezierPath {
         let contactRect = CGRect(x: -shadowSize, y: (rect.height - (shadowSize * 0.4)) + shadowDistance, width: rect.width + shadowSize * 2, height: shadowSize)
@@ -151,37 +239,6 @@ public extension NSBezierPath {
         shadowPath.line(to: CGPoint(x: rect.width + shadowOffsetX, y: 2000))
         shadowPath.line(to: CGPoint(x: shadowOffsetX, y: 2000))
         return shadowPath
-    }
-}
-
-#endif
-
-#if canImport(UIKit)
-import UIKit
-public extension UIBezierPath {
-    convenience init(rect: CGRect, cornerRadius: CGFloat, roundedCorners: CACornerMask = .all) {
-        self.init(roundedRect: rect,
-                  byRoundingCorners: UIRectCorner(roundedCorners),
-                  cornerRadii: CGSize(width: cornerRadius/2.0, height: cornerRadius/2.0))
-    }
-}
-
-public extension UIRectCorner {
-    init(_ cornerMask: CACornerMask) {
-        var corner = UIRectCorner()
-        if (cornerMask.contains(.bottomLeft)) {
-            corner.insert(.bottomLeft)
-        }
-        if (cornerMask.contains(.bottomRight)) {
-            corner.insert(.bottomRight)
-        }
-        if (cornerMask.contains(.topLeft)) {
-            corner.insert(.topLeft)
-        }
-        if (cornerMask.contains(.topRight)) {
-            corner.insert(.topRight)
-        }
-        self.init(rawValue: corner.rawValue)
     }
 }
 #endif
