@@ -33,7 +33,9 @@ public extension DisplayLinkTimer.TimerPublisher {
 
 public extension DisplayLinkTimer {
     class TimerPublisher: ConnectablePublisher {
+        internal var isConnected = false
         public func connect() -> Cancellable {
+            self.isConnected = true
             let subscription =  Subscription(onCancel: {
                 
             })
@@ -73,7 +75,7 @@ public extension DisplayLinkTimer {
                 if (subscribers.isEmpty) {
                     displayLink?.cancel()
                 } else {
-                    if (displayLink == nil) {
+                    if (displayLink == nil && isConnected) {
                         self.setupDisplayLink()
                     }
                 }
