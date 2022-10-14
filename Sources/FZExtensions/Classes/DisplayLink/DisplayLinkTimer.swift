@@ -73,6 +73,7 @@ public extension DisplayLinkTimer {
                 self.timeIntervalSinceLastFire = self.timeIntervalSinceLastFire + timeIntervalCount
                 self.previousTimestamp = frame.timestamp
                 if (self.timeIntervalSinceLastFire > self.interval) {
+                    self.timeIntervalSinceLastFire = 0.0
                     self.send(date: Date())
                 }
             })
