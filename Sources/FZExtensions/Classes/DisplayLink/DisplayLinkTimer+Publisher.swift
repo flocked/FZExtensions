@@ -36,6 +36,9 @@ public extension DisplayLinkTimer {
         internal var isConnected = false
         public func connect() -> Cancellable {
             self.isConnected = true
+            if (displayLink == nil && self.subscribers.isEmpty == false) {
+                self.setupDisplayLink()
+            }
             let subscription =  Subscription(onCancel: {
                 
             })
