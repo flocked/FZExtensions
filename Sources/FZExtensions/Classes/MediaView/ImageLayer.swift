@@ -80,6 +80,7 @@ public class ImageLayer: CALayer {
     @available(macOS 12.0, iOS 13.0, *)
     internal func applyingSymbolConfiguration(to image: NSUIImage) -> NSUIImage? {
         var configuration: NSUIImage.SymbolConfiguration? = nil
+        /*
         if let symbolConfiguration = symbolConfiguration {
            configuration = symbolConfiguration
         }
@@ -88,6 +89,15 @@ public class ImageLayer: CALayer {
             let tintConfiguration = NSUIImage.SymbolConfiguration.palette(contentTintColor)
             configuration = configuration?.applying(tintConfiguration) ?? tintConfiguration
 
+        }
+        */
+        
+        if let contentTintColor = contentTintColor {
+            configuration = NSUIImage.SymbolConfiguration.palette(contentTintColor)
+        }
+        
+        if let symbolConfiguration = symbolConfiguration {
+            configuration = configuration?.applying(symbolConfiguration) ?? symbolConfiguration
         }
         
         if let configuration = configuration {
