@@ -231,6 +231,27 @@ public class ImageLayer: CALayer {
         return .zero
     }
     
+    public func sizeThatFits(_ size: CGSize) -> CGSize {
+        if let imageSize = self.images.first?.size {
+            if (imageSize.width <= size.width && imageSize.height <= size.height) {
+                return imageSize
+            } else {
+                switch self.imageScaling {
+                case .resizeAspect:
+                    if (size.width == .infinity) {
+                        return imageSize.scaled(toHeight: size.height)
+                    } else if (size.height == .infinity) {
+                        return imageSize.scaled(toWidth: size.width)
+                    }
+                    return imageSize.scaled(toFit: size)
+                default:
+                    return size
+                }
+            }
+        }
+        return .zero
+    }
+    
     public func sizeToFit() {
         self.frame.size = self.fittingSize
     }

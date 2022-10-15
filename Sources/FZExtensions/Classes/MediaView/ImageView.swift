@@ -102,6 +102,10 @@ public class ImageView: NSView {
         self.frame.size = self.fittingSize
     }
     
+    public func sizeThatFits(_ size: CGSize) -> CGSize {
+        return imageLayer.sizeThatFits(size)
+    }
+        
     private let imageLayer = ImageLayer()
     
     public override func makeBackingLayer() -> CALayer {
