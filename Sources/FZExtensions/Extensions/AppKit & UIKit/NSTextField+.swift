@@ -98,6 +98,64 @@ public extension NSTextField {
         let fullSize = textRect(forBounds: bounds, limitedToNumberOfLines: 0).size
         return textSize != fullSize
     }
+    
+        enum LineOption {
+            case all
+            case limitToMaxNumberOfLines
+        }
+        
+        func linesCount(_ optiom: LineOption = .limitToMaxNumberOfLines) -> Int {
+            return self.rangesOfLines(optiom).count
+        }
+        
+        func lines(_ option: LineOption = .limitToMaxNumberOfLines) -> [String] {
+            let ranges = rangesOfLines(option)
+            return ranges.compactMap({String(self.stringValue[$0])})
+        }
+        
+        func rangesOfLines(_ option: LineOption = .limitToMaxNumberOfLines) -> [Range<String.Index>] {
+            let stringValue = self.stringValue
+            let linebreakMode = self.lineBreakMode
+            if ((linebreakMode != .byCharWrapping || linebreakMode != .byWordWrapping) && self.maximumNumberOfLines != 1) {
+                self.lineBreakMode = .byCharWrapping
+            }
+            var partialString: String = ""
+            var startIndex = stringValue.startIndex
+            var previousHeight: CGFloat = 0.0
+            var didStart = false
+            var nextIndex = stringValue.startIndex
+            var lineRanges: [Range<String.Index>] = []
+            var boundsSize = self.bounds.size
+            boundsSize.height = .infinity
+            stringValue.forEach({ char in
+                partialString = partialString + String(char)
+                self.stringValue = partialString
+                let height = self.textRect(forBounds: CGRect(origin: .zero, size: boundsSize), limitedToNumberOfLines: option == .all ? 0 : self.maximumNumberOfLines + 1).size.height
+                if (didStart == false) {
+                    previousHeight = height
+                    didStart = true
+                } else {
+                    nextIndex = stringValue.index(after: nextIndex)
+                    if (height > previousHeight) {
+                        let endIndex = nextIndex
+                        let range = startIndex..<endIndex
+                        startIndex = endIndex
+                        lineRanges.append(range)
+                        previousHeight = height
+                    } else if (nextIndex == stringValue.index(before: stringValue.endIndex)) {
+                        if (self.maximumNumberOfLines == 0 || option == .all || lineRanges.count < self.maximumNumberOfLines) {
+                            let endIndex = stringValue.endIndex
+                            let range = startIndex..<endIndex
+                            lineRanges.append(range)
+                        }
+                    }
+                }
+            })
+            self.stringValue = stringValue
+            self.lineBreakMode = linebreakMode
+            return lineRanges
+        }
+    
 }
 
 #endif

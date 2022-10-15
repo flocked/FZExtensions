@@ -7,6 +7,23 @@
 
 #if os(macOS)
 import AppKit
+
+public class VerticallyCenteredTextField: NSTextField {
+    public override class var cellClass: AnyClass? {
+         get { VerticallyCenteredTextFieldCell.self }
+         set { super.cellClass = newValue }
+     }
+    
+    internal var textCell: VerticallyCenteredTextFieldCell? {
+        self.cell as? VerticallyCenteredTextFieldCell
+    }
+    
+    public var focusType: VerticallyCenteredTextFieldCell.FocusType {
+        get { textCell?.focusType ?? .default }
+        set { textCell?.focusType = newValue }
+    }
+}
+
 public class VerticallyCenteredTextFieldCell: NSTextFieldCell {
     public enum FocusType: Equatable {
         case none
