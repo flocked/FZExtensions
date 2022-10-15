@@ -17,6 +17,13 @@ import Combine
 public class ImageLayer: CALayer {
     public  var contentTintColor: NSUIColor? = nil {
         didSet {
+            if #available(macOS 12.0, *) {
+            if contentTintColor != nil {
+                if let image = self.image, image.isSymbolImage, let updatedImage = applyingSymbolConfiguration(to: image) {
+                    self.image = updatedImage
+                }
+            }
+            }
         }
     }
     
@@ -70,13 +77,30 @@ public class ImageLayer: CALayer {
         }
     }
     
+    @available(macOS 12.0, iOS 13.0, *)
+    internal func applyingSymbolConfiguration(to image: NSUIImage) -> NSUIImage? {
+        var configuration: NSUIImage.SymbolConfiguration? = nil
+        if let contentTintColor = contentTintColor {
+            configuration = NSUIImage.SymbolConfiguration.palette(contentTintColor)
+        }
+        
+        if let symbolConfiguration = symbolConfiguration {
+           configuration = configuration?.applying(symbolConfiguration) ?? symbolConfiguration
+        }
+        
+        if let configuration = configuration {
+           return image.applyingSymbolConfiguration(configuration)
+        }
+        return nil
+    }
+    
     internal var _symbolConfiguration: Any? = nil
     @available(macOS 12.0, iOS 13.0, *)
     public var symbolConfiguration: NSUIImage.SymbolConfiguration? {
         get { _symbolConfiguration as? NSUIImage.SymbolConfiguration }
         set { _symbolConfiguration = newValue
-            if let newValue = newValue {
-                if let image = self.image, image.isSymbolImage, let updatedImage = image.applyingSymbolConfiguration(newValue) {
+            if newValue != nil {
+                if let image = self.image, image.isSymbolImage, let updatedImage = applyingSymbolConfiguration(to: image) {
                     self.image = updatedImage
                 }
             }
