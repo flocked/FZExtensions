@@ -134,6 +134,12 @@ public class MagnifyMediaView: NSView {
         }
     }
     
+    @available(macOS 12.0, iOS 13.0, *)
+    public var symbolConfiguration: NSUIImage.SymbolConfiguration? {
+        get { self.mediaView.symbolConfiguration }
+        set { self.mediaView.symbolConfiguration = newValue }
+    }
+    
     public  var asset: AVAsset? {
         get {  return self.mediaView.asset }
         set {

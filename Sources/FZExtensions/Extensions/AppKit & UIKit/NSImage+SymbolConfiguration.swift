@@ -192,6 +192,14 @@ public extension NSImage {
     }
 }
 
+@available(macOS 12.0, *)
+public extension NSImage {
+    func applyingSymbolConfiguration(_ configuration: NSImage.SymbolConfiguration) -> NSImage? {
+        let updatedConfiguration = self.symbolConfiguration.applying(configuration)
+        return self.withSymbolConfiguration(updatedConfiguration)
+    }
+}
+
 @available(macOS 11.0, iOS 13.0, *)
 public extension NSUIFont.Weight {
     func symbolWeight() -> NSUIImage.SymbolWeight {

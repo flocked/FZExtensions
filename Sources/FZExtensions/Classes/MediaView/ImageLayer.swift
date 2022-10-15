@@ -21,19 +21,33 @@ public class ImageLayer: CALayer {
     }
     
     public var image: NSUIImage?  {
-        get {
-            self.images.first
-        }
+        get {  self.images.first }
         set {
             if let newImage = newValue {
 #if os(macOS)
                 if (newImage.isGif) {
                     self.setGif(image: newImage)
                 } else {
+                    if #available(macOS 12.0, *) {
+                        if newImage.isSymbolImage, let symbolConfiguration = symbolConfiguration, let updatedImage = newImage.applyingSymbolConfiguration(symbolConfiguration) {
+                            self.images = [updatedImage]
+                        } else {
+                            self.images = [newImage]
+                        }
+                    } else {
                     self.images = [newImage]
+                    }
                 }
 #else
-                self.images = [newImage]
+                if #available(iOS 13.0, *) {
+                    if newImage.isSymbolImage, let symbolConfiguration = symbolConfiguration, let updatedImage = newImage.applyingSymbolConfiguration(symbolConfiguration) {
+                        self.images = [updatedImage]
+                    } else {
+                        self.images = [newImage]
+                    }
+                } else {
+                    self.images = [newImage]
+                }
 #endif
                 
             } else {
@@ -52,6 +66,19 @@ public class ImageLayer: CALayer {
             self.updateDisplayingImage()
             if (isAnimatable && !isAnimating && autoAnimates) {
                 self.startAnimating()
+            }
+        }
+    }
+    
+    internal var _symbolConfiguration: Any? = nil
+    @available(macOS 12.0, iOS 13.0, *)
+    public var symbolConfiguration: NSUIImage.SymbolConfiguration? {
+        get { _symbolConfiguration as? NSUIImage.SymbolConfiguration }
+        set { _symbolConfiguration = newValue
+            if let newValue = newValue {
+                if let image = self.image, image.isSymbolImage, let updatedImage = image.applyingSymbolConfiguration(newValue) {
+                    self.image = updatedImage
+                }
             }
         }
     }

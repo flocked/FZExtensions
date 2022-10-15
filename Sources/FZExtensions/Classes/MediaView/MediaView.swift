@@ -143,6 +143,12 @@ public class MediaView: NSView {
             }
         }
     }
+    
+    @available(macOS 12.0, iOS 13.0, *)
+    public var symbolConfiguration: NSUIImage.SymbolConfiguration? {
+        get { self.imageView.symbolConfiguration }
+        set { self.imageView.symbolConfiguration = newValue }
+    }
             
     public func play() {
         self.imageView.startAnimating()

@@ -42,6 +42,12 @@ public class ImageView: NSView {
         }
     }
     
+    @available(macOS 12.0, iOS 13.0, *)
+    public var symbolConfiguration: NSUIImage.SymbolConfiguration? {
+        get { self.imageLayer.symbolConfiguration }
+        set { self.imageLayer.symbolConfiguration = newValue }
+    }
+    
     public  var autoAnimates: Bool  {
         get {
             self.imageLayer.autoAnimates
