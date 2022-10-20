@@ -11,6 +11,15 @@ import AppKit
 import UIKit
 #endif
 
+public extension NSUIColor {
+    static func random() -> NSUIColor {
+        let r: CGFloat = CGFloat.random(in: 0.0...1.0)
+        let g: CGFloat = CGFloat.random(in: 0.0...1.0)
+        let b: CGFloat = CGFloat.random(in: 0.0...1.0)
+        return NSUIColor(red: r, green: g, blue: b, alpha: 1.0)
+    }
+}
+
 #if os(macOS)
 public extension NSColor {
     static var label: NSColor {

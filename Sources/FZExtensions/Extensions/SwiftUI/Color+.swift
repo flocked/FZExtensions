@@ -35,6 +35,10 @@ public extension Color {
         self.opacity(0.15)
     }
     
+    static func random() -> Color {
+       return Color (NSUIColor.random())
+    }
+    
     func mixed(with color: Color, by amount: CGFloat = 0.5) -> Color {
         let amount = amount.clamped(0.0...1.0)
         let nsUIColor = NSUIColor(self)
