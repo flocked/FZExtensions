@@ -53,3 +53,60 @@ public extension NSUIHostingController {
         }
     }
 }
+
+#if canImport(UIKit)
+import SwiftUI
+
+@available(iOS 13.0, *)
+public final class UIHostingView<Content: View>: UIView {
+    // MARK: - Public Properties
+    public var rootView: Content {
+        get { hostingController.rootView }
+        set { hostingController.rootView = newValue }
+    }
+
+    // MARK: - Private Properties
+    private let hostingController: UIHostingController<Content>
+    private var hostingView: UIView { hostingController.view }
+
+    // MARK: - Initialization
+    @available(*, unavailable)
+    public required init?(coder: NSCoder) {
+        fatalError("init?(coder:) unavailable")
+    }
+
+    public init(rootView: Content) {
+        hostingController = UIHostingController(rootView: rootView)
+        super.init(frame: .zero)
+        self.setup()
+    }
+    
+    public override func sizeThatFits(_ size: CGSize) -> CGSize {
+        return hostingView.sizeThatFits(size)
+    }
+        
+    public override func didMoveToWindow() {
+        if let parentController = self.parentController {
+            parentController.addChild(hostingController)
+            hostingController.didMove(toParent: parentController)
+        } else {
+            hostingController.willMove(toParent: nil)
+            hostingController.removeFromParent()
+        }
+    }
+    
+    private func setup() {
+         hostingView.backgroundColor = .clear
+         hostingView.translatesAutoresizingMaskIntoConstraints = false
+
+         addSubview(hostingView)
+
+         NSLayoutConstraint.activate([
+             hostingView.topAnchor.constraint(equalTo: topAnchor),
+             hostingView.rightAnchor.constraint(equalTo: rightAnchor),
+             hostingView.bottomAnchor.constraint(equalTo: bottomAnchor),
+             hostingView.leftAnchor.constraint(equalTo: leftAnchor)
+         ])
+     }
+}
+#endif

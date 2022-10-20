@@ -17,7 +17,7 @@ import Combine
 public class ImageLayer: CALayer {
     public  var contentTintColor: NSUIColor? = nil {
         didSet {
-            if #available(macOS 12.0, *) {
+            if #available(macOS 12.0, iOS 15.0, *) {
             if contentTintColor != nil {
                 if let image = self.image, image.isSymbolImage, let updatedImage = applyingSymbolConfiguration(to: image) {
                     self.image = updatedImage
@@ -32,7 +32,7 @@ public class ImageLayer: CALayer {
         set {
             if let newImage = newValue {
 #if os(macOS)
-                if (newImage.isGif) {
+                if (newImage.isAnimatable) {
                     self.setGif(image: newImage)
                 } else {
                     if #available(macOS 12.0, *) {
@@ -46,7 +46,7 @@ public class ImageLayer: CALayer {
                     }
                 }
 #else
-                if #available(iOS 13.0, *) {
+                if #available(iOS 15.0, *) {
                     if newImage.isSymbolImage, let symbolConfiguration = symbolConfiguration, let updatedImage = newImage.applyingSymbolConfiguration(symbolConfiguration) {
                         self.images = [updatedImage]
                     } else {
@@ -77,7 +77,7 @@ public class ImageLayer: CALayer {
         }
     }
     
-    @available(macOS 12.0, iOS 13.0, *)
+    @available(macOS 12.0, iOS 15.0, *)
     internal func applyingSymbolConfiguration(to image: NSUIImage) -> NSUIImage? {
         var configuration: NSUIImage.SymbolConfiguration? = nil
         /*
@@ -107,7 +107,7 @@ public class ImageLayer: CALayer {
     }
     
     internal var _symbolConfiguration: Any? = nil
-    @available(macOS 12.0, iOS 13.0, *)
+    @available(macOS 12.0, iOS 15.0, *)
     public var symbolConfiguration: NSUIImage.SymbolConfiguration? {
         get { _symbolConfiguration as? NSUIImage.SymbolConfiguration }
         set { _symbolConfiguration = newValue
@@ -216,7 +216,7 @@ public class ImageLayer: CALayer {
     
 #if os(macOS)
     public func setGif(image: NSImage) {
-        if let frames = image.gifFrames() {
+        if let frames = image.frames() {
             var duration = 0.0
             for frame in frames {
                 duration = duration + frame.duration

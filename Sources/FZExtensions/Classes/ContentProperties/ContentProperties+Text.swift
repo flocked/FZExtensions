@@ -40,7 +40,7 @@ public extension ContentProperties {
         public var showsExpansionTextWhenTruncated: Bool = false
         
         public init(font: NSUIFont = NSUIFont.systemFont(ofSize: NSUIFont.systemFontSize),
-                    color: NSUIColor = .black,
+                    color: NSUIColor = .label,
                     colorTransform: NSUIConfigurationColorTransformer? = nil,
                     alignment: NSTextAlignment = .left,
                     lineBreakMode: NSLineBreakMode = .byTruncatingTail,

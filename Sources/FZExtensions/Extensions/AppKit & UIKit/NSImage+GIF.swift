@@ -5,19 +5,22 @@
 //  Created by Florian Zand on 05.06.22.
 //
 
+
 #if os(macOS)
-
-import Foundation
 import AppKit
-import UniformTypeIdentifiers
+#elseif canImport(UIKit)
+import UIKit
+import MobileCoreServices
+#endif
 
-public extension NSImage {
-    class func gifData(from images: [NSImage], duration: Float) -> Data? {
+
+public extension NSUIImage {
+    class func gifData(from images: [NSUIImage], duration: Float) -> Data? {
         let frameDuration = duration / Float(images.count)
         return gifData(from: images, frameDuration: frameDuration)
     }
     
-   private class func gifData(from images: [NSImage], frameDuration: Float) -> Data? {
+    private class func gifData(from images: [NSUIImage], frameDuration: Float) -> Data? {
         let data = NSMutableData()
         let frameDuration = frameDuration * 2
         guard let dest = CGImageDestinationCreateWithData(data as CFMutableData,kUTTypePNG, images.count, nil) else { return nil }
@@ -33,28 +36,14 @@ public extension NSImage {
         return data as Data
     }
     
-    class func animatedImage(with images: [NSImage], duration: Float) -> NSImage? {
-        if let gifData = NSImage.gifData(from: images, duration: duration) {
-            return NSImage(data: gifData)
+    class func animatedImage(with images: [NSUIImage], duration: Float) -> NSUIImage? {
+        if let gifData = NSUIImage.gifData(from: images, duration: duration) {
+            return NSUIImage(data: gifData)
         }
         return nil
     }
-}
-
-public extension NSImage {
-    var isGif: Bool {
-        return (framesCount > 1)
-    }
-    
-    var framesCount: Int {
-        guard let bitmapRep = self.representations[0] as? NSBitmapImageRep,
-              let frameCount = (bitmapRep.value(forProperty: .frameCount) as? NSNumber)?.intValue else {
-            return 1
-        }
-        return frameCount
-    }
-    
-    func gifFrames() -> [ImageFrame]? {
+    #if os(macOS)
+    func frames() -> [ImageFrame]? {
         guard let bitmapRep = self.representations[0] as? NSBitmapImageRep,
               let frameCount = (bitmapRep.value(forProperty: .frameCount) as? NSNumber)?.intValue, frameCount > 1 else { return nil }
         
@@ -72,6 +61,28 @@ public extension NSImage {
           }
         return frames
     }
+    #else
+    func frames() async -> [ImageFrame] {
+        var frames = [ImageFrame]()
+        if let imageSource = ImageSource(image: self) {
+            let count = imageSource.count
+            for index in 0..<count {
+                if let cgImage = imageSource.getImage(at: index, options: nil) {
+                    let frame = ImageFrame(NSUIImage(cgImage: cgImage),  imageSource.properties(at: index)?.delayTime ?? ImageSource.defaultFrameDuration)
+                    frames.append(frame)
+                }
+            }
+        }
+        return frames
+    }
+    #endif
+    
+    var isAnimatable: Bool {
+        return (framesCount > 1)
+    }
+    
+    var framesCount: Int {
+        guard let imageSource = ImageSource(image: self) else { return 1 }
+        return imageSource.count
+    }
 }
-
-#endif
