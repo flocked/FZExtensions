@@ -8,7 +8,7 @@
 #if os(macOS)
 import AppKit
 
-public class TextField: NSTextField {
+public class FZTextField: NSTextField {
     public override class var cellClass: AnyClass? {
          get { VerticallyCenteredTextFieldCell.self }
          set { super.cellClass = newValue }

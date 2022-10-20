@@ -42,7 +42,7 @@ extension NSView {
         }
         set {
             self.wantsLayer = true
-            self.layer?.backgroundColor = newValue?.cgColor }
+            self.layer?.backgroundColor = newValue?.resolvedColor().cgColor }
     }
     
     public var alpha: CGFloat {

@@ -55,6 +55,58 @@ public struct Swizzle {
          }
     }
     
+    @discardableResult
+    public init(class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> [SwizzlePair]) {
+        let swizzlePairs = makeSwizzlePairs()
+        self.swizzleInstanceMethod(class_, paris: swizzlePairs)
+    }
+    
+    @discardableResult
+    public init(class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) {
+        let swizzlePairs = makeSwizzlePairs()
+        self.swizzleInstanceMethod(class_, paris: [swizzlePairs])
+    }
+    
+ 
+    public func swizzleInstanceMethod(_ class_: AnyClass, paris: [SwizzlePair])
+    {
+        _swizzleMethod(class_, pairs: paris, isClassMethod: false)
+    }
+
+    /// Class-method swizzling.
+    public func swizzleClassMethod(_ class_: AnyClass, paris: [SwizzlePair]) {
+        _swizzleMethod(class_, pairs: paris, isClassMethod: true)
+    }
+    
+    private func _swizzleMethod(_ class_: AnyClass, pairs: [SwizzlePair], isClassMethod: Bool) {
+        let c: AnyClass
+        if isClassMethod {
+            guard let c_ = object_getClass(class_) else {
+                return
+            }
+            c = c_
+        }
+        else {
+            c = class_
+        }
+        pairs.forEach { swizzlePair in
+            guard let method1: Method = class_getInstanceMethod(c, swizzlePair.original),
+                  let method2: Method = class_getInstanceMethod(c, swizzlePair.swizzled) else
+            {
+                return
+            }
+
+            if class_addMethod(c, swizzlePair.original, method_getImplementation(method2), method_getTypeEncoding(method2)) {
+                class_replaceMethod(c, swizzlePair.swizzled, method_getImplementation(method1), method_getTypeEncoding(method1))
+            }
+            else {
+                method_exchangeImplementations(method1, method2)
+            }
+            
+            
+         }
+    }
+    
 }
 
 

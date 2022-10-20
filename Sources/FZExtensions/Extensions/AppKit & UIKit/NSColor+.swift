@@ -16,6 +16,31 @@ public extension NSColor {
     static var label: NSColor {
         return NSColor.labelColor
     }
+
+    var dynamicColors: (light: NSColor, dark: NSColor) {
+        let light = self.resolvedColor(for: .aqua)
+        let dark = self.resolvedColor(for: .darkAqua)
+        return (light, dark)
+    }
+    
+    func resolvedColor(for appearance: NSAppearance? = nil) -> NSColor {
+        var color = self
+        if (self.type == .catalog) {
+            if #available(macOS 11.0, *) {
+                let appearance = appearance ?? .currentDrawing()
+                appearance.performAsCurrentDrawingAppearance {
+                    color = self.usingColorSpace(.sRGB) ?? self
+                }
+            } else {
+                let appearance = appearance ?? .current
+                let current = NSAppearance.current
+                NSAppearance.current = appearance
+                color = self.usingColorSpace(self.colorSpace) ?? self
+                NSAppearance.current = current
+            }
+        }
+        return color
+    }
 }
 
 public extension NSColor {

@@ -18,6 +18,17 @@ public extension NSUIColor {
     }
 }
 
+
+public extension Color {
+    @available(macOS 11.0, iOS 14.0, *)
+    init(light lightModeColor: @escaping @autoclosure () -> Color,
+        dark darkModeColor: @escaping @autoclosure () -> Color) {
+        self.init(NSUIColor(
+            light: NSUIColor(lightModeColor()),
+            dark: NSUIColor(darkModeColor())))
+    }
+}
+
 @available(macOS 11.0, iOS 14.0, *)
 public extension Color {
     var secondary: Color {
