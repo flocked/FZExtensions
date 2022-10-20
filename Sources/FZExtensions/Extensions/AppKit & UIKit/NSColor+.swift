@@ -20,9 +20,9 @@ public extension NSColor {
 
 public extension NSColor {
     convenience init(name: NSColor.Name? = nil,
-        light lightModeColor: @escaping @autoclosure () -> NSColor,
-        dark darkModeColor: @escaping @autoclosure () -> NSColor
-     ) {
+                     light lightModeColor: @escaping @autoclosure () -> NSColor,
+                     dark darkModeColor: @escaping @autoclosure () -> NSColor
+    ) {
         self.init(name: name, dynamicProvider: { appereance in
             if (appereance.name == .vibrantLight || appereance.name == .aqua) {
                 return lightModeColor()
@@ -56,7 +56,7 @@ public extension UIColor {
     convenience init(
         light lightModeColor: @escaping @autoclosure () -> UIColor,
         dark darkModeColor: @escaping @autoclosure () -> UIColor
-     ) {
+    ) {
         self.init { traitCollection in
             switch traitCollection.userInterfaceStyle {
             case .light:
@@ -80,44 +80,76 @@ public extension CGColor {
 }
 
 public extension NSUIColor {
-   internal var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
-         var red: CGFloat = 0
-         var green: CGFloat = 0
-         var blue: CGFloat = 0
-         var alpha: CGFloat = 0
-       
-       let supportedColorSpaces: [NSColorSpace] = [.sRGB, .extendedSRGB, .genericRGB, .adobeRGB1998, .deviceRGB, .displayP3]
-       if (supportedColorSpaces.contains(self.colorSpace) == false) {
-          if let color = self.usingColorSpace(.extendedSRGB) {
-              color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-           } else  if let color = self.usingColorSpace(.genericRGB) {
-               color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-            }
-       } else {
-           getRed(&red, green: &green, blue: &blue, alpha: &alpha)
-       }
-
-         return (red, green, blue, alpha)
-     }
-    
-    internal var hsba: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) {
-          var hue: CGFloat = 0
-          var saturation: CGFloat = 0
-          var brightness: CGFloat = 0
-          var alpha: CGFloat = 0
+    func rgbaComponents() -> (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
         
+        var color: NSUIColor? = self
+#if os(macOS)
         let supportedColorSpaces: [NSColorSpace] = [.sRGB, .extendedSRGB, .genericRGB, .adobeRGB1998, .deviceRGB, .displayP3]
         if (supportedColorSpaces.contains(self.colorSpace) == false) {
-           if let color = self.usingColorSpace(.extendedSRGB) {
-               color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-            } else  if let color = self.usingColorSpace(.genericRGB) {
-                color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
-             }
-        } else {
-            getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+            color = (self.usingColorSpace(.extendedSRGB) ?? self.usingColorSpace(.genericRGB)) ?? nil
         }
-            return (hue, saturation, brightness, alpha)
-      }
+#endif
+        color?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return (red, green, blue, alpha)
+    }
+    
+    func hsbComponents() -> (hue: CGFloat, saturation: CGFloat, brightness: CGFloat) {
+      var h: CGFloat = 0.0
+      var s: CGFloat = 0.0
+      var b: CGFloat = 0.0
+
+        var color: NSUIColor? = self
+      #if os(macOS)
+        let supportedColorSpaces: [NSColorSpace] = [.sRGB, .extendedSRGB, .genericRGB, .adobeRGB1998, .deviceRGB, .displayP3]
+        if (supportedColorSpaces.contains(self.colorSpace) == false) {
+            color = (self.usingColorSpace(.extendedSRGB) ?? self.usingColorSpace(.genericRGB)) ?? nil
+        }
+      #endif
+        color?.getHue(&h, saturation: &s, brightness: &b, alpha: nil)
+        return (hue: h, saturation: s, brightness: b)
+    }
+    
+    func hslComponents() -> (hue: CGFloat, saturation: CGFloat, lightness: CGFloat) {
+        let hsl = HSL(color: self)
+        return (hue: hsl.h, saturation: hsl.s, lightness: hsl.l)
+    }
+    
+    internal var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        var color: NSUIColor? = self
+#if os(macOS)
+        let supportedColorSpaces: [NSColorSpace] = [.sRGB, .extendedSRGB, .genericRGB, .adobeRGB1998, .deviceRGB, .displayP3]
+        if (supportedColorSpaces.contains(self.colorSpace) == false) {
+            color = (self.usingColorSpace(.extendedSRGB) ?? self.usingColorSpace(.genericRGB)) ?? nil
+        }
+#endif
+        color?.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        return (red, green, blue, alpha)
+    }
+    
+    internal var hsba: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) {
+        var hue: CGFloat = 0
+        var saturation: CGFloat = 0
+        var brightness: CGFloat = 0
+        var alpha: CGFloat = 0
+        var color: NSUIColor? = self
+#if os(macOS)
+        let supportedColorSpaces: [NSColorSpace] = [.sRGB, .extendedSRGB, .genericRGB, .adobeRGB1998, .deviceRGB, .displayP3]
+        if (supportedColorSpaces.contains(self.colorSpace) == false) {
+            color = (self.usingColorSpace(.extendedSRGB) ?? self.usingColorSpace(.genericRGB)) ?? nil
+        }
+#endif
+        color?.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        return (hue, saturation, brightness, alpha)
+    }
     
     var redComponent: CGFloat {
         get { self.rgba.red }
@@ -152,12 +184,12 @@ public extension NSUIColor {
     
     func withSaturation(_ saturation: CGFloat) -> NSUIColor {
         let hsba = self.hsba
-        return NSUIColor(hue: hsba.hue, saturation: hsba.saturation, lightness: saturation, alpha: hsba.alpha)
+        return NSUIColor(hue: hsba.hue, saturation: hsba.saturation, brightness: saturation, alpha: hsba.alpha)
     }
     
     func withHue(_ hue: CGFloat) -> NSUIColor {
         let hsba = self.hsba
-        return NSUIColor(hue: hue, saturation: hsba.saturation, lightness: hsba.brightness, alpha: hsba.alpha)
+        return NSUIColor(hue: hue, saturation: hsba.saturation, brightness: hsba.brightness, alpha: hsba.alpha)
     }
     
 }

@@ -29,25 +29,44 @@ public extension NSUIColor {
 #endif
     }
     
-    func lighter() -> NSUIColor {
-        return withBrightness(1.25)
+    func lighter(by amount: CGFloat = 0.2) -> NSUIColor {
+        return HSL(color: self).lighter(amount: amount).toColor()
     }
     
-    func darkened() -> NSUIColor {
-        return withBrightness(0.75)
+    func darkened(by amount: CGFloat = 0.2) -> NSUIColor {
+        return HSL(color: self).darkened(amount: amount).toColor()
+    }
+    
+    final func saturated(amount: CGFloat = 0.2) -> NSUIColor {
+      return HSL(color: self).saturated(amount: amount).toColor()
+    }
+
+    final func desaturated(amount: CGFloat = 0.2) -> NSUIColor {
+      return HSL(color: self).desaturated(amount: amount).toColor()
+    }
+    
+    final func grayscaled(mode: GrayscalingMode = .lightness) -> NSUIColor {
+      let (r, g, b, a) = self.rgbaComponents()
+
+      let l: CGFloat
+      switch mode {
+      case .luminance:
+        l = (0.299 * r) + (0.587 * g) + (0.114 * b)
+      case .lightness:
+        l = 0.5 * (max(r, g, b) + min(r, g, b))
+      case .average:
+        l = (1.0 / 3.0) * (r + g + b)
+      case .value:
+        l = max(r, g, b)
+      }
+
+      return HSL(hue: 0.0, saturation: 0.0, lightness: l, alpha: a).toColor()
     }
     
     func withBrightness(_ amount: CGFloat) -> NSUIColor {
         let hsii = hsl
         return NSUIColor(hue: hsii.hue, saturation: hsii.saturation, lightness: hsii.lightness * amount, alpha: hsii.alpha)
     }
-    
-    internal convenience init(hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat = 1)  {
-         let offset = saturation * (lightness < 0.5 ? lightness : 1 - lightness)
-         let brightness = lightness + offset
-         let saturation = lightness > 0 ? 2 * offset / brightness : 0
-         self.init(hue: hue, saturation: saturation, brightness: brightness, alpha: alpha)
-     }
         
    internal var hsl: (hue: CGFloat, saturation: CGFloat, lightness: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0, green: CGFloat = 0, blue: CGFloat = 0, alpha: CGFloat = 0, hue: CGFloat = 0
@@ -65,4 +84,11 @@ public extension NSUIColor {
         let saturation = range == 0 ? 0 : range / (lightness < 0.5 ? lightness * 2 : 2 - lightness * 2)
         return (hue, saturation, lightness, alpha)
     }
+}
+
+public enum GrayscalingMode {
+  case luminance
+  case lightness
+  case average
+  case value
 }
