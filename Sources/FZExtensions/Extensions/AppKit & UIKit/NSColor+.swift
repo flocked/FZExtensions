@@ -72,3 +72,92 @@ public extension UIColor {
     }
 }
 #endif
+
+public extension CGColor {
+    func alpha(_ alpha: CGFloat) -> CGColor {
+        return self.copy(alpha: alpha) ?? self
+    }
+}
+
+public extension NSUIColor {
+   internal var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
+         var red: CGFloat = 0
+         var green: CGFloat = 0
+         var blue: CGFloat = 0
+         var alpha: CGFloat = 0
+       
+       let supportedColorSpaces: [NSColorSpace] = [.sRGB, .extendedSRGB, .genericRGB, .adobeRGB1998, .deviceRGB, .displayP3]
+       if (supportedColorSpaces.contains(self.colorSpace) == false) {
+          if let color = self.usingColorSpace(.extendedSRGB) {
+              color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+           } else  if let color = self.usingColorSpace(.genericRGB) {
+               color.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+            }
+       } else {
+           getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+       }
+
+         return (red, green, blue, alpha)
+     }
+    
+    internal var hsba: (hue: CGFloat, saturation: CGFloat, brightness: CGFloat, alpha: CGFloat) {
+          var hue: CGFloat = 0
+          var saturation: CGFloat = 0
+          var brightness: CGFloat = 0
+          var alpha: CGFloat = 0
+        
+        let supportedColorSpaces: [NSColorSpace] = [.sRGB, .extendedSRGB, .genericRGB, .adobeRGB1998, .deviceRGB, .displayP3]
+        if (supportedColorSpaces.contains(self.colorSpace) == false) {
+           if let color = self.usingColorSpace(.extendedSRGB) {
+               color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+            } else  if let color = self.usingColorSpace(.genericRGB) {
+                color.getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+             }
+        } else {
+            getHue(&hue, saturation: &saturation, brightness: &brightness, alpha: &alpha)
+        }
+            return (hue, saturation, brightness, alpha)
+      }
+    
+    var redComponent: CGFloat {
+        get { self.rgba.red }
+    }
+    
+    var greenComponent: CGFloat {
+        get { self.rgba.green }
+    }
+    
+    var blueComponent: CGFloat {
+        get { self.rgba.blue }
+    }
+    
+    var alphaComponent: CGFloat {
+        get { self.rgba.alpha }
+    }
+    
+    func withRedCompoent(_ red: CGFloat) -> NSUIColor {
+        let rgba = self.rgba
+        return NSUIColor(red: red, green: rgba.green, blue: rgba.blue, alpha: rgba.alpha)
+    }
+    
+    func withGreenCompoent(_ green: CGFloat) -> NSUIColor {
+        let rgba = self.rgba
+        return NSUIColor(red: rgba.red, green: green, blue: rgba.blue, alpha: rgba.alpha)
+    }
+    
+    func withBlueCompoent(_ blue: CGFloat) -> NSUIColor {
+        let rgba = self.rgba
+        return NSUIColor(red: rgba.red, green: rgba.green, blue: blue, alpha: rgba.alpha)
+    }
+    
+    func withSaturation(_ saturation: CGFloat) -> NSUIColor {
+        let hsba = self.hsba
+        return NSUIColor(hue: hsba.hue, saturation: hsba.saturation, lightness: saturation, alpha: hsba.alpha)
+    }
+    
+    func withHue(_ hue: CGFloat) -> NSUIColor {
+        let hsba = self.hsba
+        return NSUIColor(hue: hue, saturation: hsba.saturation, lightness: hsba.brightness, alpha: hsba.alpha)
+    }
+    
+}

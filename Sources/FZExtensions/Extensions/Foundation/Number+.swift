@@ -139,3 +139,43 @@ public extension Int {
     }
 }
 
+public enum FloatingPointPlacesRoundingRule {
+    case toPlaces(Int)
+    case toPlacesTowardZero(Int)
+    internal var places: Int {
+        switch self {
+        case .toPlaces(let value), .toPlacesTowardZero(let value):
+            return value
+        }
+    }
+    
+    internal var divisor: Double {
+        return pow(10.0, Double(places))
+    }
+    
+    internal var rounding: FloatingPointRoundingRule {
+        switch self {
+        case .toPlaces(_ ):
+            return .toNearestOrAwayFromZero
+        case .toPlacesTowardZero(_ ):
+            return .towardZero
+        }
+    }
+}
+
+public extension BinaryFloatingPoint {
+    func rounded(_ rule: FloatingPointPlacesRoundingRule) -> Self {
+        let divisor = Self(rule.divisor)
+        return (self * divisor).rounded(rule.rounding) / divisor
+    }
+    
+    mutating func round(_ rule: FloatingPointPlacesRoundingRule) {
+        let divisor = Self(rule.divisor)
+        self = (self * divisor).rounded(rule.rounding) / divisor
+    }
+    
+    var placesCount: Int {
+        let decimal = Decimal(Double(self))
+        return max(-decimal.exponent, 0)
+    }
+}
