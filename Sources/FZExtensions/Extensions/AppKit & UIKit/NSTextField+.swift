@@ -45,6 +45,7 @@ public extension NSTextField {
                 self.cell?.wraps = newValue.wraps
                 self.truncatesLastVisibleLine = true
                 self.cell?.isScrollable = newValue.isScrollable
+                self.setContentCompressionResistancePriority(newValue.layoutPriority, for: .horizontal)
             }
         }
     }
@@ -65,6 +66,10 @@ public extension NSTextField {
        internal var wraps: Bool {
             return (self == .wraps)
         }
+        internal var layoutPriority: NSLayoutConstraint.Priority {
+            return (self == .wraps) ?  .fittingSizeCompression : .defaultLow
+        }
+        
        internal var lineBreakMode: NSLineBreakMode {
             switch self {
             case .wraps:

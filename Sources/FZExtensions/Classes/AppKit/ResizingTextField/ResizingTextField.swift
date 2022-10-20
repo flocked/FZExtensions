@@ -57,11 +57,24 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
     }
    
    private(set) var isEditing = false
-    internal var textCell = VerticallyCenteredTextFieldCell()
+    
+    public override class var cellClass: AnyClass? {
+         get { VerticallyCenteredTextFieldCell.self }
+         set { super.cellClass = newValue }
+     }
+    
+    internal var textCell: VerticallyCenteredTextFieldCell? {
+        self.cell as? VerticallyCenteredTextFieldCell
+    }
     
     public var focusType: VerticallyCenteredTextFieldCell.FocusType {
-        get { textCell.focusType }
-        set { textCell.focusType = newValue }
+        get { textCell?.focusType ?? .default }
+        set { textCell?.focusType = newValue }
+    }
+    
+    public var verticalAlignment: VerticallyCenteredTextFieldCell.VerticalAlignment {
+        get { textCell?.verticalAlignment ?? .default}
+        set { textCell?.verticalAlignment = newValue }
     }
 
    internal var placeholderSize: NSSize? { didSet {
@@ -82,14 +95,14 @@ public class ResizingTextField: NSTextField, NSTextFieldDelegate {
        super.init(coder: coder)
        _init()
    }
+    
    
    internal func _init() {
        self.drawsBackground = false
        self.isBordered = false
-       self.cell = textCell
-       textCell.focusType = .roundedCornersRelative(0.5)
-       // Receive text change notifications during Japanese input conversion (while `marked text` is present).
-       textCell.setWantsNotificationForMarkedText(true)
+       self.verticalAlignment = .center
+       self.focusType = .roundedCornersRelative(0.5)
+       textCell?.setWantsNotificationForMarkedText(true)
        self.translatesAutoresizingMaskIntoConstraints = false
        self.delegate = self
 
