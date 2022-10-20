@@ -45,6 +45,22 @@ public extension CALayer {
         layer.autoresizingMask = .all
         self.addSublayer(layer)
     }
+    
+    var nsBackgroundColor: NSColor? {
+        get {
+            if let cgColor = self.backgroundColor {  return NSColor(cgColor: cgColor) }
+            return nil
+        }
+        set { self.backgroundColor = newValue?.cgColor  }
+    }
+    #elseif canImport(UIKit)
+    var uiBackgroundColor: NSUIColor? {
+        get {
+            if let cgColor = self.backgroundColor {  return UIColor(cgColor: cgColor) }
+            return nil
+        }
+        set { self.backgroundColor = newValue?.cgColor  }
+    }
     #endif
     
     @discardableResult
