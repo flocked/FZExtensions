@@ -37,11 +37,16 @@ public extension NSUIColor {
       }
       return (0.2126 * componentsArray[0]) + (0.7152 * componentsArray[1]) + (0.0722 * componentsArray[2])
     }
-
     
     var luminosity: CGFloat {
 #if os(macOS)
-        let coreColour = CIColor(color: self)!
+        var color: NSUIColor = self
+        let supportedColorSpaces: [NSColorSpace] = [.sRGB, .extendedSRGB, .genericRGB, .adobeRGB1998, .deviceRGB, .displayP3]
+        if (supportedColorSpaces.contains(self.colorSpace) == false) {
+            color = (self.usingColorSpace(.extendedSRGB) ?? self.usingColorSpace(.genericRGB)) ?? self
+        }
+        
+        let coreColour = CIColor(color: color)!
 #else
         let coreColour = CIColor(color: self)
 #endif
