@@ -10,6 +10,35 @@ import AppKit
 
 extension NSView {
     
+    public var maskToBounds: Bool {
+        get { self.layer?.masksToBounds ?? false }
+        set { if (newValue == true) { self.wantsLayer = true }
+            self.layer?.masksToBounds = newValue
+        }
+    }
+    
+    public var mask: NSView? {
+        get {
+            return getAssociatedValue(key: "_maskView", object: self)
+        }
+        set {
+            self.layer?.mask = nil
+            set(associatedValue: newValue, key: "_maskView", object: self)
+            if let maskView = newValue {
+                self.wantsLayer = true
+                maskView.wantsLayer = true
+                self.layer?.mask = maskView.layer
+            }
+        }
+    }
+    
+    public var isOpaque: Bool {
+        get { self.layer?.isOpaque ?? false }
+        set { self.wantsLayer = true 
+            self.layer?.isOpaque = newValue
+        }
+    }
+    
     public var frameInWindow: CGRect {
         convert(bounds, to: nil)
     }
@@ -18,12 +47,28 @@ extension NSView {
         return self.window?.convertToScreen(frameInWindow)
     }
     
-    public  var transform: CGAffineTransform {
+    public var transform: CGAffineTransform {
         get {
             self.wantsLayer = true
             return self.layer!.affineTransform() }
-        set {  self.layer?.setAffineTransform(newValue)  }
+        set {
+            self.wantsLayer = true
+            self.layer?.setAffineTransform(newValue)  } }
+    
+    public var anchorPoint: CGPoint {
+        get { self.layer?.anchorPoint ?? .zero }
+        set { self.wantsLayer = true
+            self.layer?.anchorPoint = newValue
+        }
     }
+    
+    public var transform3D: CATransform3D {
+        get {
+            self.wantsLayer = true
+            return self.layer!.transform }
+        set {
+            self.wantsLayer = true
+            self.layer?.transform = newValue  } }
     
     public var center: CGPoint {
         get { self.frame.center }
