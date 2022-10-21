@@ -15,6 +15,7 @@ public extension CGRect {
     
     init(_ origin: CGPoint, _ size: CGSize) {
         self.init(origin: origin, size: size)
+
     }
     
     init(size: CGSize) {
@@ -111,7 +112,7 @@ public extension CGRect {
             self.size = size }
     }
     
-    var height: CGFloat {
+     var height: CGFloat {
         get { self.size.height }
         set {
             var size = self.size

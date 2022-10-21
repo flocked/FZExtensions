@@ -30,30 +30,6 @@ extension NSView {
         set {  self.frame.center = newValue } }
     
     
-    internal var _effectiveAppearanceKVO: NSKeyValueObservation? {
-        get { getAssociatedValue(key: "_effectiveAppearanceKVO", object: self) }
-        set { set(associatedValue: newValue, key: "_effectiveAppearanceKVO", object: self) } }
-    
-    internal func updateBackgroundColor() {
-        self.wantsLayer = true
-        self.layer?.backgroundColor = self.backgroundColor?.resolvedColor(for: self.effectiveAppearance).cgColor
-     }
-    
-    public var backgroundColor: NSColor? {
-        get { getAssociatedValue(key: "_backgroundColor", object: self) }
-        set {
-            set(associatedValue: newValue, key: "_backgroundColor", object: self)
-            self.updateBackgroundColor()
-            if newValue != nil {
-                if (self._effectiveAppearanceKVO == nil) {
-                    self._effectiveAppearanceKVO = self.observe(\.effectiveAppearance) { [weak self] object, change in
-                        self?.updateBackgroundColor()
-                    }
-                }
-            }
-        }
-    }
-    
     public var alpha: CGFloat {
         get { if let cgValue =  self.layer?.opacity {
             return CGFloat(cgValue)
