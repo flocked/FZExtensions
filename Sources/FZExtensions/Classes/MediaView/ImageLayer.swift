@@ -17,13 +17,7 @@ import Combine
 public class ImageLayer: CALayer {
     public  var contentTintColor: NSUIColor? = nil {
         didSet {
-            if #available(macOS 12.0, iOS 15.0, *) {
-            if contentTintColor != nil {
-                if let image = self.image, image.isSymbolImage, let updatedImage = applyingSymbolConfiguration(to: image) {
-                    self.image = updatedImage
-                }
-            }
-            }
+            self.updateDisplayingImageSymbolConfiguration()
         }
     }
     
@@ -62,7 +56,13 @@ public class ImageLayer: CALayer {
             }
         }
     }
-
+    
+    public var displayingImage: NSUIImage? {
+        if (self.currentIndex > -1 && self.currentIndex < self.images.count) {
+            return self.images[currentIndex]
+        }
+            return nil
+    }
     
     public var images: [NSUIImage] = [] {
         didSet {
@@ -74,6 +74,17 @@ public class ImageLayer: CALayer {
             if (isAnimatable && !isAnimating && autoAnimates) {
                 self.startAnimating()
             }
+        }
+    }
+    
+    internal func updateDisplayingImageSymbolConfiguration() {
+        if #available(macOS 12.0, iOS 15.0, *) {
+            if contentTintColor != nil {
+            if let image = self.displayingImage, image.isSymbolImage, let updatedImage = applyingSymbolConfiguration(to: image) {
+                self.images[self.currentIndex] = updatedImage
+                self.updateDisplayingImage()
+            }
+        }
         }
     }
     
@@ -92,9 +103,15 @@ public class ImageLayer: CALayer {
         }
         */
         
+#if os(macOS)
+        if let contentTintColor = contentTintColor?.resolvedColor() {
+            configuration = NSUIImage.SymbolConfiguration.palette(contentTintColor)
+        }
+#else
         if let contentTintColor = contentTintColor {
             configuration = NSUIImage.SymbolConfiguration.palette(contentTintColor)
         }
+#endif
         
         if let symbolConfiguration = symbolConfiguration {
             configuration = configuration?.applying(symbolConfiguration) ?? symbolConfiguration
@@ -111,11 +128,7 @@ public class ImageLayer: CALayer {
     public var symbolConfiguration: NSUIImage.SymbolConfiguration? {
         get { _symbolConfiguration as? NSUIImage.SymbolConfiguration }
         set { _symbolConfiguration = newValue
-            if newValue != nil {
-                if let image = self.image, image.isSymbolImage, let updatedImage = applyingSymbolConfiguration(to: image) {
-                    self.image = updatedImage
-                }
-            }
+            updateDisplayingImageSymbolConfiguration() 
         }
     }
     
@@ -235,11 +248,7 @@ public class ImageLayer: CALayer {
     
     private func updateDisplayingImage() {
         CATransaction.perform(animated: false, animations: {
-            if (self.currentIndex > -1 && self.currentIndex < self.images.count) {
-                self.contents = self.images[currentIndex]
-            } else {
-                self.contents = nil
-            }
+            self.contents = displayingImage
         })
     }
     

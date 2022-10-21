@@ -15,6 +15,11 @@ public class ImageView: NSView {
         set { self.imageLayer.contentTintColor  = newValue  }
     }
     
+    public override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        self.imageLayer.updateDisplayingImageSymbolConfiguration()
+    }
+    
     public var image: NSImage?  {
         get {
             self.imageLayer.image
@@ -112,6 +117,14 @@ public class ImageView: NSView {
         return imageLayer
     }
     
+    public var displayingImage: NSUIImage? {
+        return self.imageLayer.displayingImage
+    }
+    
+    public override var intrinsicContentSize: CGSize {
+       return self.displayingImage?.size ?? CGSize(width: NSUIView.noIntrinsicMetric, height: NSUIView.noIntrinsicMetric)
+    }
+        
     public init(image: NSImage) {
         super.init(frame: .zero)
         self.image = image
