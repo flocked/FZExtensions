@@ -9,6 +9,14 @@
 import AppKit
 
 extension NSView {
+    public typealias ContentMode = CALayerContentsGravity
+    
+    public var contentMode: ContentMode {
+        get { self.layer?.contentsGravity ?? .center }
+        set { self.wantsLayer = true
+            self.layer?.contentsGravity = newValue
+        }
+    }
     
     public var maskToBounds: Bool {
         get { self.layer?.masksToBounds ?? false }
@@ -34,7 +42,7 @@ extension NSView {
     
     public var isOpaque: Bool {
         get { self.layer?.isOpaque ?? false }
-        set { self.wantsLayer = true 
+        set { self.wantsLayer = true
             self.layer?.isOpaque = newValue
         }
     }
@@ -72,7 +80,7 @@ extension NSView {
     
     public var center: CGPoint {
         get { self.frame.center }
-        set {  self.frame.center = newValue } }
+        set { self.frame.center = newValue } }
     
     
     public var alpha: CGFloat {
