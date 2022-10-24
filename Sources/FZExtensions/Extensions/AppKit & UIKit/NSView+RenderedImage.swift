@@ -42,15 +42,6 @@ public extension NSView {
         image.unlockFocus()
         return image
     }
-    
-     func enclosingRect(for subviews: [NSView]) -> CGRect {
-        var enlosingFrame = CGRect.zero
-        for subview in subviews {
-            let frame = self.convert(subview.bounds, from:subview)
-            enlosingFrame = NSUnionRect(enlosingFrame, frame)
-        }
-        return enlosingFrame
-    }
 }
 
 #endif

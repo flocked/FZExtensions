@@ -37,6 +37,10 @@ public struct NSConfigurationColorTransformer {
     public static let monochrome: Self = Self({ color in
         return NSColor.secondaryLabelColor
     })
+        
+    public static let preferredTint: Self = Self({ color in
+        return NSColor.controlAccentColor
+    })
     
     public static let grayscale: Self = Self({ color in
         var color = color

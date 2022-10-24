@@ -44,6 +44,14 @@ public extension String {
         return prefix(1).lowercased() + self.dropFirst()
     }
     
+    var mangled: String {
+        String(self.utf16.map { $0 - 1 }.compactMap(UnicodeScalar.init).map(Character.init))
+    }
+
+    var unmangled: String {
+        String(self.utf16.map { $0 + 1 }.compactMap(UnicodeScalar.init).map(Character.init))
+    }
+    
     var capitalizedFirst: String {
         if isEmpty { return "" }
         return prefix(1).uppercased() + self.dropFirst()

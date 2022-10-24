@@ -11,7 +11,6 @@ import AppKit
 public protocol NSContentView {
     var configuration: NSContentConfiguration { get set }
     func supports(_ configuration: NSContentConfiguration) -> Bool
-    func sizeThatFits(_ size: CGSize) -> CGSize
 }
 
 public extension NSContentView {
@@ -20,15 +19,6 @@ public extension NSContentView {
     }
 }
 
-public extension NSContentView where Self: NSView {
-     func sizeThatFits(_ size: CGSize) -> CGSize {
-        return self.fittingSize
-    }
-    
-    func sizeThatFits(width: CGFloat?, height: CGFloat?) -> CGSize {
-        return self.sizeThatFits(CGSize(width: width ?? .infinity, height: height ?? .infinity))
-    }
-}
 
 
 #endif

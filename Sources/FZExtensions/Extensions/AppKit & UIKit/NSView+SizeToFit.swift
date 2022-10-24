@@ -29,6 +29,14 @@ extension Sizable where Self: NSUIView {
     public func sizeToFit() {
         self.frame.size = fittingSize
     }
+    
+    public func sizeToFit(width: CGFloat?, height: CGFloat?) {
+        self.frame.size = self.sizeThatFits(width: width, height: height)
+     }
+    
+    public func sizeThatFits(width: CGFloat?, height: CGFloat?) -> CGSize {
+        return self.sizeThatFits(CGSize(width: width ?? NSUIView.noIntrinsicMetric, height: height ?? NSUIView.noIntrinsicMetric))
+    }
 }
 
 #if os(macOS)

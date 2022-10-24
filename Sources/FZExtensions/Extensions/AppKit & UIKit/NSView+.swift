@@ -10,25 +10,36 @@ import AppKit
 
 extension NSView {
     public typealias ContentMode = CALayerContentsGravity
+
+   public func enclosingRect(for subviews: [NSView]) -> CGRect {
+       var enlosingFrame = CGRect.zero
+       for subview in subviews {
+           let frame = self.convert(subview.bounds, from:subview)
+           enlosingFrame = NSUnionRect(enlosingFrame, frame)
+       }
+       return enlosingFrame
+   }
     
-    public var contentMode: ContentMode {
-        get { self.layer?.contentsGravity ?? .center }
-        set { self.wantsLayer = true
-            self.layer?.contentsGravity = newValue
-        }
+    public var frameInWindow: CGRect {
+        convert(bounds, to: nil)
     }
+    
+    public var frameOnScreen: CGRect? {
+        return self.window?.convertToScreen(frameInWindow)
+    }
+        
+    public var contentMode: ContentMode {
+        get {   self.layer?.contentsGravity ?? .center }
+        set {   self.wantsLayer = true
+                self.layer?.contentsGravity = newValue } }
     
     public var maskToBounds: Bool {
-        get { self.layer?.masksToBounds ?? false }
-        set { if (newValue == true) { self.wantsLayer = true }
-            self.layer?.masksToBounds = newValue
-        }
-    }
+        get {   self.layer?.masksToBounds ?? false }
+        set {   self.wantsLayer = true
+                self.layer?.masksToBounds = newValue } }
     
     public var mask: NSView? {
-        get {
-            return getAssociatedValue(key: "_maskView", object: self)
-        }
+        get {    return getAssociatedValue(key: "_maskView", object: self) }
         set {
             self.layer?.mask = nil
             set(associatedValue: newValue, key: "_maskView", object: self)
@@ -41,74 +52,55 @@ extension NSView {
     }
     
     public var isOpaque: Bool {
-        get { self.layer?.isOpaque ?? false }
-        set { self.wantsLayer = true
-            self.layer?.isOpaque = newValue
-        }
-    }
-    
-    public var frameInWindow: CGRect {
-        convert(bounds, to: nil)
-    }
-    
-    public var frameOnScreen: CGRect? {
-        return self.window?.convertToScreen(frameInWindow)
-    }
-    
+        get {   self.layer?.isOpaque ?? false }
+        set {   self.wantsLayer = true
+                self.layer?.isOpaque = newValue } }
+        
     public var transform: CGAffineTransform {
-        get {
-            self.wantsLayer = true
-            return self.layer!.affineTransform() }
-        set {
-            self.wantsLayer = true
-            self.layer?.setAffineTransform(newValue)  } }
+        get {   self.wantsLayer = true
+                return self.layer?.affineTransform() ?? .init() }
+        set {   self.wantsLayer = true
+                self.layer?.setAffineTransform(newValue)  }
+    }
     
     public var anchorPoint: CGPoint {
-        get { self.layer?.anchorPoint ?? .zero }
-        set { self.wantsLayer = true
-            self.layer?.anchorPoint = newValue
-        }
-    }
+        get {   self.layer?.anchorPoint ?? .zero }
+        set {   self.wantsLayer = true
+                self.layer?.anchorPoint = newValue } }
     
     public var transform3D: CATransform3D {
-        get {
-            self.wantsLayer = true
-            return self.layer!.transform }
-        set {
-            self.wantsLayer = true
-            self.layer?.transform = newValue  } }
+        get {   self.wantsLayer = true
+                return self.layer?.transform ?? .zero}
+        set {   self.wantsLayer = true
+                self.layer?.transform = newValue  } }
     
     public var center: CGPoint {
         get { self.frame.center }
         set { self.frame.center = newValue } }
     
     
-    public var alpha: CGFloat {
-        get { if let cgValue =  self.layer?.opacity {
-            return CGFloat(cgValue)
-        }
-            return 1.0  }
-        set {
-            self.wantsLayer = true
-            self.layer?.opacity = Float(newValue) }
-    }
+    internal var alpha: CGFloat {
+        get {   guard let cgValue = self.layer?.opacity else { return 1.0 }
+                return CGFloat(cgValue) }
+        set {   self.wantsLayer = true
+                self.layer?.opacity = Float(newValue) } }
     
     public var roundedCorners: CACornerMask {
-        get { self.layer?.maskedCorners ?? CACornerMask() }
-        set {
-            self.wantsLayer = true
-            self.layer?.maskedCorners = newValue
-        }
-    }
+        get {   self.layer?.maskedCorners ?? CACornerMask() }
+        set {   self.wantsLayer = true
+                self.layer?.maskedCorners = newValue } }
     
     public var cornerRadius: CGFloat {
-        get { self.layer?.cornerRadius ?? 0.0 }
-        set {
-            self.wantsLayer = true
-            self.layer?.cornerRadius = newValue }
-    }
+        get {   self.layer?.cornerRadius ?? 0.0 }
+        set {   self.wantsLayer = true
+                self.layer?.cornerRadius = newValue } }
     
-    public  func setAnchorPoint(_ anchorPoint:CGPoint) {
+    public var cornerCurve: CALayerCornerCurve {
+        get {   self.layer?.cornerCurve ?? .circular  }
+        set {   self.wantsLayer = true
+                self.layer?.cornerCurve = newValue } }
+
+    public func setAnchorPoint(_ anchorPoint:CGPoint) {
         guard let layer = self.layer else { return }
         var newPoint = CGPoint(self.bounds.size.width * anchorPoint.x, self.bounds.size.height * anchorPoint.y)
         var oldPoint = CGPoint(self.bounds.size.width * layer.anchorPoint.x, self.bounds.size.height * layer.anchorPoint.y)
@@ -241,11 +233,38 @@ extension NSView {
     }
     
     @available(macOS 10.12, *)
-    public  static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void) {
+    public  static func animate(withDuration duration:TimeInterval = 0.25, timingFunction: CAMediaTimingFunction, animations:@escaping ()->Void, completion: (()->Void)? = nil) {
+        NSAnimationContext.runAnimationGroup() {
+            context in
+            context.duration = duration
+            context.timingFunction = timingFunction
+            context.allowsImplicitAnimation = true
+            context.completionHandler = completion
+            animations()
+        }
+    }
+    
+    @available(macOS 10.12, *)
+    public  static func animate(withDuration duration:TimeInterval = 0.25, delay: TimeInterval, timingFunction: CAMediaTimingFunction? = nil, animations:@escaping ()->Void, completion: (()->Void)? = nil) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            NSAnimationContext.runAnimationGroup() {
+                context in
+                context.duration = duration
+                context.timingFunction = timingFunction
+                context.allowsImplicitAnimation = true
+                context.completionHandler = completion
+                animations()
+            }
+        }
+    }
+    
+    @available(macOS 10.12, *)
+    public  static func animate(withDuration duration:TimeInterval = 0.25, animations:@escaping ()->Void, completion: (()->Void)? = nil) {
         NSAnimationContext.runAnimationGroup() {
             context in
             context.duration = duration
             context.allowsImplicitAnimation = true
+            context.completionHandler = completion
             animations()
         }
     }

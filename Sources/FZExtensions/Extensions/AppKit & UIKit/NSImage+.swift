@@ -73,6 +73,17 @@ public extension NSImage {
         self.init(cgImage: cgImage, size: .zero)
     }
     
+    convenience init?(size: CGSize, actions: (CGContext) -> Void) {
+        if let currentCGContext = NSGraphicsContext.current?.cgContext {
+            self.init(size: size)
+            lockFocusFlipped(false)
+            actions(currentCGContext)
+            unlockFocus()
+        } else {
+            return nil
+        }
+    }
+    
     var cgImage: CGImage? {
         guard let imageData = self.tiffRepresentation else { return nil }
         guard let sourceData = CGImageSourceCreateWithData(imageData as CFData, nil) else { return nil }
@@ -92,15 +103,15 @@ public extension NSImage {
 public extension NSImage {
     
     func withTintColor(_ color: NSColor) -> NSImage {
-      //  var image = self
-   //     image.isTemplate = true
-    //    guard self.isTemplate else { return self }
+        //  var image = self
+        //     image.isTemplate = true
+        //    guard self.isTemplate else { return self }
         
         let image = self.copy() as! NSImage
         image.isTemplate = true
         image.lockFocus()
-    
-   // CompositeSourceIn
+        
+        // CompositeSourceIn
         
         color.set()
         NSRect(origin: .zero, size: image.size).fill(using: .sourceAtop)
