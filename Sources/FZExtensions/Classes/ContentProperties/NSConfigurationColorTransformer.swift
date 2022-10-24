@@ -20,14 +20,21 @@ public struct NSConfigurationColorTransformer {
         self.transform = transform
     }
     
-    static func alpha(_ alpha: CGFloat) -> Self {
+   public static func opacity(_ opacity: CGFloat) -> Self {
         let transform: ((NSColor) -> NSColor) = { color in
-            return color.withAlphaComponent(alpha.clamped(1.0))
+            return color.withAlphaComponent(opacity.clamped(1.0))
         }
         return Self(transform)
     }
     
-    static func systemEffect(_ systemEffect: NSColor.SystemEffect) -> Self {
+    public static func preferredTint(opacity: CGFloat = 1.0) -> Self {
+        let transform: ((NSColor) -> NSColor) = { color in
+            return .controlAccentColor.withAlphaComponent(opacity.clamped(1.0))
+        }
+        return Self(transform)
+     }
+    
+    public static func systemEffect(_ systemEffect: NSColor.SystemEffect) -> Self {
         let transform: ((NSColor) -> NSColor) = { color in
             return color.withSystemEffect(systemEffect)
         }
@@ -36,10 +43,6 @@ public struct NSConfigurationColorTransformer {
     
     public static let monochrome: Self = Self({ color in
         return NSColor.secondaryLabelColor
-    })
-        
-    public static let preferredTint: Self = Self({ color in
-        return NSColor.controlAccentColor
     })
     
     public static let grayscale: Self = Self({ color in
