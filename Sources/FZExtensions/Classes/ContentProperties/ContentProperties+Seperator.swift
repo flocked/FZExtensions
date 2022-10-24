@@ -11,7 +11,7 @@ import AppKit
 
 extension ContentProperties {
     public struct Seperator: Hashable {
-        public var color: NSColor = .black
+        public var color: NSColor = .separatorColor
         public var insets: NSDirectionalEdgeInsets = .zero
         public var opacity: CGFloat = 1.0
         public var height: CGFloat = 1.0
