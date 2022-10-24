@@ -58,7 +58,7 @@ public extension CGRect {
             if (width < 0) {
                 self.origin = CGPoint(x: self.origin.x, y: self.origin.y-width)
             }
-            self._width = self.origin.y + width
+            self.width = self.origin.y + width
         }
     }
     
@@ -70,11 +70,11 @@ public extension CGRect {
             if (width < 0) {
                 self.origin = CGPoint(x: self.origin.x, y: self.origin.y-width)
             }
-            self._width = self.origin.y + width
+            self.width = self.origin.y + width
             if (height < 0) {
                 self.origin = CGPoint(x: self.origin.x-height, y: self.origin.y)
             }
-            self._height = self.origin.x + height
+            self.height = self.origin.x + height
         }
     }
     
@@ -104,8 +104,7 @@ public extension CGRect {
             self.origin = origin }
     }
     
-    
-    var _width: CGFloat {
+    var width: CGFloat {
         get { self.size.width }
         set {
             var size = self.size
@@ -113,14 +112,13 @@ public extension CGRect {
             self.size = size }
     }
     
-     var _height: CGFloat {
+     var height: CGFloat {
         get { self.size.height }
         set {
             var size = self.size
             size.height = newValue
             self.size = size }
     }
-    
     
     enum ExpandEdge {
         case minXEdge
@@ -187,8 +185,8 @@ public extension CGRect {
         let scale = newWidth / self.width
         let newHeight = self.height * scale
         var rect = self
-        rect._width = newWidth
-        rect._height = newHeight
+        rect.width = newWidth
+        rect.height = newHeight
         return rect
     }
     
@@ -196,8 +194,8 @@ public extension CGRect {
         let scale = newHeight / self.height
         let newWidth = self.width * scale
         var rect = self
-        rect._width = newWidth
-        rect._height = newHeight
+        rect.width = newWidth
+        rect.height = newHeight
         return rect
     }
 }
