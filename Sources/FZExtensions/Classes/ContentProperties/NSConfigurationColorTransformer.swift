@@ -11,6 +11,7 @@ import AppKit
 
 public struct NSConfigurationColorTransformer {
     public let transform: (NSColor) -> NSColor
+    
     public func callAsFunction(_ input: NSColor) -> NSColor {
         return transform(input)
     }
@@ -19,10 +20,16 @@ public struct NSConfigurationColorTransformer {
         self.transform = transform
     }
     
-    static func alpha(_ value: CGFloat) -> Self {
+    static func alpha(_ alpha: CGFloat) -> Self {
         let transform: ((NSColor) -> NSColor) = { color in
-            color.withAlphaComponent(value)
-            return color
+            return color.withAlphaComponent(alpha.clamped(1.0))
+        }
+        return Self(transform)
+    }
+    
+    static func systemEffect(_ systemEffect: NSColor.SystemEffect) -> Self {
+        let transform: ((NSColor) -> NSColor) = { color in
+            return color.withSystemEffect(systemEffect)
         }
         return Self(transform)
     }
