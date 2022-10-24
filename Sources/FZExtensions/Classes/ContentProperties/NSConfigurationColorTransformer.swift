@@ -27,6 +27,10 @@ public struct NSConfigurationColorTransformer {
         return Self(transform)
     }
     
+    public static let monochrome: Self = Self({ color in
+        return NSColor.secondaryLabelColor
+    })
+    
     public static let grayscale: Self = Self({ color in
         var color = color
         var white: CGFloat = 0
@@ -35,19 +39,5 @@ public struct NSConfigurationColorTransformer {
         return NSColor(white: white, alpha: alpha)
     })
 }
-
-/*
- static let preferredTint: Self  = Self({ color in
- var color = color
- color = NSColor(calibratedWhite: (0.299*color.redComponent + 0.587*color.greenComponent + 0.114*color.blueComponent), alpha: color.alphaComponent)
- return color
- })
- 
- static let monochromeTint: Self = Self({ color in
- var color = color
- color = NSColor(calibratedWhite: (0.299*color.redComponent + 0.587*color.greenComponent + 0.114*color.blueComponent), alpha: color.alphaComponent)
- return color
- })
- */
 
 #endif
