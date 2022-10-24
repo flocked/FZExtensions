@@ -44,6 +44,7 @@ public class ImageView: NSView {
         }
         set {
             self.imageLayer.imageScaling = newValue
+            self.layerContentsPlacement = newValue.viewLayerContentsPlacement
         }
     }
     

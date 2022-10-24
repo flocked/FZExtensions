@@ -14,8 +14,6 @@ import SwiftUI
 
 public struct ApplicationInfo: Codable {
   
-    @available(macOS 11.0, *)
-    @DefaultEmptyArray var supportedFileTypes: [FileTypeDefinition]
     var identifier: String
     var executable: String
 
@@ -55,7 +53,6 @@ public struct ApplicationInfo: Codable {
     }
     
     private enum CodingKeys : String, CodingKey {
-        case supportedFileTypes = "CFBundleDocumentTypes"
         case name = "CFBundleName"
         case displayName = "CFBundleDisplayName"
         case identifier = "CFBundleIdentifier"

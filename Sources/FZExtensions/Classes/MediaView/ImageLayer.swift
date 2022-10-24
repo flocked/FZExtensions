@@ -128,7 +128,7 @@ public class ImageLayer: CALayer {
     public var symbolConfiguration: NSUIImage.SymbolConfiguration? {
         get { _symbolConfiguration as? NSUIImage.SymbolConfiguration }
         set { _symbolConfiguration = newValue
-            updateDisplayingImageSymbolConfiguration() 
+            updateDisplayingImageSymbolConfiguration()
         }
     }
     
@@ -357,6 +357,37 @@ public class ImageLayer: CALayer {
           }
       }
     */
+    
+    public struct Trans {
+        var type: TransitionType = .fade
+        var duration: CGFloat = 0.1
+        internal var caTransition: CATransition? {
+            guard duration != 0.0 else { return nil }
+            let transition = CATransition()
+            transition.type = self.type.caTransitionType
+            transition.duration = self.duration
+            return transition
+        }
+        public enum TransitionType {
+            case push
+            case fade
+            case moveIn
+            case reveal
+            
+            internal var caTransitionType: CATransitionType {
+                 switch self {
+                 case .push:
+                     return .push
+                 case .fade:
+                     return .fade
+                 case .moveIn:
+                     return .moveIn
+                 case .reveal:
+                     return .reveal
+                 }
+             }
+        }
+    }
     
     public enum Transition {
         case none

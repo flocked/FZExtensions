@@ -346,3 +346,25 @@ extension NSUIView {
         self.removeConstraints(self.constraints)
     }
 }
+
+#if os(macOS)
+extension CALayerContentsGravity {
+   internal var viewLayerContentsPlacement: NSView.LayerContentsPlacement {
+        switch self {
+        case .topLeft: return .topLeft
+        case .top: return .top
+        case .topRight: return .topRight
+        case .center: return .center
+        case .bottomLeft: return .bottomLeft
+        case .bottom: return .bottom
+        case .bottomRight: return .bottomRight
+        case .resize: return .scaleAxesIndependently
+        case .resizeAspectFill: return .scaleProportionallyToFill
+        case .resizeAspect: return .scaleProportionallyToFit
+        case .left: return .left
+        case .right: return .right
+        default: return .scaleProportionallyToFill
+    }
+}
+}
+#endif

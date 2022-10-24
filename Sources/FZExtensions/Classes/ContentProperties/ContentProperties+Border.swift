@@ -60,6 +60,8 @@ extension ContentProperties.Border: Hashable {
 #if os(macOS)
 @available(macOS 10.15.1, iOS 14.0, *)
 public extension NSView {
+
+    
     func configurate(using borderProperties: ContentProperties.Border) {
         self.wantsLayer = true
         self.layer?.configurate(using: borderProperties)

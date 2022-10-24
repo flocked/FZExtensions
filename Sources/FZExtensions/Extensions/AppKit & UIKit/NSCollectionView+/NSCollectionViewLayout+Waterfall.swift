@@ -277,7 +277,6 @@ public class WaterfallLayout: NSUICollectionViewLayout {
                         itemHeight = floor(itemHeight * itemWidth / itemSize.width)
                     } // else use default item width based on other parameters
                 }
-                
                 attributes = NSUICollectionViewLayoutAttributes(forItemWith: indexPath)
                 attributes.frame = CGRect(x: xOffset, y: yOffset, width: itemWidth, height: itemHeight)
                 itemAttributes.append(attributes)
