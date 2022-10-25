@@ -8,9 +8,11 @@
 #if os(macOS)
 import AppKit
 
-public protocol NSBackgroundView: Sizable {
+public protocol NSBackgroundView {
     var configuration: NSBackgroundConfiguration { get set }
     func supports(_ configuration: NSBackgroundConfiguration) -> Bool
+    func sizeThatFits(_ size: CGSize) -> CGSize
+    var fittingSize: CGSize { get }
 }
 
 public extension NSBackgroundView {

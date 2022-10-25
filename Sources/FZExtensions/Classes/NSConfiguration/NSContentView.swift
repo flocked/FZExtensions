@@ -8,9 +8,11 @@
 #if os(macOS)
 import AppKit
 
-public protocol NSContentView: Sizable {
+public protocol NSContentView {
     var configuration: NSContentConfiguration { get set }
     func supports(_ configuration: NSContentConfiguration) -> Bool
+    func sizeThatFits(_ size: CGSize) -> CGSize
+    var fittingSize: CGSize { get }
 }
 
 public extension NSContentView {
