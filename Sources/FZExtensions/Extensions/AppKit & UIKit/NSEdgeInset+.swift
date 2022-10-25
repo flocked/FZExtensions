@@ -17,7 +17,27 @@ import SwiftUI
 public extension NSEdgeInsets {
     static var zero = NSEdgeInsets(0)
 }
+
+public extension CGRect {
+    func inset(by inset: NSEdgeInsets) -> CGRect {
+        let x = self.origin.x + inset.left
+        let y = self.origin.y + inset.top
+        let width = self.size.width - inset.left - inset.right
+        let height = self.size.height - inset.top - inset.bottom
+        return .init(x: x, y: y, width: width, height: height)
+    }
+}
 #endif
+
+public extension CGRect {
+    func inset(by inset: EdgeInsets) -> CGRect {
+        let x = self.origin.x + inset.leading
+        let y = self.origin.y + inset.top
+        let width = self.size.width - inset.leading - inset.trailing
+        let height = self.size.height - inset.top - inset.bottom
+        return .init(x: x, y: y, width: width, height: height)
+    }
+}
 
 extension NSUIEdgeInsets: Hashable {
     public static func == (lhs: NSUIEdgeInsets, rhs: NSUIEdgeInsets) -> Bool {

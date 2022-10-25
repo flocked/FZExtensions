@@ -9,12 +9,14 @@
 
 import AppKit
 
-extension NSUserInterfaceItemIdentifier: ExpressibleByStringLiteral {
-    public typealias StringLiteralType = String
-   public init(stringLiteral value: Self.StringLiteralType) {
+extension NSUserInterfaceItemIdentifier: ExpressibleByStringLiteral, ExpressibleByIntegerLiteral {
+   public init(stringLiteral value: String) {
        self.init(rawValue: value)
     }
-
+    
+    public init(integerLiteral value: Int) {
+        self.init(rawValue: String(value))
+    }
 }
 
 #endif
