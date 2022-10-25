@@ -310,7 +310,7 @@ extension NSUIImage.SymbolConfiguration {
 @available(macOS 12.0, *)
 public extension Image {
     @ViewBuilder
-    func withSymbolConfiguration( _ configuration: NSImage.SymbolConfiguration) -> some View {
+     func symbolConfiguration( _ configuration: NSImage.SymbolConfiguration) -> some View {
         self.modifier(NSImage.SymbolConfiguration.Modifier(configuration: configuration))
     }
 }
