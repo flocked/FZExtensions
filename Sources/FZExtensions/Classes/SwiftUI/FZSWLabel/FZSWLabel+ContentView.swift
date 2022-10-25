@@ -77,7 +77,7 @@ extension FZSWLabel {
                 .padding(EdgeInsets(top: properties.margin, leading: properties.shape == .capsule ? (properties.margin + (properties.margin*0.25)) : properties.margin, bottom: properties.margin, trailing: properties.shape == .capsule ? (properties.margin + (properties.margin*0.3)) : properties.margin))
                 .background(
                     self.background
-                        .shadow(properties.shadow.color?.uiColor, opacity: properties.shadow.opacity, radius: properties.shadow.radius, x: properties.shadow.x, y: properties.shadow.y)
+                        .shadow(properties.shadow.color?.swiftUI, opacity: properties.shadow.opacity, radius: properties.shadow.radius, x: properties.shadow.x, y: properties.shadow.y)
                 )
                 .overlay(
                     properties.shape.shape

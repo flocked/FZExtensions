@@ -12,8 +12,9 @@ import AppKit
 #elseif canImport(UIKit)
 import UIKit
 #endif
+
 public extension NSUIColor {
-    var uiColor: Color {
+    var swiftUI: Color {
         return Color(self)
     }
 }
