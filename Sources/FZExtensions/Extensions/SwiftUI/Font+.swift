@@ -19,6 +19,12 @@ public extension Font {
     }
 }
 
+public extension NSUIFont {
+    var swiftUI: Font {
+        return Font(self)
+    }
+}
+
 @available(macOS 11.0, iOS 14.0, tvOS 12.2, watchOS 5.2, *)
 extension NSUIFont.TextStyle {
     public var swiftUI: Font.TextStyle {
