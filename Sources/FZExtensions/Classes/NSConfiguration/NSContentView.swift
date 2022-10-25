@@ -8,7 +8,7 @@
 #if os(macOS)
 import AppKit
 
-public protocol NSContentView {
+public protocol NSContentView: Sizable {
     var configuration: NSContentConfiguration { get set }
     func supports(_ configuration: NSContentConfiguration) -> Bool
 }

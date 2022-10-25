@@ -8,7 +8,7 @@
 #if os(macOS)
 import AppKit
 
-public protocol NSBackgroundView {
+public protocol NSBackgroundView: Sizable {
     var configuration: NSBackgroundConfiguration { get set }
     func supports(_ configuration: NSBackgroundConfiguration) -> Bool
 }
