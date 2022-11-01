@@ -32,22 +32,14 @@ public struct Swizzle {
     public init(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> [SwizzlePair]) {
         let swizzlePairs = makeSwizzlePairs()
         for swizzlePair in swizzlePairs {
-            if (class_.responds(to: swizzlePair.original)) {
-                swizzleMethods(class_, swizzlePair, isClassMethod: true)
-            } else {
-                swizzleMethods(class_, swizzlePair, isClassMethod: false)
-            }
+            swizzleMethods(class_, swizzlePair)
         }
     }
     
     @discardableResult
     public init(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) {
         let swizzlePair = makeSwizzlePairs()
-        if (class_.responds(to: swizzlePair.original)) {
-            swizzleMethods(class_, swizzlePair, isClassMethod: true)
-        } else {
-            swizzleMethods(class_, swizzlePair, isClassMethod: false)
-        }
+        swizzleMethods(class_, swizzlePair)
     }
     
     internal func swizzleMethods(_ class_: AnyClass, _ swizzlePairs: [SwizzlePair], isClassMethod: Bool) {
@@ -56,10 +48,12 @@ public struct Swizzle {
         }
     }
     
-    internal func swizzleMethods(_ class_: AnyClass, _ swizzlePairs: SwizzlePair, isClassMethod: Bool) {
+    internal func swizzleMethods(_ class_: AnyClass, _ swizzlePairs: SwizzlePair, isClassMethod: Bool? = nil) {
         let selector1 = swizzlePairs.original
         let selector2 = swizzlePairs.swizzled
-
+        
+        let isClassMethod = isClassMethod ?? class_.responds(to: swizzlePairs.original)
+        
         let c: AnyClass
         if isClassMethod {
             guard let c_ = object_getClass(class_) else {
