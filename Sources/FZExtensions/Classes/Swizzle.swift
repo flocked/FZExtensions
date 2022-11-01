@@ -48,9 +48,19 @@ public struct Swizzle {
         }
     }
         
-   public static func check(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) -> Bool {
+    static func check(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) -> Bool {
         let swizzlePair = makeSwizzlePairs()
-       return self.checkMethod(class_, swizzlePair)
+        return self.checkMethod(class_, swizzlePair)
+    }
+    
+    static func check(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> [SwizzlePair]) -> Bool {
+        let swizzlePairs = makeSwizzlePairs()
+        for swizzlePair in swizzlePairs {
+            if (self.checkMethod(class_, swizzlePair)) {
+                return true
+            }
+        }
+        return false
     }
     
     internal static func checkMethod(_ class_: AnyClass, _ swizzlePairs: SwizzlePair, isClassMethod: Bool? = nil) -> Bool {
