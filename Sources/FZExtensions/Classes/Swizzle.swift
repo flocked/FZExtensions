@@ -47,7 +47,7 @@ public struct Swizzle {
             self.swizzleMethods(class_, swizzlePair, isClassMethod: isClassMethod)
         }
     }
-        
+     /*
    public static func check(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) -> Bool {
         let swizzlePair = makeSwizzlePairs()
         return self.checkMethod(class_, swizzlePair)
@@ -86,8 +86,9 @@ public struct Swizzle {
             return false
         }
 
-        return class_addMethod(c, selector1, method_getImplementation(method2), method_getTypeEncoding(method2))
+        return !class_addMethod(c, selector1, method_getImplementation(method2), method_getTypeEncoding(method2))
     }
+    */
     
     internal func swizzleMethods(_ class_: AnyClass, _ swizzlePairs: SwizzlePair, isClassMethod: Bool? = nil) {
         let selector1 = swizzlePairs.original
