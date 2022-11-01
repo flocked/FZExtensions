@@ -15,102 +15,73 @@ public struct SwizzlePair {
 }
 
 extension Selector {
-    
     public static func <->(original: Selector, swizzled: Selector) -> SwizzlePair {
         SwizzlePair(original: original, swizzled: swizzled)
     }
-    
 }
 
 public struct Swizzle {
-
     @resultBuilder
     public struct SwizzleFunctionBuilder {
-        
         public static func buildBlock(_ swizzlePairs: SwizzlePair...) -> [SwizzlePair] {
             Array(swizzlePairs)
         }
-        
     }
     
     @discardableResult
-    public init(_ type: AnyObject.Type, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> [SwizzlePair]) {
+    public init(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> [SwizzlePair]) {
         let swizzlePairs = makeSwizzlePairs()
-        swizzle(type: type, pairs: swizzlePairs)
+        for swizzlePair in swizzlePairs {
+            if (class_.responds(to: swizzlePair.original)) {
+                swizzleMethods(class_, swizzlePair, isClassMethod: true)
+            } else {
+                swizzleMethods(class_, swizzlePair, isClassMethod: false)
+            }
+        }
     }
     
     @discardableResult
-    public init(_ type: AnyObject.Type, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) {
-        let swizzlePairs = makeSwizzlePairs()
-        swizzle(type: type, pairs: [swizzlePairs])
+    public init(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) {
+        let swizzlePair = makeSwizzlePairs()
+        if (class_.responds(to: swizzlePair.original)) {
+            swizzleMethods(class_, swizzlePair, isClassMethod: true)
+        } else {
+            swizzleMethods(class_, swizzlePair, isClassMethod: false)
+        }
     }
     
-    private func swizzle(type: AnyObject.Type, pairs: [SwizzlePair]) {
-        pairs.forEach { swizzlePair in
-             guard
-                 let originalMethod = class_getInstanceMethod(type, swizzlePair.original),
-                 let swizzledMethod = class_getInstanceMethod(type, swizzlePair.swizzled)
-                 else { return }
-             method_exchangeImplementations(originalMethod, swizzledMethod)
-         }
+    internal func swizzleMethods(_ class_: AnyClass, _ swizzlePairs: [SwizzlePair], isClassMethod: Bool) {
+        for swizzlePair in swizzlePairs {
+            self.swizzleMethods(class_, swizzlePair, isClassMethod: isClassMethod)
+        }
     }
     
-}
+    internal func swizzleMethods(_ class_: AnyClass, _ swizzlePairs: SwizzlePair, isClassMethod: Bool) {
+        let selector1 = swizzlePairs.original
+        let selector2 = swizzlePairs.swizzled
 
+        let c: AnyClass
+        if isClassMethod {
+            guard let c_ = object_getClass(class_) else {
+                return
+            }
+            c = c_
+        }
+        else {
+            c = class_
+        }
 
-
-/*
-import ObjectiveC
-
-private func _swizzleMethod(_ class_: AnyClass, from selector1: Selector, to selector2: Selector, isClassMethod: Bool)
-{
-    let c: AnyClass
-    if isClassMethod {
-        guard let c_ = object_getClass(class_) else {
+        guard let method1: Method = class_getInstanceMethod(c, selector1),
+            let method2: Method = class_getInstanceMethod(c, selector2) else
+        {
             return
         }
-        c = c_
-    }
-    else {
-        c = class_
-    }
 
-    guard let method1: Method = class_getInstanceMethod(c, selector1),
-        let method2: Method = class_getInstanceMethod(c, selector2) else
-    {
-        return
-    }
-
-    if class_addMethod(c, selector1, method_getImplementation(method2), method_getTypeEncoding(method2)) {
-        class_replaceMethod(c, selector2, method_getImplementation(method1), method_getTypeEncoding(method1))
-    }
-    else {
-        method_exchangeImplementations(method1, method2)
+        if class_addMethod(c, selector1, method_getImplementation(method2), method_getTypeEncoding(method2)) {
+            class_replaceMethod(c, selector2, method_getImplementation(method1), method_getTypeEncoding(method1))
+        }
+        else {
+            method_exchangeImplementations(method1, method2)
+        }
     }
 }
-
-/// Instance-method swizzling.
-public func swizzleInstanceMethod(_ class_: AnyClass, from sel1: Selector, to sel2: Selector)
-{
-    _swizzleMethod(class_, from: sel1, to: sel2, isClassMethod: false)
-}
-
-/// Instance-method swizzling for unsafe raw-string.
-/// - Note: This is useful for non-`#selector`able methods e.g. `dealloc`, private ObjC methods.
-public func swizzleInstanceMethodString(_ class_: AnyClass, from sel1: String, to sel2: String)
-{
-    swizzleInstanceMethod(class_, from: Selector(sel1), to: Selector(sel2))
-}
-
-/// Class-method swizzling.
-public func swizzleClassMethod(_ class_: AnyClass, from sel1: Selector, to sel2: Selector)
-{
-    _swizzleMethod(class_, from: sel1, to: sel2, isClassMethod: true)
-}
-
-/// Class-method swizzling for unsafe raw-string.
-public func swizzleClassMethodString(_ class_: AnyClass, from sel1: String, to sel2: String)
-{
-    swizzleClassMethod(class_, from: Selector(sel1), to: Selector(sel2))
-}
-*/
