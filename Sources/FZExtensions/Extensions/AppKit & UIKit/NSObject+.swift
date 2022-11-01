@@ -74,4 +74,16 @@ public extension NSObject {
         }
         return false
     }
+    
+    func isSubclass(of class_: AnyClass) -> Bool {
+        var currentClass: AnyClass = type(of: self)
+
+        while let superClass: AnyClass = class_getSuperclass(currentClass) {
+            if (superClass == class_) {
+                return true
+            }
+            currentClass = superClass
+        }
+        return false
+    }
  }
