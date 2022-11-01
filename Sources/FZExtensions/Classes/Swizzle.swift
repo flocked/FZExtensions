@@ -48,12 +48,12 @@ public struct Swizzle {
         }
     }
         
-    static func check(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) -> Bool {
+   public static func check(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> SwizzlePair) -> Bool {
         let swizzlePair = makeSwizzlePairs()
         return self.checkMethod(class_, swizzlePair)
     }
     
-    static func check(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> [SwizzlePair]) -> Bool {
+   public static func check(_ class_: AnyClass, @SwizzleFunctionBuilder _ makeSwizzlePairs: () -> [SwizzlePair]) -> Bool {
         let swizzlePairs = makeSwizzlePairs()
         for swizzlePair in swizzlePairs {
             if (self.checkMethod(class_, swizzlePair)) {
