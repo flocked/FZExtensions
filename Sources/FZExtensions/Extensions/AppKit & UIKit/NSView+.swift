@@ -20,6 +20,31 @@ extension NSView {
        return enlosingFrame
    }
     
+    public var borderColor: NSColor? {
+        get {
+            if let cgColor = self.layer?.borderColor {
+                return NSColor(cgColor: cgColor)
+            }
+            return nil
+        }
+        set {
+            self.wantsLayer = true
+            self.layer?.borderColor = newValue?.cgColor
+        }
+    }
+    
+    public var borderWidth: CGFloat {
+        get {
+            self.layer?.borderWidth ?? 0.0
+        }
+        set {
+            self.wantsLayer = true
+            self.layer?.borderWidth = newValue
+        }
+    }
+    
+    
+    
     public var frameInWindow: CGRect {
         convert(bounds, to: nil)
     }

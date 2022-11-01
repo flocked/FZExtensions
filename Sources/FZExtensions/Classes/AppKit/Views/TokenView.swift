@@ -257,11 +257,7 @@ public class TokenView: NSView {
  //   public var backgroundColor: NSColor? = NSColor.controlAccentColor {
    //     didSet { needsDisplay = true } }
 
-    public var borderWidth = 0.0 {
-        didSet { needsDisplay = true } }
-    
-    public var borderColor: NSColor? = nil {
-        didSet { needsDisplay = true } }
+  
     
     public var isSelected = false {
         didSet {

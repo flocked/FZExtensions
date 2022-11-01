@@ -63,10 +63,7 @@ public class FZSWLabel: NSView {
         set { configuration.background = newValue }
     }
     
-    public var borderWidth: CGFloat {
-        get { configuration.borderWidth }
-        set { configuration.borderWidth = newValue }
-    }
+
     
     public var imagePosition: Configuration.IconPlacement {
         get { configuration.iconPlacement }
