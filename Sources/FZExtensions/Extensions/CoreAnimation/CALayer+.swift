@@ -36,63 +36,6 @@ public extension CALayer {
         superlayer.insertSublayer(self, at: 0)
     }
     
-    #if os(macOS)
-    func addSublayer(withAutoresizing layer: CALayer) {
-        layer.frame = self.bounds
-        layer.cornerRadius = self.cornerRadius
-        layer.maskedCorners = self.maskedCorners
-        layer.masksToBounds = true
-        layer.autoresizingMask = .all
-        self.addSublayer(layer)
-    }
-    
-    var nsBackgroundColor: NSColor? {
-        get { getAssociatedValue(key: "!backgroundColor", object: self) }
-        set {
-            set(associatedValue: newValue, key: "!backgroundColor", object: self)
-            self.updateBackgroundColor()
-            if (self.effectiveAppearanceObserver == nil) {
-                self.effectiveAppearanceObserver =  NSApp.observe(\.effectiveAppearance) { [weak self] tLayer, change in
-                      self?.updateBackgroundColor()
-                  }
-            }
-        }
-    }
-    
-    internal var effectiveAppearanceObserver: NSKeyValueObservation? {
-        get { getAssociatedValue(key: "_effectiveAppearanceObserver", object: self) }
-        set { set(associatedValue: newValue, key: "_effectiveAppearanceObserver", object: self) } }
-    
-    internal func updateBackgroundColor() {
-        let appearance = NSApp.effectiveAppearance
-        self.backgroundColor = self.nsBackgroundColor?.resolvedColor(for: appearance).cgColor
-    }
-    #elseif canImport(UIKit)
-    /*
-    internal var traitCollectionObserver: NSKeyValueObservation? {
-        get { getAssociatedValue(key: "_traitCollectionObserver", object: self) }
-        set { set(associatedValue: newValue, key: "_traitCollectionObserver", object: self) } }
-    
-   @objc internal func updateBackgroundColor() {
-       let traitCollection = (self.delegate as? UIView)?.traitCollection ?? UIScreen.main.traitCollection
-       self.backgroundColor = self.uiBackgroundColor?.resolvedColor(with: traitCollection).cgColor
-    }
-    
-    var uiBackgroundColor: NSUIColor? {
-        get { getAssociatedValue(key: "_uiBackgroundColor", object: self) }
-        set {
-            set(associatedValue: newValue, key: "_uiBackgroundColor", object: self)
-            self.updateBackgroundColor()
-            if (self.traitCollectionObserver == nil) {
-                self.traitCollectionObserver =  UIScreen.main.observe(\.traitCollection) {[weak self] screen, change in
-                    self?.updateBackgroundColor()
-                }
-            }
-        }
-    }
-    */
-    #endif
-    
     @discardableResult
     func addSublayer(withConstraint layer: CALayer) -> [NSLayoutConstraint]  {
         self.addSublayer(layer)
