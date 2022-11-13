@@ -64,11 +64,11 @@ public extension URL {
         static var multimediaTypes: [FileType] = [.gif, .image, .video]
         static var imageTypes: [FileType] = [.gif, .image]
 
-        var isMultimedia: Bool {
+         public var isMultimedia: Bool {
             return FileType.multimediaTypes.contains(self)
         }
          
-         var pathExtensions: [String] {
+        public var pathExtensions: [String] {
              switch self {
              case .image:
                  return ["png", "gif", "jpeg", "jpg", "heic", "tiff", "tif", "heif", "pnj"]
@@ -84,23 +84,23 @@ public extension URL {
          }
      }
      
-     var fileType: FileType? {
+    public var fileType: FileType? {
          return FileType.init(pathExtension: self.pathExtension)
      }
     
-    var isVideo: Bool {
+    public var isVideo: Bool {
         self.fileType == .video
     }
     
-    var isImage: Bool {
+    public var isImage: Bool {
         self.fileType == .image
     }
     
-    var isGIF: Bool {
+    public var isGIF: Bool {
         self.fileType == .gif
     }
     
-    var isMultimedia: Bool {
+    public var isMultimedia: Bool {
         self.fileType?.isMultimedia ?? false
     }
     
