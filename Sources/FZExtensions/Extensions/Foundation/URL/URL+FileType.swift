@@ -31,7 +31,7 @@ public extension URL {
              }
          }
          
-         init?(url: URL) {
+         public init?(url: URL) {
              switch url.pathExtension.lowercased() {
              case let pathExtension where Self.image.pathExtensions.contains(pathExtension):
                  self = .image
@@ -46,7 +46,7 @@ public extension URL {
              }
          }
          
-         init?(pathExtension: String) {
+         public init?(pathExtension: String) {
              switch pathExtension.lowercased() {
              case let pExt where Self.image.pathExtensions.contains(pExt):
                  self = .image

@@ -93,25 +93,94 @@ public extension CALayer {
 
 
 /*
-internal var traitCollectionObserver: NSKeyValueObservation? {
-    get { getAssociatedValue(key: "_traitCollectionObserver", object: self) }
-    set { set(associatedValue: newValue, key: "_traitCollectionObserver", object: self) } }
+ extension CALayer {
+     var superview: NSView? {
+         var currentLayer: CALayer? = self
+         while let layer = currentLayer {
+             if let view = (layer.delegate as? NSView) {
+                 return view
+             }
+             currentLayer = currentLayer?.superlayer
+         }
+         return nil
+     }
+     
+     internal func updateEffectiveAppearanceObserver() {
+         effectiveAppearanceObserver?.invalidate()
+         effectiveAppearanceObserver = nil
+         if let appearanceObject = appearanceObject {
+             self.effectiveAppearanceObserver = appearanceObject.observeEffectiveAppearance { [weak self] obj in
+                 self?.updateBackgroundColor(obj)
+             }
+         } else {
+             self.effectiveAppearanceObserver = NSApp.observe(\.effectiveAppearance) { [weak self] app, change in
+                 self?.updateBackgroundColor(app)
+             }
+         }
+     }
+     
+     var nsBackgroundColor: NSColor? {
+         get { getAssociatedValue(key: "!backgroundColor", object: self) }
+         set {
+             set(associatedValue: newValue, key: "!backgroundColor", object: self)
+             self.updateBackgroundColor()
+             if newValue != nil {
+                 if (self.effectiveAppearanceObserver == nil) {
+                     self.updateEffectiveAppearanceObserver()
+                 }
+             } else {
+                 self.effectiveAppearanceObserver?.invalidate()
+                 self.effectiveAppearanceObserver = nil
+             }
+         }
+     }
+     
+     internal var effectiveAppearanceObserver: NSKeyValueObservation? {
+         get { getAssociatedValue(key: "_effectiveAppearanceObserver", object: self) }
+         set { set(associatedValue: newValue, key: "_effectiveAppearanceObserver", object: self) } }
+     
+     internal func updateBackgroundColor(_ object: NSObject? = nil) {
+         if let object = object {
+             guard object == NSApp || object == self.appearanceObject else {
+                 self.updateEffectiveAppearanceObserver()
+                 return
+             }
+         }
+         let appearance = appearanceObject?.effectiveAppearance ?? NSApp.effectiveAppearance
+         self.backgroundColor = self.nsBackgroundColor?.resolvedColor(for: appearance).cgColor
+     }
+     
+     internal var appearanceObject: (any ObservableAppearanceObject)? {
+          var currentLayer: CALayer? = self
+          while let layer = currentLayer {
+              if let appearanceObject = (layer.delegate as? (any ObservableAppearanceObject)) {
+                  return appearanceObject
+              }
+              currentLayer = currentLayer?.superlayer
+          }
+          return nil
+      }
+ }
 
-@objc internal func updateBackgroundColor() {
-   let traitCollection = (self.delegate as? UIView)?.traitCollection ?? UIScreen.main.traitCollection
-   self.backgroundColor = self.uiBackgroundColor?.resolvedColor(with: traitCollection).cgColor
-}
+ internal protocol ObservableAppearanceObject: NSObject, NSAppearanceCustomization {
+     associatedtype Value: AnyObject
+     func observeEffectiveAppearance(changeHandler: @escaping ((Value)->())) -> NSKeyValueObservation
+ }
 
-var uiBackgroundColor: NSUIColor? {
-    get { getAssociatedValue(key: "_uiBackgroundColor", object: self) }
-    set {
-        set(associatedValue: newValue, key: "_uiBackgroundColor", object: self)
-        self.updateBackgroundColor()
-        if (self.traitCollectionObserver == nil) {
-            self.traitCollectionObserver =  UIScreen.main.observe(\.traitCollection) {[weak self] screen, change in
-                self?.updateBackgroundColor()
-            }
-        }
-    }
-}
+ extension ObservableAppearanceObject where Self: NSObject & NSAppearanceCustomization {
+     func observeEffectiveAppearance( changeHandler: @escaping ((Self)->())) -> NSKeyValueObservation {
+        return self.observe(\.effectiveAppearance) { [weak self] view, value in
+             guard let self = self else { return }
+             changeHandler(self)
+         }
+     }
+ }
+
+ extension NSView: ObservableAppearanceObject { }
+ extension NSApplication: ObservableAppearanceObject { }
+ extension NSWindow: ObservableAppearanceObject { }
+ extension NSMenu: ObservableAppearanceObject { }
+ extension NSPopover: ObservableAppearanceObject { }
+
+
 */
