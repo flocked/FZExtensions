@@ -8,6 +8,7 @@
 import Foundation
 
 public extension Sequence where Element: Identifiable {
+    /*
     func contains(_ element: Element) -> Bool {
        return self.contains(where: {$0.id == element.id})
     }
@@ -29,6 +30,7 @@ public extension Sequence where Element: Identifiable {
         }
         return true
     }
+    */
         
     var ids: [Element.ID] {
         return self.compactMap({$0.id})
