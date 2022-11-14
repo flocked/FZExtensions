@@ -5,6 +5,8 @@
 //  Created by Florian Zand on 02.11.22.
 //
 
+#if os(macOS)
+
 import Cocoa
 
 public extension NSRunningApplication {
@@ -15,3 +17,4 @@ public extension NSRunningApplication {
     }
     
 }
+#endif

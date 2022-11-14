@@ -84,23 +84,23 @@ public extension URL {
          }
      }
      
-    public var fileType: FileType? {
+     var fileType: FileType? {
          return FileType.init(pathExtension: self.pathExtension)
      }
     
-    public var isVideo: Bool {
+     var isVideo: Bool {
         self.fileType == .video
     }
     
-    public var isImage: Bool {
+     var isImage: Bool {
         self.fileType == .image
     }
     
-    public var isGIF: Bool {
+     var isGIF: Bool {
         self.fileType == .gif
     }
     
-    public var isMultimedia: Bool {
+     var isMultimedia: Bool {
         self.fileType?.isMultimedia ?? false
     }
     
