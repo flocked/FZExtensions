@@ -39,6 +39,9 @@ public extension BackgroundColorSettable where Self: NSView {
                         self?.updateBackgroundColor()
                     }
                 }
+            }  else {
+                _effectiveAppearanceKVO?.invalidate()
+                _effectiveAppearanceKVO = nil
             }
         }
     }
