@@ -38,7 +38,35 @@ public extension NSMenu {
     }
 }
 
-public extension NSGestureRecognizer {
+public extension NSPanGestureRecognizer {
+    convenience init(action: @escaping ActionBlock) {
+        self.init()
+        self.actionBlock = action
+    }
+}
+
+public extension NSMagnificationGestureRecognizer {
+    convenience init(action: @escaping ActionBlock) {
+        self.init()
+        self.actionBlock = action
+    }
+}
+
+public extension NSClickGestureRecognizer {
+    convenience init(action: @escaping ActionBlock) {
+        self.init()
+        self.actionBlock = action
+    }
+}
+
+public extension NSPressGestureRecognizer {
+    convenience init(action: @escaping ActionBlock) {
+        self.init()
+        self.actionBlock = action
+    }
+}
+
+public extension NSRotationGestureRecognizer {
     convenience init(action: @escaping ActionBlock) {
         self.init()
         self.actionBlock = action

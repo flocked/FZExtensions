@@ -11,7 +11,7 @@ import AppKit
 import SwiftUI
 
 public class TokenView: NSView {
-    public enum CornerStyle: Codable {
+    public enum CornerType: Codable {
         case capsule
         case fixed(CGFloat)
         case rect
@@ -46,7 +46,7 @@ public class TokenView: NSView {
     
     public struct Configuration {
         var opacity: Float?
-        var cornerStyle: CornerStyle?
+        var cornerType: CornerType?
         var font: NSFont?
         var foregorundColor: NSColor?
         var backgroundStyle: BackgroundStyle?
@@ -60,11 +60,11 @@ public class TokenView: NSView {
         var size: CGFloat?
         
         public static func tinted(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small,foregorundColor: color, backgroundStyle: .color(color.withBrightness(1.65)))
+            return Configuration(cornerType: .small,foregorundColor: color, backgroundStyle: .color(color.withBrightness(1.65)))
         }
         
         public static func colored(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small, backgroundStyle: .color(color))
+            return Configuration(cornerType: .small, backgroundStyle: .color(color))
         }
         
         public static func opacity(_ opacity: Float) -> Configuration {
@@ -72,20 +72,20 @@ public class TokenView: NSView {
         }
         
         public static func coloredBorered(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small, backgroundStyle: .color(color), borderWidth: 2.0)
+            return Configuration(cornerType: .small, backgroundStyle: .color(color), borderWidth: 2.0)
         }
         
         public  static func bordered(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small, foregorundColor: nil, backgroundStyle: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
+            return Configuration(cornerType: .small, foregorundColor: nil, backgroundStyle: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
         }
         public static func borderedColored(_ color: NSColor) -> Configuration {
-            return Configuration(cornerStyle: .small, foregorundColor: color, backgroundStyle: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
+            return Configuration(cornerType: .small, foregorundColor: color, backgroundStyle: nil, borderWidth: 4.0, borderColor: NSColor.controlAccentColor)
         }
     }
     
     var currentConfiguration: Configuration {
         return Configuration(opacity: self.opacity,
-                             cornerStyle: self.cornerStyle,
+                             cornerType: self.cornerType,
                              font: self.font,
                              foregorundColor: self.foregroundColor,
                              backgroundStyle: self.backgroundStyle,
@@ -103,8 +103,8 @@ public class TokenView: NSView {
             self.opacity = value
         }
         
-        if let value = newConfiguration.cornerStyle {
-            self.cornerStyle = value
+        if let value = newConfiguration.cornerType {
+            self.cornerType = value
         }
         if let value = newConfiguration.font {
             self.font = value
@@ -152,9 +152,10 @@ public class TokenView: NSView {
     public var opacity: Float = 1.0 {
         didSet { needsDisplay = true } }
     
-    public var cornerStyle: CornerStyle = .small {
+    public var cornerType: CornerType = .small {
         didSet { needsDisplay = true }
     }
+    
     
     public var font: NSFont  {
         get { textField.font ?? .systemFont(ofSize: self.bounds.height) }
@@ -467,7 +468,7 @@ public class TokenView: NSView {
         }
          */
         
-        switch cornerStyle {
+        switch cornerType {
         case .capsule:
             layer.cornerCurve = .continuous
             layer.cornerRadius = self.bounds.height/2.0

@@ -51,10 +51,7 @@ public extension NSUIView {
             }
         }
     }
-    
 }
-
-
 #endif
 
 

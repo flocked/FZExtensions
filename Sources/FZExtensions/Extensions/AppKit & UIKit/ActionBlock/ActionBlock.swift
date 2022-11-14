@@ -10,8 +10,15 @@ public protocol TargetActionProtocol: AnyObject {
  }
 
 extension NSControl: TargetActionProtocol {}
- extension NSToolbarItem: TargetActionProtocol {}
- extension NSGestureRecognizer: TargetActionProtocol {}
+extension NSToolbarItem: TargetActionProtocol {}
+
+extension NSPanGestureRecognizer: TargetActionProtocol {}
+extension NSMagnificationGestureRecognizer: TargetActionProtocol {}
+extension NSClickGestureRecognizer: TargetActionProtocol {}
+extension NSPressGestureRecognizer: TargetActionProtocol {}
+extension NSRotationGestureRecognizer: TargetActionProtocol {}
+
+
  extension NSMenuItem: TargetActionProtocol { }
 
  internal class ActionTrampoline<T: TargetActionProtocol>: NSObject {
