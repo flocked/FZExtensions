@@ -22,11 +22,11 @@ public struct Shell {
         case zsh
     }
     
-    public static func execute(_ args: String...,at path: String = ".", update: ((String) -> Void)?, completion: @escaping (Result<String, Shell.Error>) -> Void) {
+    public static func execute(_ args: String...,at path: String = ".", update: ((String) -> Void)? = nil, completion: @escaping (Result<String, Shell.Error>) -> Void) {
         self.execute(args, at: path, update: update, completion: completion)
     }
     
-    public static func execute(_ args: [String],at path: String = ".", update: ((String) -> Void)?, completion: @escaping (Result<String, Shell.Error>) -> Void) {
+    public static func execute(_ args: [String],at path: String = ".", update: ((String) -> Void)? = nil, completion: @escaping (Result<String, Shell.Error>) -> Void) {
         let task = Process()
         task.launchPath = "/bin/bash"
         let command = "cd \(path.escapingSpaces) && \(args.joined(separator: " "))"
