@@ -63,7 +63,7 @@ public class MetadataQuery: NSObject, NSMetadataQueryDelegate {
         get { (self.query.searchItems as? [URL]) ?? [] }
         set { query.searchItems = newValue as [NSURL]  } }
     
-    internal var attributes: [String] {
+    public var attributes: [String] {
         get { return query.valueListAttributes }
         set { return query.valueListAttributes = newValue }
     }
