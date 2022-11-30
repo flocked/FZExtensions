@@ -9,7 +9,7 @@ public struct DataSize: Comparable, Equatable {
         self.countStyle = countStyle
     }
         
-    public  init(terabytes: Double = 0, gigabytes: Double = 0, megabytes: Double = 0, kilobytes: Double = 0, bytes: Int = 0, countStyle: CountStyle = .file) {
+    public init(terabytes: Double = 0, gigabytes: Double = 0, megabytes: Double = 0, kilobytes: Double = 0, bytes: Int = 0, countStyle: CountStyle = .file) {
         self.bytes = bytes
         self.countStyle = countStyle
         self.bytes += self.bytes(for: kilobytes, .kilobyte)
@@ -52,6 +52,10 @@ public struct DataSize: Comparable, Equatable {
     private func bytes(for value: Double, _ unit: Unit) -> Int {
         Int(unit.self.convert(value, to: .byte, countStyle: self.countStyle))
     }
+    
+    public static var zero: DataSize {
+         return DataSize()
+     }
 }
 
 public extension DataSize {

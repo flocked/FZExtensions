@@ -418,7 +418,6 @@ public class URLResources {
              }
         }
     
-    
         public var isAliasFile: Bool {
             get {
                 return (try? url.resourceValues(for: .isAliasFileKey).isAliasFile) ?? false
@@ -438,8 +437,6 @@ public class URLResources {
         }
         return nil
     }
-    
-    
 }
 
 #if os(macOS)
@@ -496,6 +493,5 @@ public extension URLResources {
            return try? url.resourceValues(for: .labelColorKey).labelColor
         }
     }
-    
 }
 #endif

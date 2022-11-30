@@ -41,6 +41,7 @@ public extension Pathish {
         return url.resources.dataSize
     }
     
+    
 
     /*
     func directorySize() -> DataSize? {
