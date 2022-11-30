@@ -16,8 +16,8 @@ public extension NSRange {
 
 public struct TextCheckingResult {
     private var dic = [String : String]()
-    var range: Range<String.Index>
-    init(source: String, textCheckingResult: NSTextCheckingResult, keys: [String]) {
+    public var range: Range<String.Index>
+    public init(source: String, textCheckingResult: NSTextCheckingResult, keys: [String]) {
         self.range = Range(textCheckingResult.range, in: source)!
         self.string = ""
         self.string = String(source[self.range])
@@ -27,12 +27,12 @@ public struct TextCheckingResult {
             }
         }
     }
-    var string: String
-    var keys: [String] {
+    public var string: String
+    public var keys: [String] {
         return dic.compactMap({$0.key})
     }
     
-    func string(forKey key: String) -> String? {
+    public func string(forKey key: String) -> String? {
         return dic[key]
     }
 }
