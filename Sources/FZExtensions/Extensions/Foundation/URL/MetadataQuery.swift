@@ -17,7 +17,7 @@ public class MetadataQuery: NSObject, NSMetadataQueryDelegate {
     
 #if os(macOS)
    public func items(types: [URL.FileType], at urls: [URL], handler: @escaping Handler) {
-        self.attributes = [NSMetadataItemFSNameKey]
+       self.attributes = [.fsName]
         self.predicate =  NSPredicate(format: "%K like '*.*'", NSMetadataItemFSNameKey)
         query.searchScopes = [urls as [NSURL]]
         self.completionHandler = { items in
@@ -34,7 +34,7 @@ public class MetadataQuery: NSObject, NSMetadataQueryDelegate {
     }
 #endif
     
-    func query(attributes: [String], for urls: [URL]) {
+    func query(attributes: [MetadataQuery.Parameter], for urls: [URL]) {
         self.stop()
         self.attributes = attributes
 #if os(macOS)
@@ -63,9 +63,9 @@ public class MetadataQuery: NSObject, NSMetadataQueryDelegate {
         get { (self.query.searchItems as? [URL]) ?? [] }
         set { query.searchItems = newValue as [NSURL]  } }
     
-    public var attributes: [String] {
-        get { return query.valueListAttributes }
-        set { return query.valueListAttributes = newValue }
+    var attributes: [MetadataQuery.Parameter] {
+        get { return query.valueListAttributes.compactMap({Parameter(rawValue: $0)}) }
+        set { query.valueListAttributes = newValue.compactMap({$0.rawValue}) }
     }
     
     public var results: [MetadataItem] {
@@ -109,9 +109,9 @@ public class MetadataQuery: NSObject, NSMetadataQueryDelegate {
         set { self.query.notificationBatchingInterval = newValue } }
     
     
-    public var sortedBy: [SortOption]  {
+    public var sortedBy: [SortDescriptor]  {
         set { self.sortDescriptors =  newValue.compactMap({$0.sortDescriptor}) }
-        get { self.sortDescriptors.compactMap({SortOption(sortDescriptor: $0)})  }
+        get { self.sortDescriptors.compactMap({SortDescriptor(sortDescriptor: $0)})  }
     }
  
     internal var sortDescriptors: [NSSortDescriptor] {
@@ -143,7 +143,6 @@ self.searchScopes = [.ubiquitousDocuments]
 extension MetadataQuery {
 #if os(macOS)
     public enum SearchScope: String {
-
         case home
         case local
         case localIndexed
