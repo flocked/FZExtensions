@@ -58,6 +58,13 @@ public struct DataSize: Comparable, Equatable {
      }
 }
 
+extension DataSize: ExpressibleByIntegerLiteral {
+    public init(integerLiteral value: Int) {
+        self.bytes = value
+        self.countStyle = .file
+    }
+}
+
 public extension DataSize {
      enum Unit: Int {
         case byte = 0
