@@ -3,7 +3,7 @@ import Foundation
 /// Extensions on Foundation’s `Bundle` so you get `Path` rather than `String` or `URL`.
 public extension Bundle {
     /// Returns the path for requested resource in this bundle.
-    func path(forResource: String, ofType: String?) -> Path? {
+    func filePath(forResource: String, ofType: String?) -> Path? {
         let f: (String?, String?) -> String? = path(forResource:ofType:)
         let str = f(forResource, ofType)
         return str.flatMap(Path.init)
