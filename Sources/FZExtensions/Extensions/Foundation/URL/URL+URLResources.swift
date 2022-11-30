@@ -432,7 +432,7 @@ public class URLResources {
         }
     }
     
-    var dataSize: DataSize? {
+   public var dataSize: DataSize? {
         if let bytes = self.totalFileAllocatedSize ?? self.fileAllocatedSize {
             return DataSize(bytes)
         }
