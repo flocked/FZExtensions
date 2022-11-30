@@ -43,11 +43,6 @@ public extension Sequence where Element: Equatable {
     }
 }
 
-public extension Sequence where Element: Hashable {
-    func unique() ->  [Element] {
-        return Array(Set(self))
-    }
-}
 
 public extension Array where Element: Equatable {
     mutating func uniqued() {
@@ -107,6 +102,7 @@ public extension Sequence where Element: RawRepresentable, Element.RawValue: Equ
     }
 }
 
+/*
 public extension Sequence where Iterator.Element: AnyObject {
     func unique() ->  [Iterator.Element] {
         var elements = [Iterator.Element]()
@@ -118,6 +114,7 @@ public extension Sequence where Iterator.Element: AnyObject {
         return elements
     }
 }
+*/
 
 public extension Sequence where Element: Equatable  {
     func contains<S: Sequence>(any elements: S) -> Bool where S.Element == Element {
