@@ -63,7 +63,7 @@ public class MetadataQuery: NSObject, NSMetadataQueryDelegate {
         get { (self.query.searchItems as? [URL]) ?? [] }
         set { query.searchItems = newValue as [NSURL]  } }
     
-    var attributes: [MetadataQuery.Parameter] {
+    public var attributes: [MetadataQuery.Parameter] {
         get { return query.valueListAttributes.compactMap({Parameter(rawValue: $0)}) }
         set { query.valueListAttributes = newValue.compactMap({$0.rawValue}) }
     }
