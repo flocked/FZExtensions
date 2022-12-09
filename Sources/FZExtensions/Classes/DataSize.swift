@@ -45,11 +45,11 @@ public struct DataSize: Comparable, Equatable {
         set { self.bytes = bytes(for: newValue, .petabyte) }
     }
     
-    private func value(for unit: Unit) -> Double {
+    internal func value(for unit: Unit) -> Double {
         Unit.byte.convert(Double(self.bytes), to: unit, countStyle: self.countStyle)
     }
     
-    private func bytes(for value: Double, _ unit: Unit) -> Int {
+    internal func bytes(for value: Double, _ unit: Unit) -> Int {
         Int(unit.self.convert(value, to: .byte, countStyle: self.countStyle))
     }
     
@@ -77,7 +77,7 @@ public extension DataSize {
         case zettabyte = 7
         case yottabyte = 8
        
-       fileprivate var byteCountFormatterUnit: ByteCountFormatter.Units {
+       internal var byteCountFormatterUnit: ByteCountFormatter.Units {
            switch self {
            case .byte:
                return .useBytes
@@ -100,7 +100,7 @@ public extension DataSize {
            }
        }
         
-        func convert(_ number: Double, to targetUnit: Unit, countStyle: CountStyle = .file) -> Double {
+       internal func convert(_ number: Double, to targetUnit: Unit, countStyle: CountStyle = .file) -> Double {
             let factor: Double = (countStyle == .binary) ? 1024 : 1000
             let conversionFactor = pow(factor, Double(self.rawValue - targetUnit.rawValue))
             return number * conversionFactor
@@ -141,13 +141,13 @@ public extension DataSize {
 }
 
 extension DataSize: CustomStringConvertible {
-    public  var description: String {
+    public var description: String {
         let formatter = self.formatter
         formatter.includesActualByteCount = true
         return formatter.string(fromByteCount: Int64(self.bytes))
     }
     
-    private var formatter: ByteCountFormatter {
+    internal var formatter: ByteCountFormatter {
         return ByteCountFormatter(unit: .useAll, countStyle: self.countStyle)
     }
     
