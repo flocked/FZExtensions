@@ -8,7 +8,7 @@
 import Foundation
 
 public extension URL {
-    func redirectedURL(complectionHandler: @escaping ((URL?)->())) {
+    func redirectedURL(complectionHandler: @escaping ((URL?, Error?)->())) {
         URLRedirect.shared.redirectedURL(for: self, complectionHandler: complectionHandler)
     }
 }
@@ -22,15 +22,14 @@ internal class URLRedirect: NSObject, URLSessionTaskDelegate {
     
     lazy var session = URLSession(configuration: .default, delegate: self, delegateQueue: nil)
     
-    func redirectedURL(for url: URL, complectionHandler: @escaping ((URL?)->())) {
+    func redirectedURL(for url: URL, complectionHandler: @escaping ((URL?, Error?)->())) {
         let request = URLRequest(url: url)
         let task = session.dataTask(with: request, completionHandler: { data, response, error in
             
             if let httpResponse = response as? HTTPURLResponse, let location = httpResponse.allHeaderFields["Location"] as? String, let locationURL = URL(string: location) {
-                Swift.print("Finished", locationURL)
-                    complectionHandler(locationURL)
+                    complectionHandler(locationURL, error)
                 } else {
-                    complectionHandler(nil)
+                    complectionHandler(nil, error)
             }
         })
         task.resume()
