@@ -197,6 +197,16 @@ extension NSView {
         }
     }
     
+    public func firstSuperview<V: NSView>(for viewClass: V.Type) -> V? {
+        if let superview = self.superview {
+            if let view = superview as? V {
+                return view
+            }
+            return superview.firstSuperview(for: viewClass)
+        }
+        return nil
+    }
+    
     public func sendToBack() {
         if let superview = self.superview, let firstView = superview.subviews.first, firstView != self {
             superview.addSubview(self, positioned: .below, relativeTo: firstView)

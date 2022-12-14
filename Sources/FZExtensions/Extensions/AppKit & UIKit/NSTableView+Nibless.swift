@@ -36,6 +36,15 @@ public extension NSTableView {
         get { getAssociatedValue(key: "_registeredCellsByIdentifier", object: self) }
         set { set(associatedValue: newValue, key: "_registeredCellsByIdentifier", object: self) }
     }
+    
+    @objc internal func swizzled_register(_ nib: NSNib?, forIdentifier identifier: NSUserInterfaceItemIdentifier) {
+        if nib == nil, var registeredCellsByIdentifier = registeredCellsByIdentifier, registeredCellsByIdentifier[identifier] != nil {
+            registeredCellsByIdentifier[identifier] = nil
+            self.registeredCellsByIdentifier = registeredCellsByIdentifier
+        } else {
+            self.swizzled_register(nib, forIdentifier: identifier)
+        }
+    }
         
     @objc internal func swizzled_makeView(withIdentifier identifier: NSUserInterfaceItemIdentifier, owner: Any?) -> NSView? {
         if let registeredCellClass = self.registeredCellsByIdentifier?[identifier] {
@@ -58,8 +67,10 @@ public extension NSTableView {
     @objc static internal func swizzle() {
         if (didSwizzle == false) {
             didSwizzle = true
+            let registerSelector = #selector((self.register(_:forIdentifier:)) as (NSTableView) -> (NSNib?, NSUserInterfaceItemIdentifier) -> Void)
             Swizzle(NSTableView.self) {
                 #selector(self.makeView(withIdentifier:owner:)) <-> #selector(self.swizzled_makeView(withIdentifier:owner:))
+                registerSelector <-> #selector(self.swizzled_register(_:forIdentifier:))
             }
         }
     }
