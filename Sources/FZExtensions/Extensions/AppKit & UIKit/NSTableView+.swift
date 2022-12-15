@@ -9,10 +9,10 @@
 import AppKit
 
 extension NSTableView {
-    public func reloadOnMainThread(_ complete: (() -> ())? = nil) {
+    public func reloadOnMainThread(completionHandler: (() -> ())? = nil) {
         DispatchQueue.main.async {
             self.reloadData()
-            complete?()
+            completionHandler?()
         }
     }
         
