@@ -13,8 +13,7 @@ import UIKit
 import UniformTypeIdentifiers
 
 public extension NSUIImage {
-    convenience init(color: NSUIColor) {
-        let size = CGSize(width: 1, height: 1)
+    convenience init(color: NSUIColor, size: CGSize = .init(width: 1.0, height: 1.0)) {
 #if canImport(UIKit)
         let image = UIGraphicsImageRenderer(size: size).image { context in
             color.setFill()
