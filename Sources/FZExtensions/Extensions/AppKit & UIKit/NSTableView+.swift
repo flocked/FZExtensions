@@ -15,20 +15,7 @@ extension NSTableView {
             complete?()
         }
     }
-    
-   public func reloadMaintainingSelection(_ complete: (() -> ())? = nil) {
-          let oldSelectedRowIndexes = selectedRowIndexes
-          reloadOnMainThread {
-              if oldSelectedRowIndexes.count == 0 {
-                  if self.numberOfRows > 0 {
-                      self.selectRowIndexes(IndexSet(integer: 0), byExtendingSelection: false)
-                  }
-              } else {
-                  self.selectRowIndexes(oldSelectedRowIndexes, byExtendingSelection: false)
-              }
-          }
-      }
-    
+        
     public static func tableRowHeight(text: ContentProperties.Text.FontSize, secondaryText: ContentProperties.Text.FontSize? = nil, textPadding: CGFloat = 0.0, verticalPadding: CGFloat = 2.0) -> CGFloat  {
        return self.tableRowHeight(fontSize: text.value, secondaryTextFontSize: secondaryText?.value, textPadding: textPadding, verticalPadding: verticalPadding)
     }
