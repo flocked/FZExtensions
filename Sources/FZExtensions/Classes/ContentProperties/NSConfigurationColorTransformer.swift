@@ -11,6 +11,7 @@ import AppKit
 
 public struct NSConfigurationColorTransformer {
     public let transform: (NSColor) -> NSColor
+    internal let uuid: UUID = UUID()
     
     public func callAsFunction(_ input: NSColor) -> NSColor {
         return transform(input)
@@ -56,10 +57,10 @@ public struct NSConfigurationColorTransformer {
 
 extension NSConfigurationColorTransformer: Hashable {
     public static func == (lhs: NSConfigurationColorTransformer, rhs: NSConfigurationColorTransformer) -> Bool {
-        lhs.transform == rhs.transform
+        lhs.uuid == rhs.uuid
     }
     public func hash(into hasher: inout Hasher) {
-        hasher.combine(transform)
+        hasher.combine(uuid)
     }
 }
 
