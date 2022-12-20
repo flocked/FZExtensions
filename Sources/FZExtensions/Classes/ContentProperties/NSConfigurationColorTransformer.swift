@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 
-public struct NSConfigurationColorTransformer: Hashable {
+public struct NSConfigurationColorTransformer {
     public let transform: (NSColor) -> NSColor
     
     public func callAsFunction(_ input: NSColor) -> NSColor {
@@ -52,6 +52,12 @@ public struct NSConfigurationColorTransformer: Hashable {
         color.getWhite(&white, alpha: &alpha)
         return NSColor(white: white, alpha: alpha)
     })
+}
+
+extension NSConfigurationColorTransformer: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(transform)
+    }
 }
 
 #endif
