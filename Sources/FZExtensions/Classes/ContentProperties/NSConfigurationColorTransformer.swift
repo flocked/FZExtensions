@@ -9,7 +9,7 @@
 import Foundation
 import AppKit
 
-public struct NSConfigurationColorTransformer {
+public struct NSConfigurationColorTransformer: Hashable {
     public let transform: (NSColor) -> NSColor
     
     public func callAsFunction(_ input: NSColor) -> NSColor {
