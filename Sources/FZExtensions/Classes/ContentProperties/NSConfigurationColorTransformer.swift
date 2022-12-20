@@ -55,6 +55,9 @@ public struct NSConfigurationColorTransformer {
 }
 
 extension NSConfigurationColorTransformer: Hashable {
+    public static func == (lhs: NSConfigurationColorTransformer, rhs: NSConfigurationColorTransformer) -> Bool {
+        lhs.transform == rhs.transform
+    }
     public func hash(into hasher: inout Hasher) {
         hasher.combine(transform)
     }
