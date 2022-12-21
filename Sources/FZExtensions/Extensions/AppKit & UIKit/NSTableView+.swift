@@ -16,6 +16,17 @@ extension NSTableView {
         }
     }
     
+    public var nonSelectedRowIndexes: IndexSet {
+        let selected = self.selectedRowIndexes
+        var nonSelectedRowIndexes = IndexSet()
+        for i in 0..<self.numberOfRows {
+            if (selected.contains(i) == false) {
+                nonSelectedRowIndexes.insert(i)
+            }
+         }
+        return nonSelectedRowIndexes
+    }
+    
     public func visibleRowIndexes() -> [Int] {
         let visibleRects = self.visibleRect
         let visibleRange = self.rows(in: visibleRects)
