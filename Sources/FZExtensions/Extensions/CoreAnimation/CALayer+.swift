@@ -13,15 +13,19 @@ import AppKit
 #elseif canImport(UIKit)
 import UIKit
 #endif
-
-public extension CACornerMask {
-    static let bottomLeft = CACornerMask.layerMinXMaxYCorner
-    static let bottomRight = CACornerMask.layerMaxXMaxYCorner
-    static let topLeft = CACornerMask.layerMinXMinYCorner
-    static let topRight = CACornerMask.layerMaxXMinYCorner
-    static let all: CACornerMask = [.bottomLeft, .bottomRight, .topLeft, .topRight]
-    static let none: CACornerMask = []
+extension CACornerMask: Hashable {
+    public static let bottomLeft = CACornerMask.layerMinXMaxYCorner
+    public static let bottomRight = CACornerMask.layerMaxXMaxYCorner
+    public static let topLeft = CACornerMask.layerMinXMinYCorner
+    public static let topRight = CACornerMask.layerMaxXMinYCorner
+    public static let all: CACornerMask = [.bottomLeft, .bottomRight, .topLeft, .topRight]
+    public static let none: CACornerMask = []
+    
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(self.rawValue)
+    }
 }
+
 
 public extension CALayer {
     func sendToFront() {
