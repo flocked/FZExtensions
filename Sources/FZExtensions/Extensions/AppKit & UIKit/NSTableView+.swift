@@ -15,6 +15,41 @@ extension NSTableView {
             completionHandler?()
         }
     }
+    
+    public func visibleRowIndexes() -> [Int] {
+        let visibleRects = self.visibleRect
+        let visibleRange = self.rows(in: visibleRects)
+        var rows = [Int]()
+        for i in visibleRange.location...visibleRange.location+visibleRange.length {
+            rows.append(i)
+        }
+        return rows
+    }
+    
+    public func visibleRows(makeIfNecessary: Bool) -> [NSTableRowView] {
+        return self.visibleRowIndexes().compactMap({self.rowView(atRow: $0, makeIfNecessary: makeIfNecessary)})
+    }
+    
+    public func visibleCells(for columns: [NSTableColumn], makeIfNecessary: Bool) -> [NSTableCellView] {
+        let rowIndexes = self.visibleRowIndexes()
+        let tableColumnsCount = self.tableColumns.count
+        var cells = [NSTableCellView]()
+        var columnIndexes = [Int]()
+        for (index, column) in self.tableColumns.enumerated() {
+            if (columns.contains(column)) {
+                columnIndexes.append(index)
+            }
+        }
+        
+        for columnIndex in columnIndexes {
+            for rowIndex in rowIndexes {
+                if let cellView = self.view(atColumn: columnIndex, row: rowIndex, makeIfNecessary: makeIfNecessary) as? NSTableCellView {
+                    cells.append(cellView)
+                }
+            }
+        }
+        return cells
+    }
         
     public static func tableRowHeight(text: ContentProperties.Text.FontSize, secondaryText: ContentProperties.Text.FontSize? = nil, textPadding: CGFloat = 0.0, verticalPadding: CGFloat = 2.0) -> CGFloat  {
        return self.tableRowHeight(fontSize: text.value, secondaryTextFontSize: secondaryText?.value, textPadding: textPadding, verticalPadding: verticalPadding)
